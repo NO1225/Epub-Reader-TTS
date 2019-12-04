@@ -18,7 +18,7 @@ namespace Epub_Reader_TTS
     /// </summary>
     public partial class PagePage : BasePage<PageViewModel>
     {
-        public PagePage()
+        public PagePage(PageViewModel pageViewModel = null) : base(pageViewModel)
         {
             InitializeComponent();
         }

@@ -7,6 +7,37 @@
       mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
-        <local:PagePage/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel 
+            Grid.Row="0"
+            Orientation="Horizontal">
+
+            <Button 
+                Command="{Binding PlayCommand}" 
+                VerticalAlignment="Center"
+                Margin="10"
+                Padding="10">Play</Button>
+
+            <Button 
+                Command="{Binding PauseCommand}" 
+                VerticalAlignment="Center"
+                Margin="10"
+                Padding="10">Pause</Button>
+
+            <Button 
+                Command="{Binding StopCommand}" 
+                VerticalAlignment="Center"
+                Margin="10"
+                Padding="10">Stop</Button>
+        </StackPanel>
+
+
+        <ContentControl 
+            Grid.Row="1"
+            Content="{Binding CurrentPage,Converter={local:BookPageConverter}}"/>
     </Grid>
 </local:BasePage>

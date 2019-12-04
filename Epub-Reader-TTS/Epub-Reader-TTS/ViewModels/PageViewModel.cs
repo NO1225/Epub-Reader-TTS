@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,20 +62,25 @@ namespace Epub_Reader_TTS
 
             SpeechSynthesizer.SpeakCompleted += SpeakCompleted;
 
-            Load().GetAwaiter().GetResult();
+            //Load().GetAwaiter().GetResult();
         }
 
         private async Task Load()
         {
-            await ReadCurrent();
+            ReadCurrent();
         }
 
-        private async Task ReadCurrent()
+        public async Task ReadCurrent()
         {
+            SpeechSynthesizer.SpeakAsyncCancelAll();
+
             CurrentParagraph.Active = true;
+
+            Debug.WriteLine("starting");
 
             SpeechSynthesizer.SpeakAsync(CurrentParagraph.ParagraphText);
 
+            Debug.WriteLine("finished");
         }
 
         private void SpeakProgress(object sender, SpeakProgressEventArgs e)
