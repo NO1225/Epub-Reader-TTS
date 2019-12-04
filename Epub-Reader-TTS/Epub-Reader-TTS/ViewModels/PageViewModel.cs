@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Speech.AudioFormat;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,6 +57,11 @@ namespace Epub_Reader_TTS
             SpeechSynthesizer.SelectVoice("Microsoft Zira Desktop");
 
             SpeechSynthesizer.Rate = 4;
+            SpeechSynthesizer.Volume = 100;
+            var outPutFile = Path.Combine(Directory.GetCurrentDirectory(), "output.wav");
+            //File.Create(outPutFile);
+            SpeechSynthesizer.SetOutputToWaveFile("output.wav", new SpeechAudioFormatInfo(48000, AudioBitsPerSample.Sixteen, AudioChannel.Stereo));
+            
             //var a = SpeechSynthesizer.GetInstalledVoices();
 
             SpeechSynthesizer.SpeakProgress += SpeakProgress;
@@ -69,29 +76,6 @@ namespace Epub_Reader_TTS
             await ReadCurrent();
         }
 
-        private async Task ReadCurrent()
-        {
-            CurrentParagraph.Active = true;
-
-            SpeechSynthesizer.SpeakAsync(CurrentParagraph.ParagraphText);
-
-        }
-
-        private void SpeakProgress(object sender, SpeakProgressEventArgs e)
-        {
-            CurrentParagraph.WordIndex = e.CharacterPosition;
-
-            CurrentParagraph.WordLength = e.CharacterCount;
-        }
-
-        private void SpeakCompleted(object sender, SpeakCompletedEventArgs e)
-        {
-            CurrentParagraph.Active = false;
-
-            CurrentParagraph.WordLength = 0;
-
-            NextParagraph(ParagraphIndex);
-        }
 
         #endregion
 
@@ -125,6 +109,33 @@ namespace Epub_Reader_TTS
         {
             if (OnFinnished != null)
                 OnFinnished(this.Index);
+        }
+
+
+        private async Task ReadCurrent()
+        {
+            SpeechSynthesizer.SpeakAsyncCancelAll();
+
+            CurrentParagraph.Active = true;
+
+            SpeechSynthesizer.SpeakAsync(CurrentParagraph.ParagraphText);
+
+        }
+
+        private void SpeakProgress(object sender, SpeakProgressEventArgs e)
+        {
+            CurrentParagraph.WordIndex = e.CharacterPosition;
+
+            CurrentParagraph.WordLength = e.CharacterCount;
+        }
+
+        private void SpeakCompleted(object sender, SpeakCompletedEventArgs e)
+        {
+            CurrentParagraph.Active = false;
+
+            CurrentParagraph.WordLength = 0;
+
+            NextParagraph(ParagraphIndex);
         }
 
         #endregion
