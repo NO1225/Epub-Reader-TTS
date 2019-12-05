@@ -10,8 +10,13 @@ namespace Epub_Reader_TTS
 {
     public class PageViewModel : BaseViewModel
     {
+        #region Private Fields
 
-        #region MyRegion
+        private SpeechSynthesizer SpeechSynthesizer;
+
+        #endregion
+
+        #region Public Properties
 
         public Action<int> OnFinnished;
 
@@ -19,13 +24,15 @@ namespace Epub_Reader_TTS
 
         public int Index { get; set; }
 
-        public int ParagraphIndex { get; set; }
+        public string Title { get; set; }
 
         public ObservableCollection<ParagraphViewModel> ParagraphViewModels { get; set; }
 
+        public int ParagraphIndex { get; set; }
+               
         public ParagraphViewModel CurrentParagraph { get=> ParagraphViewModels != null && ParagraphViewModels.Count > 0 ? ParagraphViewModels[ParagraphIndex] : null; }
 
-        private SpeechSynthesizer SpeechSynthesizer;
+        public bool IsReading { get => SpeechSynthesizer.State==SynthesizerState.Speaking; }
 
         #endregion
 
@@ -36,7 +43,7 @@ namespace Epub_Reader_TTS
         {
             this.ParagraphViewModels = new ObservableCollection<ParagraphViewModel>();
 
-            for(int i =0;i<5;i++)
+            for(int i =0;i<51;i++)
             {
                 AddParagraph(new ParagraphViewModel()
                 {
@@ -65,44 +72,31 @@ namespace Epub_Reader_TTS
             //Load().GetAwaiter().GetResult();
         }
 
-        private async Task Load()
-        {
-            ReadCurrent();
-        }
-
-        public async Task ReadCurrent()
-        {
-            SpeechSynthesizer.SpeakAsyncCancelAll();
-
-            CurrentParagraph.Active = true;
-
-            Debug.WriteLine("starting");
-
-            SpeechSynthesizer.SpeakAsync(CurrentParagraph.ParagraphText);
-
-            Debug.WriteLine("finished");
-        }
-
-        private void SpeakProgress(object sender, SpeakProgressEventArgs e)
-        {
-            CurrentParagraph.WordIndex = e.CharacterPosition;
-
-            CurrentParagraph.WordLength = e.CharacterCount;
-        }
-
-        private void SpeakCompleted(object sender, SpeakCompletedEventArgs e)
-        {
-            CurrentParagraph.Active = false;
-
-            CurrentParagraph.WordLength = 0;
-
-            NextParagraph(ParagraphIndex);
-        }
-
         #endregion
 
 
         #region Public Methods
+
+        public async Task StartReading()
+        {
+            await ReadParagraph();
+        }
+
+        public async Task StopReading()
+        {
+            // TODO: Cancel the event
+            SpeechSynthesizer.SpeakAsyncCancelAll();
+        }
+
+        public async Task TogglePause()
+        {
+            if (SpeechSynthesizer.State == SynthesizerState.Speaking)
+                SpeechSynthesizer.Pause();
+            else if (SpeechSynthesizer.State == SynthesizerState.Paused)
+                SpeechSynthesizer.Resume();
+            else
+                await ReadParagraph();
+        }
 
         public void AddParagraph(ParagraphViewModel paragraphViewModel)
         {
@@ -119,7 +113,7 @@ namespace Epub_Reader_TTS
             else
             {
                 ParagraphIndex = currentParagraph + 1;
-                ReadCurrent();
+                ReadParagraph();
             }
         }
 
@@ -127,10 +121,45 @@ namespace Epub_Reader_TTS
 
         #region Private Methods
 
+
+        private async Task ReadParagraph()
+        {
+            SpeechSynthesizer.SpeakAsyncCancelAll();
+
+            CurrentParagraph.Active = true;
+
+            Debug.WriteLine("starting");
+
+            SpeechSynthesizer.SpeakAsync(CurrentParagraph.ParagraphText);
+
+            Debug.WriteLine("finished");
+        }
+
+
         private void Finnished()
         {
             if (OnFinnished != null)
                 OnFinnished(this.Index);
+        }
+
+        #endregion
+
+        #region Event Hundlers
+
+        private void SpeakProgress(object sender, SpeakProgressEventArgs e)
+        {
+            CurrentParagraph.WordIndex = e.CharacterPosition;
+
+            CurrentParagraph.WordLength = e.CharacterCount;
+        }
+
+        private void SpeakCompleted(object sender, SpeakCompletedEventArgs e)
+        {
+            CurrentParagraph.Active = false;
+
+            CurrentParagraph.WordLength = 0;
+
+            NextParagraph(ParagraphIndex);
         }
 
         #endregion

@@ -8,25 +8,31 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <StackPanel 
             Grid.Row="0"
+            HorizontalAlignment="Left"
+            Orientation="Horizontal">
+            <Button 
+                VerticalAlignment="Center"
+                Margin="10"
+                Padding="10">Bookmarks</Button>
+        </StackPanel>
+
+        <StackPanel 
+            Grid.Row="0"
+            HorizontalAlignment="Center"
             Orientation="Horizontal">
 
             <Button 
                 Command="{Binding PlayCommand}" 
                 VerticalAlignment="Center"
                 Margin="10"
-                Padding="10">Play</Button>
-
-            <Button 
-                Command="{Binding PauseCommand}" 
-                VerticalAlignment="Center"
-                Margin="10"
-                Padding="10">Pause</Button>
+                Content="{Binding PauseButtonText}"
+                Padding="10"/>
 
             <Button 
                 Command="{Binding StopCommand}" 

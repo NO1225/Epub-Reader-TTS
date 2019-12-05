@@ -5,24 +5,38 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Epub_Reader_TTS"
       mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
-
-    <ScrollViewer>
+    <ScrollViewer 
+        x:Name="ScrollContainer"
+        HorizontalScrollBarVisibility="Auto"
+        VerticalScrollBarVisibility="Disabled"
+        >
         <ItemsControl ItemsSource="{Binding ParagraphViewModels}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel 
+                        Orientation="Vertical"
+                        Height="{Binding ElementName=ScrollContainer, Path=ActualtHeight}"
+                        ItemWidth="{Binding ElementName=ScrollContainer, Path=ActualWidth,
+                        Converter={local:MultiplyConverter},ConverterParameter=0.5}"
+                    />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <local:IndexHighlightTextBlock 
-                        Margin="10"     
-                        Text="{Binding ParagraphText}"
-                        HighlightIndex="{Binding WordIndex}"
-                        HighlightLength="{Binding WordLength}"
-                        IsActive="{Binding Active}"
-                        FontSize="18"
-                        HighlightBackground="LightPink"
-                        HighlightForeground="Black" 
-                        TextWrapping="Wrap"
-                        />
+                    Margin="10"     
+                    Text="{Binding ParagraphText}"
+                    HighlightIndex="{Binding WordIndex}"
+                    HighlightLength="{Binding WordLength}"
+                    IsActive="{Binding Active}"
+                    FontSize="18"
+                    HighlightBackground="LightPink"
+                    HighlightForeground="Black" 
+                    TextWrapping="Wrap"
+                    />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
     </ScrollViewer>
+    
 </local:BasePage>
