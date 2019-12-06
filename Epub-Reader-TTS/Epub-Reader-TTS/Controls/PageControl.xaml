@@ -29,7 +29,7 @@
                     Text="{Binding ParagraphText}"
                     HighlightIndex="{Binding WordIndex}"
                     HighlightLength="{Binding WordLength}"
-                    IsActive="{Binding Active}"
+                    IsActive="{Binding Active,Mode=TwoWay}"
                     FontSize="18"
                     HighlightBackground="LightPink"
                     HighlightForeground="Black" 

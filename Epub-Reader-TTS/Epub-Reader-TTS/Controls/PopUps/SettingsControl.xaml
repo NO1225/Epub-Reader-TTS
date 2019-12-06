@@ -11,9 +11,10 @@
     <Grid
         Background="White"
         MinWidth="300"
+        MinHeight="400"
         >
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="20">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -25,30 +26,72 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+
+                <!-- Font Settings -->
+                <Label 
+                    VerticalAlignment="Center"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Content="Font Size"/>
+
+                <DockPanel
+                    Grid.Row="0"
+                    Grid.Column="1">
+                    <TextBlock 
+                        VerticalAlignment="Center"
+                        DockPanel.Dock="Left"
+                        Text="A" 
+                        FontSize="12"/>
+                    
+                    <TextBlock 
+                        VerticalAlignment="Center"
+                        DockPanel.Dock="Right"
+                        Text="A" 
+                        FontSize="36"/>
+
+                    <Slider 
+                        VerticalAlignment="Center"
+                        Margin="10"
+                        Minimum="12"
+                        Maximum="36"
+                        IsSnapToTickEnabled="True"
+                        TickFrequency="2"
+                        Value="{Binding FontSize}"/>
+                </DockPanel>
+
 
                 <!-- Voice Settings -->
                 <Label 
-                    Grid.Row="0"
+                    VerticalAlignment="Center"
+                    Grid.Row="1"
                     Grid.Column="0"
                     Content="Voice"/>
 
                 <ComboBox 
-                    Grid.Row="0"
+                    VerticalAlignment="Center"
+                    Grid.Row="1"
                     Grid.Column="1"
                     ItemsSource="{Binding InstalledVoices}"
-                    SelectedItem="{Binding SelectedVoice}"
-                    DisplayMemberPath="{Binding VoiceInfo.Name}"/>
+                    SelectedItem="{Binding SelectedVoice}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding VoiceInfo.Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
 
                 <!-- Speed Settings -->
                 <Label 
-                    Grid.Row="1"
+                    VerticalAlignment="Center"
+                    Grid.Row="2"
                     Grid.Column="0"
                     Content="Speed"/>
 
                 <Slider 
                     VerticalAlignment="Center"
-                    Grid.Row="1"
+                    Grid.Row="2"
                     Grid.Column="1"
                     Minimum="1"
                     Maximum="10"

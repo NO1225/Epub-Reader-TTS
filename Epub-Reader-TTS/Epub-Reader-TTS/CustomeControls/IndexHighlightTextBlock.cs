@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -21,7 +22,7 @@ namespace Epub_Reader_TTS
 
         public static readonly DependencyProperty IsActiveProperty =
             DependencyProperty.Register("IsActive", typeof(bool), typeof(IndexHighlightTextBlock),
-                new PropertyMetadata(false, OnHighlightIndexPropertyChanged));
+                new PropertyMetadata(false, IsActivePropertyChanged));
 
         public static readonly DependencyProperty TextProperty =
             TextBlock.TextProperty.AddOwner(
@@ -102,6 +103,17 @@ namespace Epub_Reader_TTS
             set => SetValue(TextTrimmingProperty, value);
         }
 
+        private static void IsActivePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var textblock = (IndexHighlightTextBlock)d;
+
+            if ((bool)e.NewValue)
+                textblock.BringIntoView();
+
+            textblock.ProcessIndexChanged(textblock.Text);
+
+        }
+
         private static void OnHighlightIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var textblock = (IndexHighlightTextBlock)d;
@@ -126,7 +138,9 @@ namespace Epub_Reader_TTS
             if (highlightTextBlock == null)
                 return;
             highlightTextBlock.Inlines.Clear();
+
             if (highlightTextBlock == null || string.IsNullOrWhiteSpace(mainText)) return;
+
             if (highlightLength == 0 || highlightIndex > mainText.Length - highlightLength)
             {
                 var completeRun = new Run(mainText);
@@ -144,9 +158,7 @@ namespace Epub_Reader_TTS
                 mainText.Substring(highlightIndex + highlightLength, mainText.Length - (highlightIndex + highlightLength)), false));
 
             if (isActive)
-                Focus();
-
-
+                BringIntoView();
         }
 
         private Run GetRunForText(string text, bool isHighlighted)

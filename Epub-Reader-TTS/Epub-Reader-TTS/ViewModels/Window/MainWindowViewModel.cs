@@ -21,7 +21,7 @@ namespace Epub_Reader_TTS
 
         private void Load()
         {
-            BookViewModel = new BookViewModel();
+            //BookViewModel = new BookViewModel();
         }
     }
 }

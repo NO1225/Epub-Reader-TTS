@@ -12,13 +12,17 @@ namespace Epub_Reader_TTS
 {
     public class BookViewModel : BaseViewModel
     {
+        #region Private Fields
+
+        private InstalledVoice selectedVoice;
+        private int readingSpeed;
+        private PageViewModel currentPage;
+
+        #endregion
 
         #region Public Properties
 
         public Action OnFinnished;
-        private InstalledVoice selectedVoice;
-        private int readingSpeed;
-        private PageViewModel currentPage;
 
         public bool Focused { get; set; }
 
@@ -33,8 +37,12 @@ namespace Epub_Reader_TTS
             get => currentPage; 
             set
             {
+
                 if(currentPage!=null)
-                    CurrentPage.OnClose();
+                {
+                    TogglePause(true).GetAwaiter().GetResult();
+                    CurrentPage.OnClose().GetAwaiter().GetResult();
+                }
 
                 currentPage = value;
 
@@ -58,7 +66,7 @@ namespace Epub_Reader_TTS
             set
             {
                 selectedVoice = value;
-                SelecteVoice(selectedVoice, readingSpeed);
+                Task.Run(()=>SelecteVoice(selectedVoice, readingSpeed));
             }
         }
 
@@ -173,6 +181,8 @@ namespace Epub_Reader_TTS
 
         private void SelecteVoice(InstalledVoice selectedVoice, int readingSpeed)
         {
+            //TODO: Save 
+
             SpeechSynthesizer.SelectVoice(selectedVoice.VoiceInfo.Name);
 
             SpeechSynthesizer.Rate = readingSpeed;
@@ -200,8 +210,18 @@ namespace Epub_Reader_TTS
 
         public void NextPage(int currentPage)
         {
+            var page = PageViewModels.FirstOrDefault(p => p.Index == currentPage + 1);
 
+            if (page != null)
+            {
+                CurrentPage = page;
+                TogglePause().GetAwaiter().GetResult();
+
+            }
+            else
+                Finnished();
         }
+
 
         #endregion
 
@@ -219,9 +239,9 @@ namespace Epub_Reader_TTS
             await CurrentPage.StopReading();
         }
 
-        private async Task TogglePause()
+        private async Task TogglePause(bool forcePause = false)
         {
-            await CurrentPage.TogglePause();
+            await CurrentPage.TogglePause(forcePause);
             Debug.WriteLine(CurrentPage.IsReading);
             PauseButtonText = CurrentPage.IsReading ? "Pause" : "Resume";
 

@@ -13,9 +13,12 @@
         </Grid.RowDefinitions>
 
 
-        <ContentControl 
+        <local:PageControl
             Grid.Row="1"
-            Content="{Binding CurrentPage,Converter={local:BookPageConverter}}"/>
+            DataContext="{Binding CurrentPage}"/>
+        <!--<ContentControl 
+            Grid.Row="1"
+            Content="{Binding CurrentPage,Converter={local:BookPageConverter}}"/>-->
 
         <local:AdditionalContentControl 
             Grid.Row="1"

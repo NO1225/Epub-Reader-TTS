@@ -29,46 +29,51 @@ namespace Epub_Reader_TTS
         public ObservableCollection<ParagraphViewModel> ParagraphViewModels { get; set; }
 
         public int ParagraphIndex { get; set; }
-               
-        public ParagraphViewModel CurrentParagraph { get=> ParagraphViewModels != null && ParagraphViewModels.Count > 0 ? ParagraphViewModels[ParagraphIndex] : null; }
 
-        public bool IsReading { get => Parent.SpeechSynthesizer.State==SynthesizerState.Speaking; }
+        public ParagraphViewModel CurrentParagraph { get => ParagraphViewModels != null && ParagraphViewModels.Count > 0 ? ParagraphViewModels[ParagraphIndex] : null; }
+
+        public bool IsReading { get => Parent.SpeechSynthesizer.State == SynthesizerState.Speaking; }
+
+        public bool IsClosing { get; set; }
+
+        public bool FirstRun { get; set; }
 
         #endregion
-        
+
         #region Default Constructor
 
         public PageViewModel()
         {
             this.ParagraphViewModels = new ObservableCollection<ParagraphViewModel>();
 
-            for(int i =0;i<51;i++)
+            for (int i = 0; i < 31; i++)
             {
                 AddParagraph(new ParagraphViewModel()
                 {
                     Active = false,
                     Index = i,
-                    ParagraphText = $"{this.GetHashCode()}The experienced publisher misdirects the downhill dragon. When will a suite object? Can the credible ideal nose? When will a dustbin collapse underneath a trained politician?"
+                    ParagraphText = $"{this.GetHashCode()} The experienced publisher misdirects the downhill dragon. When will a suite object? Can the credible ideal nose? When will a dustbin collapse underneath a trained politician?"
                 });
             }
 
             OnPropertyChanged(nameof(CurrentParagraph));
-
-
-
-            //Load().GetAwaiter().GetResult();
         }
 
         #endregion
-        
+
         #region Public Methods
 
-        public async Task Initiate()
+        public void Initiate(bool reading = false)
         {
+            IsClosing = true;
+
+            Debug.WriteLine($"Initiating: {this.GetHashCode()} son of {this.Parent.GetHashCode()}");
 
             Parent.SpeechSynthesizer.SpeakProgress += SpeakProgress;
 
             Parent.SpeechSynthesizer.SpeakCompleted += SpeakCompleted;
+
+            CurrentParagraph.Active = true;
         }
 
         public async Task StartReading()
@@ -78,16 +83,38 @@ namespace Epub_Reader_TTS
 
         public async Task StopReading()
         {
+
+            Debug.WriteLine($"Stoping: {this.GetHashCode()} son of {this.Parent.GetHashCode()} isclosibg is {IsClosing}");
+
+            Parent.SpeechSynthesizer.SpeakProgress -= SpeakProgress;
+
+            Parent.SpeechSynthesizer.SpeakCompleted -= SpeakCompleted;
+
             // TODO: Cancel the event
             Parent.SpeechSynthesizer.SpeakAsyncCancelAll();
+
+            Debug.WriteLine($"stoped: {this.GetHashCode()} son of {this.Parent.GetHashCode()} isclosibg is {IsClosing}");
+
         }
 
-        public async Task TogglePause()
+        public async Task TogglePause(bool forcePause)
         {
+            IsClosing = false;
+
+            if (forcePause)
+            {
+                Parent.SpeechSynthesizer.Pause();
+                return;
+            }
             if (Parent.SpeechSynthesizer.State == SynthesizerState.Speaking)
                 Parent.SpeechSynthesizer.Pause();
             else if (Parent.SpeechSynthesizer.State == SynthesizerState.Paused)
+            {
                 Parent.SpeechSynthesizer.Resume();
+                if (Parent.SpeechSynthesizer.State == SynthesizerState.Ready)
+                    await ReadParagraph();
+
+            }
             else
                 await ReadParagraph();
         }
@@ -106,16 +133,27 @@ namespace Epub_Reader_TTS
             // TODO: ;
             else
             {
+                CurrentParagraph.Active = false;
+
                 ParagraphIndex = currentParagraph + 1;
                 ReadParagraph();
             }
         }
 
-        public void OnClose()
+        public async Task OnClose()
         {
+            IsClosing = true;
+
+            Debug.WriteLine($"Closing: {this.GetHashCode()} son of {this.Parent.GetHashCode()} isclosibg is {IsClosing}");
+
             Parent.SpeechSynthesizer.SpeakProgress -= SpeakProgress;
 
             Parent.SpeechSynthesizer.SpeakCompleted -= SpeakCompleted;
+
+            await StopReading();
+
+            Debug.WriteLine($"Closed: {this.GetHashCode()} son of {this.Parent.GetHashCode()} isclosibg is {IsClosing}");
+
         }
 
 
@@ -150,6 +188,8 @@ namespace Epub_Reader_TTS
 
         private void SpeakProgress(object sender, SpeakProgressEventArgs e)
         {
+            if (IsClosing)
+                return;
             CurrentParagraph.WordIndex = e.CharacterPosition;
 
             CurrentParagraph.WordLength = e.CharacterCount;
@@ -157,6 +197,8 @@ namespace Epub_Reader_TTS
 
         private void SpeakCompleted(object sender, SpeakCompletedEventArgs e)
         {
+            if (IsClosing)
+                return;
             CurrentParagraph.Active = false;
 
             CurrentParagraph.WordLength = 0;
