@@ -25,15 +25,16 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <local:IndexHighlightTextBlock 
-                    Margin="10"     
-                    Text="{Binding ParagraphText}"
-                    HighlightIndex="{Binding WordIndex}"
-                    HighlightLength="{Binding WordLength}"
-                    IsActive="{Binding Active,Mode=TwoWay}"
-                    FontSize="18"
-                    HighlightBackground="LightPink"
-                    HighlightForeground="Black" 
-                    TextWrapping="Wrap"
+                        Margin="10"     
+                        Text="{Binding ParagraphText}"
+                        Foreground="{DynamicResource PrimaryFontColorBrush}"
+                        HighlightIndex="{Binding WordIndex}"
+                        HighlightLength="{Binding WordLength}"
+                        IsActive="{Binding Active,Mode=TwoWay}"
+                        FontSize="{DynamicResource MainFontSize}"
+                        HighlightBackground="{DynamicResource PrimaryHoverColorBrush}"
+                        HighlightForeground="{DynamicResource PrimaryFontColorBrush}" 
+                        TextWrapping="Wrap"
                     />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

@@ -9,6 +9,10 @@
         MinWidth="800"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <local:BookPage/>
+        <local:PageHost 
+            d:DataContext=""
+            DataContext="{Binding ApplicationViewModel, Source={x:Static local:ViewModelLocator.Instance}}"
+            CurrentPage="{Binding CurrentPage, Converter={local:ApplicationPageValueConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+
     </Grid>
 </Window>
