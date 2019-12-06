@@ -12,12 +12,15 @@ namespace Epub_Reader_TTS
     /// </summary>
     public class BookPageConverter : BaseValueConverter<BookPageConverter>
     {
+        public static PagePage CashedPage = new PagePage();
         public override object Convert(object value, Type targetType = null, object parameter = null, CultureInfo culture = null)
         {
-
+            // TODO: Decide wiether to cash or not
             var pageViewModel = value as PageViewModel;
+            if (pageViewModel != null)
+                return new PageControl();
 
-            return new PagePage(pageViewModel);
+
 
             //switch (addContent)
             //{

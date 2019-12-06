@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
+using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -11,21 +13,64 @@ namespace Epub_Reader_TTS
     public class BookViewModel : BaseViewModel
     {
 
-        #region MyRegion
+        #region Public Properties
 
         public Action OnFinnished;
+        private InstalledVoice selectedVoice;
+        private int readingSpeed;
+        private PageViewModel currentPage;
 
         public bool Focused { get; set; }
 
         public string FilePath { get; set; }
 
-        public int PageIndex { get; set; }
+        public int PageIndex => CurrentPage != null ? CurrentPage.Index : -1;
 
-        public ObservableCollection<PageViewModel>  PageViewModels { get; set; }
+        public ObservableCollection<PageViewModel> PageViewModels { get; set; }
 
-        public PageViewModel CurrentPage { get => PageViewModels != null && PageViewModels.Count > 0 ? PageViewModels[PageIndex] : null; }
+        public PageViewModel CurrentPage
+        {
+            get => currentPage; 
+            set
+            {
+                if(currentPage!=null)
+                    CurrentPage.OnClose();
+
+                currentPage = value;
+
+                CurrentPage.Initiate();
+            }
+        }
 
         public string PauseButtonText { get; set; }
+
+        public AdditionalContent CurrentAdditionalContent { get; set; }
+
+        public bool AdditionalContentVisible { get; set; }
+
+        public SpeechSynthesizer SpeechSynthesizer { get; set; }
+
+        public ReadOnlyCollection<InstalledVoice> InstalledVoices { get; set; }
+
+        public InstalledVoice SelectedVoice
+        {
+            get => selectedVoice;
+            set
+            {
+                selectedVoice = value;
+                SelecteVoice(selectedVoice, readingSpeed);
+            }
+        }
+
+        public int ReadingSpeed
+        {
+            get => readingSpeed;
+            set
+            {
+                readingSpeed = value;
+                SelecteVoice(selectedVoice, readingSpeed);
+            }
+        }
 
         #endregion
 
@@ -35,9 +80,12 @@ namespace Epub_Reader_TTS
 
         public ICommand StopCommand { get; set; }
 
+        public ICommand ToggleBookmarksCommand { get; set; }
+
+        public ICommand ToggleSettingsCommand { get; set; }
+
 
         #endregion
-
 
         #region Default Constructor
 
@@ -47,20 +95,88 @@ namespace Epub_Reader_TTS
 
             StopCommand = new RelayCommand(async () => await Stop());
 
+            ToggleBookmarksCommand = new RelayCommand(ToggleBookmarks);
+
+            ToggleSettingsCommand = new RelayCommand(ToggleSettings);
+
             this.PageViewModels = new ObservableCollection<PageViewModel>();
+
+
+            SpeechSynthesizer = new SpeechSynthesizer();
+            // Configure the audio output.   
+            SpeechSynthesizer.SetOutputToDefaultAudioDevice();
+
+            InstalledVoices = SpeechSynthesizer.GetInstalledVoices();
+
+            SelectedVoice = InstalledVoices.First();
+
+            //var a = SpeechSynthesizer.GetInstalledVoices();
+
 
             AddPage(new PageViewModel()
             {
                 Focused = true,
-                Index=0,
-                ParagraphIndex=0,
+                Index = 0,
+                Title = "Chapter 1",
+                ParagraphIndex = 0,
+            });
+
+            AddPage(new PageViewModel()
+            {
+                Focused = true,
+                Index = 1,
+                Title = "Chapter 2",
+                ParagraphIndex = 0,
+            });
+
+            AddPage(new PageViewModel()
+            {
+                Focused = true,
+                Index = 2,
+                Title = "Chapter 3",
+                ParagraphIndex = 0,
             });
 
             PauseButtonText = "Play";
 
-            OnPropertyChanged(nameof(CurrentPage));
+            CurrentPage = PageViewModels.First();
+
+            //OnPropertyChanged(nameof(CurrentPage));
         }
 
+        private void ToggleSettings()
+        {
+            if (CurrentAdditionalContent == AdditionalContent.Settings)
+            {
+                AdditionalContentVisible = !AdditionalContentVisible;
+            }
+            else
+            {
+                CurrentAdditionalContent = AdditionalContent.Settings;
+                AdditionalContentVisible = true;
+            }
+        }
+
+        private void ToggleBookmarks()
+        {
+            if (CurrentAdditionalContent == AdditionalContent.Bookmarks)
+            {
+                AdditionalContentVisible = !AdditionalContentVisible;
+            }
+            else
+            {
+                CurrentAdditionalContent = AdditionalContent.Bookmarks;
+                AdditionalContentVisible = true;
+            }
+        }
+
+
+        private void SelecteVoice(InstalledVoice selectedVoice, int readingSpeed)
+        {
+            SpeechSynthesizer.SelectVoice(selectedVoice.VoiceInfo.Name);
+
+            SpeechSynthesizer.Rate = readingSpeed;
+        }
 
         public BookViewModel(string filePath, int page, int paragraph)
         {
@@ -71,12 +187,13 @@ namespace Epub_Reader_TTS
 
         #endregion
 
-
         #region Public Methods
 
         public void AddPage(PageViewModel pageViewModel)
         {
             pageViewModel.OnFinnished = NextPage;
+
+            pageViewModel.Parent = this;
 
             this.PageViewModels.Add(pageViewModel);
         }

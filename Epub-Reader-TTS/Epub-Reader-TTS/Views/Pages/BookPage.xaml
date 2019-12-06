@@ -12,11 +12,23 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+
+        <ContentControl 
+            Grid.Row="1"
+            Content="{Binding CurrentPage,Converter={local:BookPageConverter}}"/>
+
+        <local:AdditionalContentControl 
+            Grid.Row="1"
+            local:AnimateSlideInFromTopProperty.Value="{Binding AdditionalContentVisible}"
+            Content="{Binding CurrentAdditionalContent, Converter={local:AdditionalContentConverter}}"
+            />
+
         <StackPanel 
             Grid.Row="0"
             HorizontalAlignment="Left"
             Orientation="Horizontal">
             <Button 
+                Command="{Binding ToggleBookmarksCommand}"
                 VerticalAlignment="Center"
                 Margin="10"
                 Padding="10">Bookmarks</Button>
@@ -41,9 +53,18 @@
                 Padding="10">Stop</Button>
         </StackPanel>
 
+        <StackPanel 
+            Grid.Row="0"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button 
+                Command="{Binding ToggleSettingsCommand}"
+                VerticalAlignment="Center"
+                Margin="10"
+                Padding="10">Settings</Button>
+        </StackPanel>
 
-        <ContentControl 
-            Grid.Row="1"
-            Content="{Binding CurrentPage,Converter={local:BookPageConverter}}"/>
+
+
     </Grid>
 </local:BasePage>

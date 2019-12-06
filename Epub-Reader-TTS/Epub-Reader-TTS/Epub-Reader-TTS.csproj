@@ -81,11 +81,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AttachedProperties\AnimationAttachedProperties.cs" />
+    <Compile Include="AttachedProperties\BaseAttachedProperty.cs" />
+    <Compile Include="Controls\PageControl.xaml.cs">
+      <DependentUpon>PageControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PopUps\SettingsControl.xaml.cs">
+      <DependentUpon>SettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PopUpHost\AdditionalContentControl.xaml.cs">
+      <DependentUpon>AdditionalContentControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PopUps\BookmarkControl.xaml.cs">
+      <DependentUpon>BookmarkControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Enums\AdditionalContent.cs" />
+    <Compile Include="ValueConverters\AdditionalContentConverter.cs" />
     <Compile Include="ValueConverters\BaseValueConverter.cs" />
     <Compile Include="ValueConverters\MultiplyConverter.cs" />
     <Compile Include="ValueConverters\BookPageConverter.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
+    <Compile Include="ViewModels\BookmarksViewModel.cs" />
     <Compile Include="ViewModels\BookViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\ParagraphViewModel.cs" />
@@ -97,6 +114,22 @@
     <Compile Include="Views\Pages\PagePage.xaml.cs">
       <DependentUpon>PagePage.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\PageControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PopUps\SettingsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PopUpHost\AdditionalContentControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PopUps\BookmarkControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

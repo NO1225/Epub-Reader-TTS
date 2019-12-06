@@ -12,7 +12,7 @@ namespace Epub_Reader_TTS
     {
         #region Private Fields
 
-        private SpeechSynthesizer SpeechSynthesizer;
+        public BookViewModel Parent;
 
         #endregion
 
@@ -32,11 +32,10 @@ namespace Epub_Reader_TTS
                
         public ParagraphViewModel CurrentParagraph { get=> ParagraphViewModels != null && ParagraphViewModels.Count > 0 ? ParagraphViewModels[ParagraphIndex] : null; }
 
-        public bool IsReading { get => SpeechSynthesizer.State==SynthesizerState.Speaking; }
+        public bool IsReading { get => Parent.SpeechSynthesizer.State==SynthesizerState.Speaking; }
 
         #endregion
-
-
+        
         #region Default Constructor
 
         public PageViewModel()
@@ -49,33 +48,28 @@ namespace Epub_Reader_TTS
                 {
                     Active = false,
                     Index = i,
-                    ParagraphText = @"The experienced publisher misdirects the downhill dragon. When will a suite object? Can the credible ideal nose? When will a dustbin collapse underneath a trained politician?"
+                    ParagraphText = $"{this.GetHashCode()}The experienced publisher misdirects the downhill dragon. When will a suite object? Can the credible ideal nose? When will a dustbin collapse underneath a trained politician?"
                 });
             }
 
             OnPropertyChanged(nameof(CurrentParagraph));
 
-            SpeechSynthesizer = new SpeechSynthesizer();
 
-            // Configure the audio output.   
-            SpeechSynthesizer.SetOutputToDefaultAudioDevice();
-
-            SpeechSynthesizer.SelectVoice("Microsoft Zira Desktop");
-
-            SpeechSynthesizer.Rate = 4;
-            //var a = SpeechSynthesizer.GetInstalledVoices();
-
-            SpeechSynthesizer.SpeakProgress += SpeakProgress;
-
-            SpeechSynthesizer.SpeakCompleted += SpeakCompleted;
 
             //Load().GetAwaiter().GetResult();
         }
 
         #endregion
-
-
+        
         #region Public Methods
+
+        public async Task Initiate()
+        {
+
+            Parent.SpeechSynthesizer.SpeakProgress += SpeakProgress;
+
+            Parent.SpeechSynthesizer.SpeakCompleted += SpeakCompleted;
+        }
 
         public async Task StartReading()
         {
@@ -85,15 +79,15 @@ namespace Epub_Reader_TTS
         public async Task StopReading()
         {
             // TODO: Cancel the event
-            SpeechSynthesizer.SpeakAsyncCancelAll();
+            Parent.SpeechSynthesizer.SpeakAsyncCancelAll();
         }
 
         public async Task TogglePause()
         {
-            if (SpeechSynthesizer.State == SynthesizerState.Speaking)
-                SpeechSynthesizer.Pause();
-            else if (SpeechSynthesizer.State == SynthesizerState.Paused)
-                SpeechSynthesizer.Resume();
+            if (Parent.SpeechSynthesizer.State == SynthesizerState.Speaking)
+                Parent.SpeechSynthesizer.Pause();
+            else if (Parent.SpeechSynthesizer.State == SynthesizerState.Paused)
+                Parent.SpeechSynthesizer.Resume();
             else
                 await ReadParagraph();
         }
@@ -117,6 +111,14 @@ namespace Epub_Reader_TTS
             }
         }
 
+        public void OnClose()
+        {
+            Parent.SpeechSynthesizer.SpeakProgress -= SpeakProgress;
+
+            Parent.SpeechSynthesizer.SpeakCompleted -= SpeakCompleted;
+        }
+
+
         #endregion
 
         #region Private Methods
@@ -124,13 +126,13 @@ namespace Epub_Reader_TTS
 
         private async Task ReadParagraph()
         {
-            SpeechSynthesizer.SpeakAsyncCancelAll();
+            Parent.SpeechSynthesizer.SpeakAsyncCancelAll();
 
             CurrentParagraph.Active = true;
 
             Debug.WriteLine("starting");
 
-            SpeechSynthesizer.SpeakAsync(CurrentParagraph.ParagraphText);
+            Parent.SpeechSynthesizer.SpeakAsync(CurrentParagraph.ParagraphText);
 
             Debug.WriteLine("finished");
         }
