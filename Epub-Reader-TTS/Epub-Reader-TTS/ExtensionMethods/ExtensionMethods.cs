@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
+using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
-
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Data;
-using System.ComponentModel;
 
 namespace Epub_Reader_TTS
 {
+    /// <summary>
+    /// Extension methods to hel in the application
+    /// </summary>
     public static class ExtensionMethods
     {
         #region ExtensionMethods
@@ -92,36 +91,6 @@ namespace Epub_Reader_TTS
             return ColorTranslator.FromHtml(dictionary[key]);
         }
 
-        public static string ToFillsStr(this double amount, int decimels = 3)
-        {
-            amount = double.Parse(amount.ToString());
-            string format = "0.";
-            for (int i = 0; i < decimels; i++)
-                format += "0";
-            return (amount - Math.Truncate(amount)).ToString(format).Substring(2);
-        }
-
-        public static DataTable ToDataTable<T>(this IList<T> data)
-        {
-            PropertyDescriptorCollection props =
-                TypeDescriptor.GetProperties(typeof(T));
-            DataTable table = new DataTable();
-            for (int i = 0; i < props.Count; i++)
-            {
-                PropertyDescriptor prop = props[i];
-                table.Columns.Add(prop.Name, prop.PropertyType);
-            }
-            object[] values = new object[props.Count];
-            foreach (T item in data)
-            {
-                for (int i = 0; i < values.Length; i++)
-                {
-                    values[i] = props[i].GetValue(item);
-                }
-                table.Rows.Add(values);
-            }
-            return table;
-        }
 
         #endregion
 

@@ -1,56 +1,79 @@
 ﻿using Epub_Reader_TTS.Core;
 using EpubSharp;
-using EpubSharp.Format;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
 namespace Epub_Reader_TTS
-{ 
+{
+    /// <summary>
+    /// Viewmodel to store all the details to be displayed on the dashboard page
+    /// </summary>
     public class DashboardViewModel : BaseViewModel
     {
 
+        #region Public Properties
+
+        /// <summary>
+        /// Collection of tiles - Stored books - to be displayed
+        /// </summary>
         public ObservableCollection<TileViewModel> Tiles { get; set; }
 
-        public int Columns { get; set; } = 4;
+        #endregion
 
+        #region Private Fields
+
+        /// <summary>
+        /// List of the books stored in the database
+        /// </summary>
         private List<Book> bookList;
 
+        #endregion
 
+        #region Public Commands
 
+        /// <summary>
+        /// Command to add a new file to the list of books
+        /// </summary>
         public ICommand OpenBookCommand { get; set; }
+
+        /// <summary>
+        /// Command to refresh and retreive all the information about the stored books
+        /// </summary>
         public ICommand RefreshAllCommand { get; set; }
 
+        #endregion
+
+        #region Default Constructor
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public DashboardViewModel()
         {
             OpenBookCommand = new RelayCommand(async () => await OpenBookFile());
 
-            RefreshAllCommand = new RelayCommand(() => DI.TaskManager.Run(async()=>await RefreshAll()));
+            RefreshAllCommand = new RelayCommand(() => DI.TaskManager.Run(async () => await RefreshAll()));
 
             Initiate().GetAwaiter().GetResult();
         }
 
-        private async Task RefreshAll()
-        {
+        #endregion
 
+        #region Initiator
 
-            foreach(Book book in bookList)
-            {
-                await RefreshBook(book);
-            }
-        }
-
+        /// <summary>
+        /// The initiator for this page to get the books from the database and store them to be displayed
+        /// </summary>
+        /// <returns></returns>
         private async Task Initiate()
         {
-            bookList = await DI.ClientDataStore.GetBooks();
+            this.bookList = await DI.ClientDataStore.GetBooks();
 
             Tiles = new ObservableCollection<TileViewModel>();
 
@@ -58,20 +81,40 @@ namespace Epub_Reader_TTS
                 Tiles.Add(new TileViewModel(book, this));
         }
 
+        #endregion
+
+        #region Command Methods
+
+        /// <summary>
+        /// Refresh all the books and retreive their information
+        /// </summary>
+        /// <returns></returns>
+        private async Task RefreshAll()
+        {
+            foreach (Book book in bookList)
+            {
+                await RefreshBook(book);
+            }
+        }
+
+        /// <summary>
+        /// Open the file and assosiate it with a book model
+        /// </summary>
+        /// <returns></returns>
         private async Task OpenBookFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
             openFileDialog.Filter = "epub books (*.epub)|*.epub";
 
-            var result =  openFileDialog.ShowDialog();
+            var result = openFileDialog.ShowDialog();
 
-            if((result!=null) && (bool)result)
+            if ((result != null) && (bool)result)
             {
                 var book = bookList.FirstOrDefault(b => b.BookFilePath == openFileDialog.FileName);
 
 
-                if (book !=null)
+                if (book != null)
                 {
                     book.LastOpenDate = DateTime.Now;
 
@@ -92,6 +135,15 @@ namespace Epub_Reader_TTS
             }
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Refresh the selected book
+        /// </summary>
+        /// <param name="file">the selected book</param>
+        /// <returns></returns>
         public async Task RefreshBook(Book file)
         {
             if (!DI.FileManager.PathExists(file.BookFilePath))
@@ -107,7 +159,7 @@ namespace Epub_Reader_TTS
 
             await DI.ClientDataStore.AddBook(file);
 
-            if(!DI.FileManager.PathExists(file.BookCoverPath))
+            if (!DI.FileManager.PathExists(file.BookCoverPath))
             {
                 if (string.IsNullOrEmpty(file.BookCoverPath))
                     file.BookCoverPath = DI.FileManager.ResolvePath($"Covers/{file.Id}.png");
@@ -120,10 +172,13 @@ namespace Epub_Reader_TTS
             }
 
             await DI.ClientDataStore.AddBook(file);
-
-            //await Initiate();
         }
 
+        /// <summary>
+        /// Open the selected book
+        /// </summary>
+        /// <param name="file">the selected book</param>
+        /// <returns></returns>
         public async Task OpenBook(Book file)
         {
             //await RefreshBook(file);
@@ -145,7 +200,7 @@ namespace Epub_Reader_TTS
             };
 
             var i = 0;
-            foreach(EpubTextFile text in html)
+            foreach (EpubTextFile text in html)
             {
                 var pageVM = new PageViewModel()
                 {
@@ -154,7 +209,7 @@ namespace Epub_Reader_TTS
                 };
 
                 var j = 0;
-                foreach(string paragraph in text.ToParagraphs())
+                foreach (string paragraph in text.ToParagraphs())
                 {
                     var paragraphVM = new ParagraphViewModel()
                     {
@@ -164,7 +219,7 @@ namespace Epub_Reader_TTS
 
                     pageVM.AddParagraph(paragraphVM);
                 }
-                if(pageVM.ParagraphViewModels.Count>0)
+                if (pageVM.ParagraphViewModels.Count > 0)
                 {
                     bookVM.AddPage(pageVM);
                     i++;
@@ -182,65 +237,20 @@ namespace Epub_Reader_TTS
             ViewModelLocator.ApplicationViewModel.CurrentBookViewModel.Initialize(file);
 
             ViewModelLocator.ApplicationViewModel.GoToPage(ApplicationPage.Book);
-            //// Read metadata
-            //string title = book.Title;
-            //List<string> authors = book.Authors.ToList();
-            //Image cover = book.CoverImage.ToImage();
 
-            //// Get table of contents
-            //ICollection<EpubChapter> chapters = book.TableOfContents;
-
-            //// Get contained files
-            //ICollection<EpubTextFile> css = book.Resources.Css;
-            //ICollection<EpubByteFile> images = book.Resources.Images;
-            //ICollection<EpubByteFile> fonts = book.Resources.Fonts;
-
-            //// Convert to plain text
-            //string text = book.ToPlainText();
-
-            //var text1 = html.Skip(10).First().ToParagraphs();
         }
 
+        /// <summary>
+        /// Remove the selected book
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
         public async Task RemoveBook(Book file)
         {
-
+            // TODO:  
         }
 
-        private void LoadBook(Book file)
-        {
-            // Read an epub file
-            EpubBook book = EpubReader.Read(file.BookFilePath);
+        #endregion
 
-            // Read metadata
-            string title = book.Title;
-            List<string> authors = book.Authors.ToList();
-            Image cover = book.CoverImage.ToImage();
-
-            // Get table of contents
-            ICollection<EpubChapter> chapters = book.TableOfContents;
-
-            // Get contained files
-            ICollection<EpubTextFile> html = book.Resources.Html;
-            ICollection<EpubTextFile> css = book.Resources.Css;
-            ICollection<EpubByteFile> images = book.Resources.Images;
-            ICollection<EpubByteFile> fonts = book.Resources.Fonts;
-
-            // Convert to plain text
-            string text = book.ToPlainText();
-
-            var text1 = html.Skip(10).First().ToParagraphs();
-            //Debug.WriteLine(text1);
-            //html.First().TextContent
-
-            // Access internal EPUB format specific data structures.
-            EpubFormat format = book.Format;
-            OcfDocument ocf = format.Ocf;
-            OpfDocument opf = format.Opf;
-            NcxDocument ncx = format.Ncx;
-            NavDocument nav = format.Nav;
-
-            // Create an EPUB
-            EpubWriter.Write(book, "new.epub");
-        }
     }
 }

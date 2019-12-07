@@ -70,7 +70,7 @@ namespace Epub_Reader_TTS
             set
             {
                 selectedVoice = value;
-                Task.Run(()=>SelecteVoice(selectedVoice, readingSpeed));
+                TaskManager.Run(()=>SelecteVoice(selectedVoice, readingSpeed));
             }
         }
 
@@ -235,7 +235,7 @@ namespace Epub_Reader_TTS
         {
             pageViewModel.OnFinnished = NextPage;
 
-            pageViewModel.Parent = this;
+            pageViewModel.parent = this;
 
             this.PageViewModels.Add(pageViewModel);
         }
@@ -270,7 +270,7 @@ namespace Epub_Reader_TTS
 
         private async Task Stop()
         {
-            await CurrentPage.StopReading();
+            //await CurrentPage.StopReading();
         }
 
         private async Task TogglePause(bool forcePause = false)

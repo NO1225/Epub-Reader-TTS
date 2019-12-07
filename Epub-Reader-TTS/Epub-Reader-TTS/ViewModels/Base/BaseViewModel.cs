@@ -8,7 +8,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Epub_Reader_TTS
@@ -20,10 +19,51 @@ namespace Epub_Reader_TTS
     [AddINotifyPropertyChangedInterface]
     public class BaseViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
     {
+
+        #region Public Properties
+
+        /// <summary>
+        /// It gives indication if this viewmodel has any validation errors
+        /// </summary>
+        public bool HasErrors { get { return _errors.Any(propErrors => propErrors.Value != null && propErrors.Value.Count > 0); } }
+
+        /// <summary>
+        /// If the state of this viewmodel in respect o validation
+        /// </summary>
+        public bool IsValid { get { return !this.HasErrors; } }
+
+        #endregion
+
+        #region Private Fields
+
+        /// <summary>
+        /// List of error resulting from the validation
+        /// </summary>
+        private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
+
+        /// <summary>
+        /// Lock object to be used in thread locking 
+        /// </summary>
+        private object _lock = new object();
+
+
+        #endregion
+
+        #region Events
+
         /// <summary>
         /// The event that is fired when any child property changes its value
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
+
+        /// <summary>
+        /// Event hundler to fire when the error states of this viewmodel changed
+        /// </summary>
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Call this to fire a <see cref="PropertyChanged"/> event
@@ -36,17 +76,11 @@ namespace Epub_Reader_TTS
             ValidateProperty(a, name);
         }
 
-
-
-        private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
-
-        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
-
-        private object _lock = new object();
-        public bool HasErrors { get { return _errors.Any(propErrors => propErrors.Value != null && propErrors.Value.Count > 0); } }
-        public bool IsValid { get { return this.HasErrors; } }
-
-
+        /// <summary>
+        /// Check the error and validate the choes property
+        /// </summary>
+        /// <param name="propertyName">the property to be validated</param>
+        /// <returns>the errors of this validation</returns>
         public IEnumerable GetErrors(string propertyName)
         {
             if (!string.IsNullOrEmpty(propertyName))
@@ -60,12 +94,21 @@ namespace Epub_Reader_TTS
                 return _errors.SelectMany(err => err.Value.ToList());
         }
 
+        /// <summary>
+        /// The event to be fired if the error state of this view model changed
+        /// </summary>
+        /// <param name="propertyName"></param>
         public void OnErrorsChanged(string propertyName)
         {
             if (ErrorsChanged != null)
                 ErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Validate the chosen property
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="propertyName"></param>
         public void ValidateProperty(object value, [CallerMemberName] string propertyName = null)
         {
             lock (_lock)
@@ -83,6 +126,9 @@ namespace Epub_Reader_TTS
             }
         }
 
+        /// <summary>
+        /// Validate all the properties
+        /// </summary>
         public void Validate()
         {
             lock (_lock)
@@ -99,21 +145,7 @@ namespace Epub_Reader_TTS
             }
         }
 
-        private void HandleValidationResults(List<ValidationResult> validationResults)
-        {
-            //Group validation results by property names  
-            var resultsByPropNames = from res in validationResults
-                                     from mname in res.MemberNames
-                                     group res by mname into g
-                                     select g;
-            //add _errors to dictionary and inform binding engine about _errors  
-            foreach (var prop in resultsByPropNames)
-            {
-                var messages = prop.Select(r => r.ErrorMessage).ToList();
-                _errors.Add(prop.Key, messages);
-                OnErrorsChanged(prop.Key);
-            }
-        }
+        #endregion
 
         #region Command Helpers
 
@@ -151,6 +183,12 @@ namespace Epub_Reader_TTS
 
         #region HelperMethod
 
+        /// <summary>
+        /// Get the value of a property its name 
+        /// </summary>
+        /// <param name="obj">The object that host that property</param>
+        /// <param name="name">the name of the property</param>
+        /// <returns></returns>
         private Object GetPropValue(Object obj, String name)
         {
             foreach (String part in name.Split('.'))
@@ -164,6 +202,26 @@ namespace Epub_Reader_TTS
                 obj = info.GetValue(obj, null);
             }
             return obj;
+        }
+
+        /// <summary>
+        /// Arrange the validation result and group the errors in the error property of this viewmodel
+        /// </summary>
+        /// <param name="validationResults"></param>
+        private void HandleValidationResults(List<ValidationResult> validationResults)
+        {
+            //Group validation results by property names  
+            var resultsByPropNames = from res in validationResults
+                                     from mname in res.MemberNames
+                                     group res by mname into g
+                                     select g;
+            //add _errors to dictionary and inform binding engine about _errors  
+            foreach (var prop in resultsByPropNames)
+            {
+                var messages = prop.Select(r => r.ErrorMessage).ToList();
+                _errors.Add(prop.Key, messages);
+                OnErrorsChanged(prop.Key);
+            }
         }
 
         #endregion

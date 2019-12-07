@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Epub_Reader_TTS
 {
     /// <summary>
-    /// Convert the <see cref="ApplicationPage"/> to an actual view/Page
+    /// Convert the <see cref="AdditionalContent"/> to an actual popup control
     /// </summary>
     public class AdditionalContentConverter : BaseValueConverter<AdditionalContentConverter>
     {

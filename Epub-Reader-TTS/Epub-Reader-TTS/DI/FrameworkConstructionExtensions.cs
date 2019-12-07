@@ -38,9 +38,6 @@ namespace Epub_Reader_TTS
             // Bind a file manager
             construction.Services.AddTransient<IFileManager, BaseFileManager>();
 
-            // Bind a UI Manager
-            construction.Services.AddTransient<IUIManager, UIManager>();
-
             // Bind a Settings manager
             construction.Services.AddTransient<ISettingsManager, SettingsManager>();
 

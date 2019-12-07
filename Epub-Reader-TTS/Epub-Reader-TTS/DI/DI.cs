@@ -8,10 +8,6 @@ namespace Epub_Reader_TTS
     /// </summary>
     public static class DI
     {
-        /// <summary>
-        /// A shortcut to access the <see cref="IUIManager"/>
-        /// </summary>
-        public static IUIManager UI => Framework.Service<IUIManager>();
 
         /// <summary>
         /// A shortcut to access the <see cref="ISettingsManager"/>
@@ -28,8 +24,14 @@ namespace Epub_Reader_TTS
         /// </summary>
         public static IClientDataStore ClientDataStore => Framework.Service<IClientDataStore>();
 
+        /// <summary>
+        /// A shortcut to access toe <see cref="IFileManager"/> service
+        /// </summary>
         public static IFileManager FileManager => Framework.Service<IFileManager>();
 
+        /// <summary>
+        /// A shortcut to access toe <see cref="ITaskManager"/> service
+        /// </summary>
         public static ITaskManager TaskManager => Framework.Service<ITaskManager>();
     }
 }

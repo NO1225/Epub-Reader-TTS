@@ -36,6 +36,7 @@ namespace Epub_Reader_TTS
         }
 
         #endregion
+
         #region Value Converter Methods
         /// <summary>
         /// The method to convert one type to another

@@ -5,10 +5,12 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Epub_Reader_TTS
 {
+    /// <summary>
+    /// Static class helper to aid in converting html content into plain text
+    /// </summary>
     internal static class Html
     {
         private static readonly RegexOptions RegexOptions = RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture;

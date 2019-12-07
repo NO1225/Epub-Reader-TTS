@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Epub_Reader_TTS
 {
     /// <summary>
-    /// Convert the <see cref="ApplicationPage"/> to an actual view/Page
+    /// multiply the input numirical value with the choosen parameter
     /// </summary>
     public class MultiplyConverter : BaseValueConverter<MultiplyConverter>
     {

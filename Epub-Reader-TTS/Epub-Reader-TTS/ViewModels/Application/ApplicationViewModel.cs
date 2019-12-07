@@ -1,8 +1,6 @@
 ﻿using Epub_Reader_TTS.Core;
-using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Epub_Reader_TTS
 {
@@ -17,14 +15,16 @@ namespace Epub_Reader_TTS
         /// <summary>
         /// The current page of the applcation 
         /// </summary>
-        public ApplicationPage CurrentPage
-        {
-            get;
-            private set;
-        } = ApplicationPage.Dashboard;
+        public ApplicationPage CurrentPage { get; private set; }
 
+        /// <summary>
+        /// Place holder for the viewmodel of the displayed book
+        /// </summary>
         public BookViewModel CurrentBookViewModel { get; set; }
 
+        /// <summary>
+        /// The model of the currently display book
+        /// </summary>
         public Book CurrentBook { get; set; }
 
         /// <summary>
@@ -41,24 +41,22 @@ namespace Epub_Reader_TTS
         /// </summary>
         public bool BackVisible { get => CurrentPage != ApplicationPage.Dashboard; }
 
-
-
         /// <summary>
         /// Colors properties
         /// </summary>
         #region Colors
 
-        public Color MainColor { get; set; }
+        //public Color MainColor { get; set; }
 
-        public Brush MainColorBrush { get; set; }
+        //public Brush MainColorBrush { get; set; }
 
-        public Color MainHoverColor { get; set; }
+        //public Color MainHoverColor { get; set; }
 
-        public Brush MainHoverColorBrush { get; set; }
+        //public Brush MainHoverColorBrush { get; set; }
 
-        public Color MainPressedColor { get; set; }
+        //public Color MainPressedColor { get; set; }
 
-        public Brush MainPressedColorBrush { get; set; }
+        //public Brush MainPressedColorBrush { get; set; }
 
         #endregion
 
@@ -105,40 +103,17 @@ namespace Epub_Reader_TTS
         /// <param name="page">The page to go to</param>
         public void GoToPage(ApplicationPage page)
         {
-            //switch (page)
-            //{
-            //    case ApplicationPage.Members:
-            //        if (!HRAccessLevel)
-            //            return;
-            //        break;
-            //    case ApplicationPage.Custmers:
-            //        if (!HRAccessLevel)
-            //            return;
-            //        break;
-            //    case ApplicationPage.ESCoin:
-            //        if (!HRAccessLevel)
-            //            return;
-            //        break;
-            //    case ApplicationPage.Backups:
-            //        if (!HRAccessLevel)
-            //            return;
-            //        break;
-            //    case ApplicationPage.Satistics:
-            //        if (!AdminAccessLevel)
-            //            return;
-            //        break;
-            //    default:
-            //        break;
-            //}
             CurrentPage = page;
         }
 
         /// <summary>
-        /// Setting the main color in the resources of our programm
+        /// Setting the colors of the application to be in dark mode or in light mode
         /// </summary>
         /// <param name="color"></param>
-        public void SetColor(Color color)
+        public void SetDarkMode(bool isDarkMode)
         {
+            // TODO: 
+
             //MainColor = color;
             //MainHoverColor = color.ChangeBrightness(Constants.BrightnessFactor);
             //MainPressedColor = color.ChangeBrightness(-Constants.BrightnessFactor / 2);
@@ -157,6 +132,12 @@ namespace Epub_Reader_TTS
 
         }
 
+        /// <summary>
+        /// Save the location of the reading of this book in the database 
+        /// </summary>
+        /// <param name="pageIndex">Current page</param>
+        /// <param name="paragraphIndex">Current paragraph</param>
+        /// <returns></returns>
         internal async Task SavePosition(int pageIndex, int paragraphIndex)
         {
             this.CurrentBook.CurrentPageIndex = pageIndex;
@@ -166,7 +147,6 @@ namespace Epub_Reader_TTS
         }
 
         #endregion
-
-
+        
     }
 }

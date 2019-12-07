@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Epub_Reader_TTS
@@ -19,6 +15,9 @@ namespace Epub_Reader_TTS
         /// </summary>
         private Action mAction;
 
+        /// <summary>
+        /// The function to be run to check if this command is able to be excuted
+        /// </summary>
         Func<bool> mTargetCanExecuteMethod;
 
         #endregion
@@ -29,6 +28,14 @@ namespace Epub_Reader_TTS
         /// The event thats fired when the <see cref="CanExecute(object)"/> value has changed
         /// </summary>
         public event EventHandler CanExecuteChanged = delegate { };
+
+        /// <summary>
+        /// Used to raise the event to check if this command can be excuted
+        /// </summary>
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged(this, EventArgs.Empty);
+        }
 
         #endregion
 
@@ -42,21 +49,27 @@ namespace Epub_Reader_TTS
             mAction = action;
         }
 
+        /// <summary>
+        /// Constructor with the ability to add an action to check if this command can be excuted
+        /// </summary>
+        /// <param name="executeMethod"></param>
+        /// <param name="canExecuteMethod"></param>
         public RelayCommand(Action executeMethod, Func<bool> canExecuteMethod)
         {
             mAction = executeMethod;
             mTargetCanExecuteMethod = canExecuteMethod;
         }
 
-        public void RaiseCanExecuteChanged()
-        {
-            CanExecuteChanged(this, EventArgs.Empty);
-        }
 
         #endregion
 
         #region Command Methods
 
+        /// <summary>
+        /// Run the action stored as the can excution function
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
         bool ICommand.CanExecute(object parameter)
         {
             if (mTargetCanExecuteMethod != null)
@@ -71,6 +84,10 @@ namespace Epub_Reader_TTS
         }
 
 
+        /// <summary>
+        /// Run the action stored in this command
+        /// </summary>
+        /// <param name="parameter"></param>
         void ICommand.Execute(object parameter)
         {
             if (mAction != null)
@@ -78,26 +95,6 @@ namespace Epub_Reader_TTS
                 mAction();
             }
         }
-
-
-        ///// <summary>
-        ///// A relay command can always execute
-        ///// </summary>
-        ///// <param name="parameter"></param>
-        ///// <returns></returns>
-        //public bool CanExecute(object parameter)
-        //{
-        //    return true;
-        //}
-
-        ///// <summary>
-        ///// Executes the commands Action
-        ///// </summary>
-        ///// <param name="parameter"></param>
-        //public void Execute(object parameter)
-        //{
-        //    mAction();
-        //}
 
         #endregion
     }
