@@ -8,7 +8,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -16,9 +16,6 @@
         <local:PageControl
             Grid.Row="1"
             DataContext="{Binding CurrentPage}"/>
-        <!--<ContentControl 
-            Grid.Row="1"
-            Content="{Binding CurrentPage,Converter={local:BookPageConverter}}"/>-->
 
         <local:AdditionalContentControl 
             Grid.Row="1"
@@ -29,7 +26,15 @@
         <Grid
             Grid.Row="0"
             Background="{DynamicResource SecondaryBackGroundColorBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition  Width="*"/>
+                <ColumnDefinition  Width="2*"/>
+                <ColumnDefinition  Width="2*"/>
+                <ColumnDefinition  Width="2*"/>
+                <ColumnDefinition  Width="*"/>
+            </Grid.ColumnDefinitions>
             <StackPanel 
+                Grid.Column="0"
                 HorizontalAlignment="Left"
                 Orientation="Horizontal">
                 <Button 
@@ -38,11 +43,22 @@
                     Margin="10"
                     Padding="10">Bookmarks</Button>
             </StackPanel>
-
+            <TextBlock
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Text="{Binding Title}"/>
             <StackPanel 
+                Grid.Column="2"                
                 HorizontalAlignment="Center"
                 Orientation="Horizontal">
 
+                <Button 
+                    Command="{Binding PreviousCommand}" 
+                    VerticalAlignment="Center"
+                    Margin="10"
+                    Padding="10">Previous</Button>
+                
                 <Button 
                     Command="{Binding PlayCommand}" 
                     VerticalAlignment="Center"
@@ -51,15 +67,21 @@
                     Padding="10"/>
 
                 <Button 
-                    Command="{Binding StopCommand}" 
+                    Command="{Binding NextCommand}" 
                     VerticalAlignment="Center"
                     Margin="10"
-                    Padding="10">Stop</Button>
+                    Padding="10">Next</Button>
             </StackPanel>
-
+            <TextBlock
+                Grid.Column="3"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Text="{Binding CurrentPage.Title}"/>
             <StackPanel 
+                Grid.Column="4"
                 HorizontalAlignment="Right"
                 Orientation="Horizontal">
+
                 <Button 
                     Command="{Binding ToggleSettingsCommand}"
                     VerticalAlignment="Center"

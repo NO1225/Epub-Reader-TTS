@@ -12,30 +12,55 @@ using static Epub_Reader_TTS.DI;
 
 namespace Epub_Reader_TTS
 {
+    /// <summary>
+    /// Viewmodel to store all the detail of the book
+    /// </summary>
     public class BookViewModel : BaseViewModel
     {
         #region Private Fields
 
+        /// <summary>
+        /// The selected voice
+        /// </summary>
         private InstalledVoice selectedVoice;
+
+        /// <summary>
+        /// The reading speed
+        /// </summary>
         private int readingSpeed;
+
+        /// <summary>
+        /// The current page
+        /// </summary>
         private PageViewModel currentPage;
 
         #endregion
 
         #region Public Properties
 
+        /// <summary>
+        /// Action place holder to be fired when the book is finneshed
+        /// </summary>
         public Action OnFinnished;
-
-        public bool Focused { get; set; }
-
-        public string FilePath { get; set; }
-
+        
+        /// <summary>
+        /// The title of this book
+        /// </summary>
         public string Title { get; set; }
 
+        /// <summary>
+        /// The index of the current opge
+        /// </summary>
         public int PageIndex => CurrentPage != null ? CurrentPage.Index : -1;
 
+        /// <summary>
+        /// Collection of all the pages of this book
+        /// </summary>
         public ObservableCollection<PageViewModel> PageViewModels { get; set; }
 
+        /// <summary>
+        /// The current displayed book 
+        /// </summary>
         public PageViewModel CurrentPage
         {
             get => currentPage; 
@@ -54,33 +79,54 @@ namespace Epub_Reader_TTS
             }
         }
 
+        /// <summary>
+        /// THe text to be displayed in the pause button
+        /// </summary>
         public string PauseButtonText { get; set; }
 
+        /// <summary>
+        /// The type of the popup to be displayed
+        /// </summary>
         public AdditionalContent CurrentAdditionalContent { get; set; }
 
+        /// <summary>
+        /// Show the pop up
+        /// </summary>
         public bool AdditionalContentVisible { get; set; }
 
+        /// <summary>
+        /// The tool responsable of speaking 
+        /// </summary>
         public SpeechSynthesizer SpeechSynthesizer { get; set; }
 
+        /// <summary>
+        /// List of all the installed voice on this pc
+        /// </summary>
         public ReadOnlyCollection<InstalledVoice> InstalledVoices { get; set; }
 
+        /// <summary>
+        /// The selected voice to be used in the reading 
+        /// </summary>
         public InstalledVoice SelectedVoice
         {
             get => selectedVoice;
             set
             {
                 selectedVoice = value;
-                TaskManager.Run(()=>SelecteVoice(selectedVoice, readingSpeed));
+                TaskManager.Run(()=>UpdateSelecteVoice(selectedVoice, readingSpeed));
             }
         }
 
+        /// <summary>
+        /// The reading speed 
+        /// </summary>
         public int ReadingSpeed
         {
             get => readingSpeed;
             set
             {
                 readingSpeed = value;
-                SelecteVoice(selectedVoice, readingSpeed);
+                UpdateSelecteVoice(selectedVoice, readingSpeed);
             }
         }
 
@@ -88,24 +134,31 @@ namespace Epub_Reader_TTS
 
         #region Commands
 
+        /// <summary>
+        /// Command to start reading or toggle pause resume...
+        /// </summary>
         public ICommand PlayCommand { get; set; }
-
-        public ICommand StopCommand { get; set; }
-
+        
+        /// <summary>
+        /// Command to show the bookmarks popup
+        /// </summary>
         public ICommand ToggleBookmarksCommand { get; set; }
 
+        /// <summary>
+        /// Command to show the settings popup
+        /// </summary>
         public ICommand ToggleSettingsCommand { get; set; }
-
 
         #endregion
 
         #region Default Constructor
 
+        /// <summary>
+        /// The default constructor
+        /// </summary>
         public BookViewModel()
         {
             PlayCommand = new RelayCommand(async () => await TogglePause());
-
-            StopCommand = new RelayCommand(async () => await Stop());
 
             ToggleBookmarksCommand = new RelayCommand(ToggleBookmarks);
 
@@ -113,55 +166,62 @@ namespace Epub_Reader_TTS
 
             this.PageViewModels = new ObservableCollection<PageViewModel>();
             
+            Initiate();
+        }
+
+        #endregion
+
+        #region Initiation
+
+        /// <summary>
+        /// The default initiation
+        /// </summary>
+        private void Initiate()
+        {
             SpeechSynthesizer = new SpeechSynthesizer();
-            // Configure the audio output.   
+
             SpeechSynthesizer.SetOutputToDefaultAudioDevice();
 
             InstalledVoices = SpeechSynthesizer.GetInstalledVoices();
 
-            //AddPage(new PageViewModel()
-            //{
-            //    Focused = true,
-            //    Index = 0,
-            //    Title = "Chapter 1",
-            //    ParagraphIndex = 0,
-            //});
-
-            //AddPage(new PageViewModel()
-            //{
-            //    Focused = true,
-            //    Index = 1,
-            //    Title = "Chapter 2",
-            //    ParagraphIndex = 0,
-            //});
-
-            //AddPage(new PageViewModel()
-            //{
-            //    Focused = true,
-            //    Index = 2,
-            //    Title = "Chapter 3",
-            //    ParagraphIndex = 0,
-            //});
-
             PauseButtonText = "Play";
 
-            //CurrentPage = PageViewModels.First();
-
-            Initiate();
-
-            //OnPropertyChanged(nameof(CurrentPage));
+            SetSelectedVoice(DI.SettingsManager.GetSelectedVoice(), DI.SettingsManager.GetReadingSpeed());
         }
 
-        private void Initiate()
+        /// <summary>
+        /// Initiate and go to the last saved position of this book
+        /// </summary>
+        /// <param name="book"></param>
+        internal void Initialize(Book book)
         {
+            CurrentPage = PageViewModels.First(p => p.Index == book.CurrentPageIndex);
 
-            //SelectedVoice = InstalledVoices.First();
+            CurrentPage.ParagraphIndex = book.CurrentParagraphIndex;
 
-            //var a = SpeechSynthesizer.GetInstalledVoices();
-
-            SelecteVoice(DI.SettingsManager.GetSelectedVoice(), DI.SettingsManager.GetReadingSpeed());
+            CurrentPage.CurrentParagraph.Active = true;
         }
 
+        #endregion
+
+        #region Public Commands
+
+        /// <summary>
+        /// Start reading or toggle pause/resume ... 
+        /// </summary>
+        /// <param name="forcePause">Force pausing </param>
+        /// <returns></returns>
+        private async Task TogglePause(bool forcePause = false)
+        {
+            await CurrentPage.TogglePause(forcePause);
+            Debug.WriteLine(CurrentPage.IsReading);
+            PauseButtonText = CurrentPage.IsReading ? "Pause" : "Resume";
+
+        }
+
+        /// <summary>
+        /// Show/Hide the settings popup
+        /// </summary>
         private void ToggleSettings()
         {
             if (CurrentAdditionalContent == AdditionalContent.Settings)
@@ -175,6 +235,9 @@ namespace Epub_Reader_TTS
             }
         }
 
+        /// <summary>
+        /// Show/Hide the bookmarks popup
+        /// </summary>
         private void ToggleBookmarks()
         {
             if (CurrentAdditionalContent == AdditionalContent.Bookmarks)
@@ -188,49 +251,14 @@ namespace Epub_Reader_TTS
             }
         }
 
-        internal void Initialize(Book book)
-        {
-            CurrentPage = PageViewModels.First(p=>p.Index == book.CurrentPageIndex);
-
-            CurrentPage.ParagraphIndex = book.CurrentParagraphIndex;
-
-            CurrentPage.CurrentParagraph.Active = true;
-        }
-
-        private void SelecteVoice(InstalledVoice selectedVoice, int readingSpeed)
-        {
-            //TODO: Save 
-
-            SpeechSynthesizer.SelectVoice(selectedVoice.VoiceInfo.Name);
-
-            SpeechSynthesizer.Rate = readingSpeed;
-
-            DI.SettingsManager.SetSelectedVoice(selectedVoice.VoiceInfo.Name);
-            DI.SettingsManager.SetReadingSpeed(readingSpeed);
-        }
-
-        private void SelecteVoice(string selectedVoice, int readingSpeed)
-        {
-            if (string.IsNullOrEmpty(selectedVoice))
-                selectedVoice = InstalledVoices.First().VoiceInfo.Name;
-
-            SelectedVoice = InstalledVoices.First(v => v.VoiceInfo.Name == selectedVoice);
-
-            ReadingSpeed = readingSpeed;
-
-        }
-
-        public BookViewModel(string filePath, int page, int paragraph)
-        {
-            // TODO:
-            throw new Exception();
-        }
-
-
         #endregion
 
         #region Public Methods
 
+        /// <summary>
+        /// Add a page to this book
+        /// </summary>
+        /// <param name="pageViewModel"></param>
         public void AddPage(PageViewModel pageViewModel)
         {
             pageViewModel.OnFinnished = NextPage;
@@ -240,6 +268,10 @@ namespace Epub_Reader_TTS
             this.PageViewModels.Add(pageViewModel);
         }
 
+        /// <summary>
+        /// Go to the next page
+        /// </summary>
+        /// <param name="currentPage">the index of the current page</param>
         public void NextPage(int currentPage)
         {
             var page = PageViewModels.FirstOrDefault(p => p.Index == currentPage + 1);
@@ -261,27 +293,46 @@ namespace Epub_Reader_TTS
 
         #region Private Methods
 
+        /// <summary>
+        /// To be fired when the book is finnished
+        /// </summary>
         private void Finnished()
         {
             if (OnFinnished != null)
                 OnFinnished();
         }
 
-
-        private async Task Stop()
+        /// <summary>
+        /// Select voice based on the installed voice
+        /// </summary>
+        /// <param name="selectedVoice"></param>
+        /// <param name="readingSpeed"></param>
+        private void UpdateSelecteVoice(InstalledVoice selectedVoice, int readingSpeed)
         {
-            //await CurrentPage.StopReading();
+            SpeechSynthesizer.SelectVoice(selectedVoice.VoiceInfo.Name);
+
+            SpeechSynthesizer.Rate = readingSpeed;
+
+            DI.SettingsManager.SetSelectedVoice(selectedVoice.VoiceInfo.Name);
+            DI.SettingsManager.SetReadingSpeed(readingSpeed);
         }
 
-        private async Task TogglePause(bool forcePause = false)
+        /// <summary>
+        /// Set the selected voice 
+        /// </summary>
+        /// <param name="selectedVoice"></param>
+        /// <param name="readingSpeed"></param>
+        private void SetSelectedVoice(string selectedVoice, int readingSpeed)
         {
-            await CurrentPage.TogglePause(forcePause);
-            Debug.WriteLine(CurrentPage.IsReading);
-            PauseButtonText = CurrentPage.IsReading ? "Pause" : "Resume";
+            if (string.IsNullOrEmpty(selectedVoice))
+                selectedVoice = InstalledVoices.First().VoiceInfo.Name;
 
+            SelectedVoice = InstalledVoices.First(v => v.VoiceInfo.Name == selectedVoice);
+
+            ReadingSpeed = readingSpeed;
         }
-
 
         #endregion
+
     }
 }
