@@ -49,5 +49,14 @@ namespace Epub_Reader_TTS.Properties {
                 return ((int)(this["ReadingSpeed"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DarkMode {
+            get {
+                return ((bool)(this["DarkMode"]));
+            }
+        }
     }
 }

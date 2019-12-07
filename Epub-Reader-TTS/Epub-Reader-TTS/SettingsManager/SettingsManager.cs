@@ -44,5 +44,19 @@
 
         #endregion
 
+        #region Dark Mode
+
+        public bool IsDarkMode()
+        {
+            return (bool)Properties.Settings.Default["DarkMode"];
+        }
+
+        public void SetDarkMode(bool value)
+        {
+            Properties.Settings.Default["DarkMode"] = value;
+        }
+
+        #endregion
+
     }
 }
