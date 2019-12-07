@@ -27,5 +27,7 @@ namespace Epub_Reader_TTS
         /// A shortcut to access toe <see cref="IClientDataStore"/> service
         /// </summary>
         public static IClientDataStore ClientDataStore => Framework.Service<IClientDataStore>();
+
+        public static IFileManager FileManager => Framework.Service<IFileManager>();
     }
 }

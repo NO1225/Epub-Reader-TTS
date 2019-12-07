@@ -43,6 +43,8 @@ namespace Epub_Reader_TTS.Relational
             //
             // Set Id as primary key
             modelBuilder.Entity<Book>().HasKey(a => a.Id);
+
+            modelBuilder.Entity<Book>().HasIndex(a => a.BookFilePath).IsUnique();
             
             // TODO: Set up limits
             //modelBuilder.Entity<LoginCredentialsDataModel>().Property(a => a.FirstName).HasMaxLength(50);

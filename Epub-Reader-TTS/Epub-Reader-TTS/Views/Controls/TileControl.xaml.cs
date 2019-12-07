@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -14,11 +16,11 @@ using System.Windows.Shapes;
 namespace Epub_Reader_TTS
 {
     /// <summary>
-    /// Interaction logic for PagePage.xaml
+    /// Interaction logic for TileControl.xaml
     /// </summary>
-    public partial class PagePage : BasePage<PageViewModel>
+    public partial class TileControl : UserControl
     {
-        public PagePage(PageViewModel pageViewModel = null) : base(pageViewModel)
+        public TileControl()
         {
             InitializeComponent();
         }

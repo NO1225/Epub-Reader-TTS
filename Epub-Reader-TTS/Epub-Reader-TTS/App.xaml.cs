@@ -36,7 +36,7 @@ namespace Epub_Reader_TTS
             // Log it
             Logger.LogDebugSource("Application starting...");
 
-            ViewModelApplication.GoToPage(ApplicationPage.Book);
+            ViewModelApplication.GoToPage(ApplicationPage.Dashboard);
 
 
             Current.MainWindow = new MainWindow();

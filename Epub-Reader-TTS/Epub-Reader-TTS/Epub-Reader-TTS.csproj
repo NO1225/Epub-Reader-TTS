@@ -84,19 +84,19 @@
     </ApplicationDefinition>
     <Compile Include="AttachedProperties\AnimationAttachedProperties.cs" />
     <Compile Include="AttachedProperties\BaseAttachedProperty.cs" />
-    <Compile Include="Controls\PageControl.xaml.cs">
+    <Compile Include="Views\Controls\PageControl.xaml.cs">
       <DependentUpon>PageControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PageHost.xaml.cs">
+    <Compile Include="Views\Controls\PageHost.xaml.cs">
       <DependentUpon>PageHost.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PopUps\SettingsControl.xaml.cs">
+    <Compile Include="Views\Controls\PopUps\SettingsControl.xaml.cs">
       <DependentUpon>SettingsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PopUpHost\AdditionalContentControl.xaml.cs">
+    <Compile Include="Views\Controls\PopUpHost\AdditionalContentControl.xaml.cs">
       <DependentUpon>AdditionalContentControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PopUps\BookmarkControl.xaml.cs">
+    <Compile Include="Views\Controls\PopUps\BookmarkControl.xaml.cs">
       <DependentUpon>BookmarkControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="DI\DI.cs" />
@@ -112,39 +112,42 @@
     <Compile Include="ValueConverters\BaseValueConverter.cs" />
     <Compile Include="ValueConverters\ApplicationPageValueConverter.cs" />
     <Compile Include="ValueConverters\MultiplyConverter.cs" />
-    <Compile Include="ValueConverters\BookPageConverter.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
-    <Compile Include="ViewModels\BookViewModel.cs" />
+    <Compile Include="ViewModels\Book\BookViewModel.cs" />
     <Compile Include="ViewModels\Application\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\Application\ViewModelLocator.cs" />
-    <Compile Include="ViewModels\PageViewModel.cs" />
-    <Compile Include="ViewModels\ParagraphViewModel.cs" />
+    <Compile Include="ViewModels\Book\PageViewModel.cs" />
+    <Compile Include="ViewModels\Book\ParagraphViewModel.cs" />
+    <Compile Include="ViewModels\DashBoard\DashboardViewModel.cs" />
     <Compile Include="ViewModels\Window\MainWindowViewModel.cs" />
+    <Compile Include="Views\Controls\TileControl.xaml.cs">
+      <DependentUpon>TileControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Pages\BasePage\BasePage.cs" />
     <Compile Include="Views\Pages\BookPage.xaml.cs">
       <DependentUpon>BookPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Pages\PagePage.xaml.cs">
-      <DependentUpon>PagePage.xaml</DependentUpon>
+    <Compile Include="Views\Pages\DashboardPage.xaml.cs">
+      <DependentUpon>DashboardPage.xaml</DependentUpon>
     </Compile>
-    <Page Include="Controls\PageControl.xaml">
+    <Page Include="Views\Controls\PageControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\PageHost.xaml">
+    <Page Include="Views\Controls\PageHost.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\PopUps\SettingsControl.xaml">
+    <Page Include="Views\Controls\PopUps\SettingsControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\PopUpHost\AdditionalContentControl.xaml">
+    <Page Include="Views\Controls\PopUpHost\AdditionalContentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\PopUps\BookmarkControl.xaml">
+    <Page Include="Views\Controls\PopUps\BookmarkControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -161,7 +164,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CustomeControls\IndexHighlightTextBlock.cs" />
+    <Compile Include="Views\CustomeControls\IndexHighlightTextBlock.cs" />
     <Compile Include="Expressions\ExpressionHelpers.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -195,11 +198,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Controls\TileControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Pages\BookPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Pages\PagePage.xaml">
+    <Page Include="Views\Pages\DashboardPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -237,9 +244,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Control\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <PackageReference Include="Dna.Framework">
       <Version>1.0.7.15</Version>

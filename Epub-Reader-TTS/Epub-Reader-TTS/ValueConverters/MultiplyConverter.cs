@@ -14,10 +14,9 @@ namespace Epub_Reader_TTS
     {
         public override object Convert(object value, Type targetType = null, object parameter = null, CultureInfo culture = null)
         {
-
             var multiplyer = double.Parse(parameter.ToString());
 
-            var result = int.Parse(value.ToString());
+            var result = double.Parse(value.ToString());
 
             return result * multiplyer;
 

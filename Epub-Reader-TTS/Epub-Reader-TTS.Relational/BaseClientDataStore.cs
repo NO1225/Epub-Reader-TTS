@@ -49,21 +49,21 @@ namespace Epub_Reader_TTS.Relational
 
         public Task<List<Book>> GetBooks()
         {
-            return Task.FromResult(mDbContext.Books.ToList());
+            return Task.FromResult(mDbContext.Books.OrderBy(b=>b.LastOpenDate).ToList());
         }
 
         public async Task AddBook(Book book)
         {
             // Clear all entries
-            var exists = mDbContext.Books.FirstOrDefault(b=>b.Id == book.Id)!=null;
+            //var exists = mDbContext.Books.FirstOrDefault(b=>b.Id == book.Id)!=null;
 
-            if (exists)
-                // Update the existing one
-                mDbContext.Books.Update(book);
-            else
+            if (string.IsNullOrEmpty(book.Id.ToString()))
                 // Add new one
                 mDbContext.Books.Add(book);
-            
+            else
+                // Update the existing one
+                mDbContext.Books.Update(book);
+
             // Save changes
             await mDbContext.SaveChangesAsync();
         }

@@ -73,5 +73,10 @@ namespace Epub_Reader_TTS.Core
         {
             return File.Exists(filePath);
         }
+
+        public FileStream OpenFile(string path)
+        {
+            return File.OpenRead(path);
+        }
     }
 }

@@ -25,49 +25,48 @@
             local:AnimateSlideInFromTopProperty.Value="{Binding AdditionalContentVisible}"
             Content="{Binding CurrentAdditionalContent, Converter={local:AdditionalContentConverter}}"
             />
-
-        <StackPanel 
+        
+        <Grid
             Grid.Row="0"
-            HorizontalAlignment="Left"
-            Orientation="Horizontal">
-            <Button 
-                Command="{Binding ToggleBookmarksCommand}"
-                VerticalAlignment="Center"
-                Margin="10"
-                Padding="10">Bookmarks</Button>
-        </StackPanel>
+            Background="{DynamicResource SecondaryBackGroundColorBrush}">
+            <StackPanel 
+                HorizontalAlignment="Left"
+                Orientation="Horizontal">
+                <Button 
+                    Command="{Binding ToggleBookmarksCommand}"
+                    VerticalAlignment="Center"
+                    Margin="10"
+                    Padding="10">Bookmarks</Button>
+            </StackPanel>
 
-        <StackPanel 
-            Grid.Row="0"
-            HorizontalAlignment="Center"
-            Orientation="Horizontal">
+            <StackPanel 
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
 
-            <Button 
-                Command="{Binding PlayCommand}" 
-                VerticalAlignment="Center"
-                Margin="10"
-                Content="{Binding PauseButtonText}"
-                Padding="10"/>
+                <Button 
+                    Command="{Binding PlayCommand}" 
+                    VerticalAlignment="Center"
+                    Margin="10"
+                    Content="{Binding PauseButtonText}"
+                    Padding="10"/>
 
-            <Button 
-                Command="{Binding StopCommand}" 
-                VerticalAlignment="Center"
-                Margin="10"
-                Padding="10">Stop</Button>
-        </StackPanel>
+                <Button 
+                    Command="{Binding StopCommand}" 
+                    VerticalAlignment="Center"
+                    Margin="10"
+                    Padding="10">Stop</Button>
+            </StackPanel>
 
-        <StackPanel 
-            Grid.Row="0"
-            HorizontalAlignment="Right"
-            Orientation="Horizontal">
-            <Button 
-                Command="{Binding ToggleSettingsCommand}"
-                VerticalAlignment="Center"
-                Margin="10"
-                Padding="10">Settings</Button>
-        </StackPanel>
-
-
-
+            <StackPanel 
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Button 
+                    Command="{Binding ToggleSettingsCommand}"
+                    VerticalAlignment="Center"
+                    Margin="10"
+                    Padding="10">Settings</Button>
+            </StackPanel>
+        </Grid>
+        
     </Grid>
 </local:BasePage>

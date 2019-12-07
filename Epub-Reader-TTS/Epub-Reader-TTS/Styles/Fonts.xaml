@@ -44,6 +44,8 @@
     <system:String x:Key="FontAwesomeClenderIcon">&#xf073;</system:String>
     <system:String x:Key="FontAwesomeUpIcon">&#xf077;</system:String>
     <system:String x:Key="FontAwesomeDownIcon">&#xf078;</system:String>
+    <system:String x:Key="FontAwesomeReLoadIcon">&#xf021;</system:String>
+    
     
 
 

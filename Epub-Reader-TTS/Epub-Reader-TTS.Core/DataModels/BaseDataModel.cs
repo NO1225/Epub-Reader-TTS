@@ -6,6 +6,6 @@ namespace Epub_Reader_TTS.Core
 {
     public class BaseDataModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace Epub_Reader_TTS.Core
 {
@@ -31,5 +32,7 @@ namespace Epub_Reader_TTS.Core
         string ResolvePath(string path);
 
         bool PathExists(string filePath);
+
+        FileStream OpenFile(string path);
     }
 }

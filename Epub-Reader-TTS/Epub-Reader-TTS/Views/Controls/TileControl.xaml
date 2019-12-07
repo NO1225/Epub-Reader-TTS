@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="Epub_Reader_TTS.TileControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Epub_Reader_TTS"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="27*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+        <Button 
+            Margin="20 0 0 0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Style="{DynamicResource IconGrowButton}"
+            Content="{StaticResource FontAwesomeReLoadIcon}"
+            Height="40"
+            />
+        <Button 
+            Margin="0 0 20 0"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Right"
+            Style="{DynamicResource IconGrowButton}"
+            Content="{StaticResource FontAwesomeCloseIcon}"
+            Height="40"
+            />
+        <Button Style="{StaticResource TileStyle}" 
+                Grid.Row="0" 
+                Margin="10" 
+                Padding="10" 
+                Command="{Binding SwitchPageCommand}" 
+                Background="{StaticResource PrimaryBackGroundColorBrush}">
+            <Image  
+                Margin="20" 
+                Grid.Row="0" 
+                Source="{Binding TileImage}" />
+        </Button>
+        <DockPanel 
+            Grid.Row="1"
+            Margin="0 10" >
+
+
+            <TextBlock 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center" 
+                TextWrapping="Wrap"
+                Text="{Binding Id}" 
+                Foreground="{DynamicResource PrimaryFontColorBrush}" />
+
+        </DockPanel>
+    </Grid>
+</UserControl>
