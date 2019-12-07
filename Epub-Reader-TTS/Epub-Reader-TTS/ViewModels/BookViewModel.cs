@@ -7,6 +7,7 @@ using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using static Epub_Reader_TTS.DI;
 
 namespace Epub_Reader_TTS
 {
@@ -116,11 +117,6 @@ namespace Epub_Reader_TTS
 
             InstalledVoices = SpeechSynthesizer.GetInstalledVoices();
 
-            SelectedVoice = InstalledVoices.First();
-
-            //var a = SpeechSynthesizer.GetInstalledVoices();
-
-
             AddPage(new PageViewModel()
             {
                 Focused = true,
@@ -149,7 +145,19 @@ namespace Epub_Reader_TTS
 
             CurrentPage = PageViewModels.First();
 
+            Initiate();
+
             //OnPropertyChanged(nameof(CurrentPage));
+        }
+
+        private void Initiate()
+        {
+
+            //SelectedVoice = InstalledVoices.First();
+
+            //var a = SpeechSynthesizer.GetInstalledVoices();
+
+            SelecteVoice(DI.SettingsManager.GetSelectedVoice(), DI.SettingsManager.GetReadingSpeed());
         }
 
         private void ToggleSettings()
@@ -186,6 +194,20 @@ namespace Epub_Reader_TTS
             SpeechSynthesizer.SelectVoice(selectedVoice.VoiceInfo.Name);
 
             SpeechSynthesizer.Rate = readingSpeed;
+
+            DI.SettingsManager.SetSelectedVoice(selectedVoice.VoiceInfo.Name);
+            DI.SettingsManager.SetReadingSpeed(readingSpeed);
+        }
+
+        private void SelecteVoice(string selectedVoice, int readingSpeed)
+        {
+            if (string.IsNullOrEmpty(selectedVoice))
+                selectedVoice = InstalledVoices.First().VoiceInfo.Name;
+
+            SelectedVoice = InstalledVoices.First(v => v.VoiceInfo.Name == selectedVoice);
+
+            ReadingSpeed = readingSpeed;
+
         }
 
         public BookViewModel(string filePath, int page, int paragraph)

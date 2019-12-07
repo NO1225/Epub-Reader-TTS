@@ -106,7 +106,8 @@
     <Compile Include="Enums\AdditionalContent.cs" />
     <Compile Include="Enums\ApplicationPage.cs" />
     <Compile Include="IoC\IoC.cs" />
-    <Compile Include="SettingsManager\SettingsManager.cs" />
+    <Compile Include="DI\SettingsManager\ISettingsManager.cs" />
+    <Compile Include="DI\SettingsManager\SettingsManager.cs" />
     <Compile Include="ValueConverters\AdditionalContentConverter.cs" />
     <Compile Include="ValueConverters\BaseValueConverter.cs" />
     <Compile Include="ValueConverters\ApplicationPageValueConverter.cs" />

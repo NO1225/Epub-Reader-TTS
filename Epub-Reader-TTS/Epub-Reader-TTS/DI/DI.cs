@@ -14,6 +14,11 @@ namespace Epub_Reader_TTS
         public static IUIManager UI => Framework.Service<IUIManager>();
 
         /// <summary>
+        /// A shortcut to access the <see cref="ISettingsManager"/>
+        /// </summary>
+        public static ISettingsManager SettingsManager => Framework.Service<ISettingsManager>();
+
+        /// <summary>
         /// A shortcut to access the <see cref="ApplicationViewModel"/>
         /// </summary>
         public static ApplicationViewModel ViewModelApplication => Framework.Service<ApplicationViewModel>();

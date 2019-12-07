@@ -38,13 +38,8 @@ namespace Epub_Reader_TTS
 
             ViewModelApplication.GoToPage(ApplicationPage.Book);
 
-            // Setup IoC 
-            //IoC.Setup();
-
-            //Test();//.GetAwaiter().GetResult();
 
             Current.MainWindow = new MainWindow();
-
             Current.MainWindow.Show();
 
         }

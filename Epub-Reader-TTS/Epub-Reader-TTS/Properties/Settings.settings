@@ -2,16 +2,16 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Epub_Reader_TTS.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="FontSize" Type="System.Int32" Scope="Application">
+    <Setting Name="FontSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">14</Value>
     </Setting>
-    <Setting Name="SelectedVoice" Type="System.String" Scope="Application">
+    <Setting Name="SelectedVoice" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="ReadingSpeed" Type="System.Int32" Scope="Application">
+    <Setting Name="ReadingSpeed" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">3</Value>
     </Setting>
-    <Setting Name="DarkMode" Type="System.Boolean" Scope="Application">
+    <Setting Name="DarkMode" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

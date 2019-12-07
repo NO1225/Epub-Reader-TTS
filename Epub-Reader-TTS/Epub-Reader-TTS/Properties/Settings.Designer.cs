@@ -23,39 +23,51 @@ namespace Epub_Reader_TTS.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("14")]
         public int FontSize {
             get {
                 return ((int)(this["FontSize"]));
             }
+            set {
+                this["FontSize"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string SelectedVoice {
             get {
                 return ((string)(this["SelectedVoice"]));
             }
+            set {
+                this["SelectedVoice"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public int ReadingSpeed {
             get {
                 return ((int)(this["ReadingSpeed"]));
             }
+            set {
+                this["ReadingSpeed"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool DarkMode {
             get {
                 return ((bool)(this["DarkMode"]));
+            }
+            set {
+                this["DarkMode"] = value;
             }
         }
     }
