@@ -1,4 +1,7 @@
-﻿using System.Windows.Input;
+﻿using Epub_Reader_TTS.Core;
+using System;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Epub_Reader_TTS
@@ -18,7 +21,11 @@ namespace Epub_Reader_TTS
         {
             get;
             private set;
-        } = ApplicationPage.Book;
+        } = ApplicationPage.Dashboard;
+
+        public BookViewModel CurrentBookViewModel { get; set; }
+
+        public Book CurrentBook { get; set; }
 
         /// <summary>
         /// The logo of the application
@@ -148,6 +155,14 @@ namespace Epub_Reader_TTS
             //Application.Current.Resources["MainHoverColorBrush"] = MainHoverColorBrush;
             //Application.Current.Resources["MainPressedColorBrush"] = MainPressedColorBrush;
 
+        }
+
+        internal async Task SavePosition(int pageIndex, int paragraphIndex)
+        {
+            this.CurrentBook.CurrentPageIndex = pageIndex;
+            this.CurrentBook.CurrentParagraphIndex = paragraphIndex;
+
+            await DI.ClientDataStore.AddBook(this.CurrentBook);
         }
 
         #endregion

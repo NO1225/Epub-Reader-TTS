@@ -31,6 +31,8 @@ namespace Epub_Reader_TTS.Core
         /// <returns></returns>
         string ResolvePath(string path);
 
+        void EnsurePathExist(string path);
+
         bool PathExists(string filePath);
 
         FileStream OpenFile(string path);

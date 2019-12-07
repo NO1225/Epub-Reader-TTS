@@ -288,9 +288,23 @@
                         </Border.RenderTransformOrigin>
 
                         <Grid>
-                            <Viewbox>
-                                <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            </Viewbox>
+                            <Border x:Name="MaskBorder" 
+                                    Background="{TemplateBinding Background}" 
+                                    CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self},Converter={local:MultiplyConverter},ConverterParameter=0.5}"
+                                    />
+
+                            <ContentPresenter 
+                                x:Name="contentPresenter" 
+                                Focusable="False" 
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                Margin="{TemplateBinding Padding}" 
+                                RecognizesAccessKey="True" 
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <ContentPresenter.OpacityMask>
+                                    <VisualBrush Visual="{Binding ElementName=MaskBorder}" />
+                                </ContentPresenter.OpacityMask>
+                            </ContentPresenter>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>

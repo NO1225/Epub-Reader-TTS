@@ -69,6 +69,10 @@ namespace Epub_Reader_TTS.Core
             return Path.GetFullPath(path);
         }
 
+        public void EnsurePathExist(string path)
+        {
+            Directory.CreateDirectory(path);
+        }
         public bool PathExists(string filePath)
         {
             return File.Exists(filePath);

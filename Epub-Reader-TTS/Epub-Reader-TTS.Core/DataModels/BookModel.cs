@@ -12,9 +12,9 @@ namespace Epub_Reader_TTS.Core
 
         public string BookCoverPath { get; set; }
 
-        public int? CurrentPageIndex { get; set; }
+        public int CurrentPageIndex { get; set; }
 
-        public int? CurrentParagraphIndex { get; set; }
+        public int CurrentParagraphIndex { get; set; }
 
         public bool IsFinnished { get; set; }
 

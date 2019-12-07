@@ -12,7 +12,9 @@
         <local:PageHost 
             d:DataContext=""
             DataContext="{Binding ApplicationViewModel, Source={x:Static local:ViewModelLocator.Instance}}"
-            CurrentPage="{Binding CurrentPage, Converter={local:ApplicationPageValueConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+            CurrentPage="{Binding CurrentPage, 
+            Converter={local:ApplicationPageValueConverter}, 
+            UpdateSourceTrigger=PropertyChanged}"/>
 
     </Grid>
 </Window>

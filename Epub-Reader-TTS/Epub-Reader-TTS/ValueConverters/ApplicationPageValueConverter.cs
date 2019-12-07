@@ -20,7 +20,7 @@ namespace Epub_Reader_TTS
                 case ApplicationPage.Dashboard:
                     return new DashboardPage();
                 case ApplicationPage.Book:
-                    return new BookPage(parameter as BookViewModel);
+                    return new BookPage(ViewModelLocator.ApplicationViewModel.CurrentBookViewModel);
                 default:
                     Debugger.Break();
                     return null;

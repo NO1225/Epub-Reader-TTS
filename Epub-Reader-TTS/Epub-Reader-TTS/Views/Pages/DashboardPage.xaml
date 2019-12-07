@@ -17,7 +17,7 @@
             Background="{DynamicResource SecondaryBackGroundColorBrush}"
             >
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding Books}">
+                <ItemsControl ItemsSource="{Binding Tiles}">
                     <ItemsControl.ItemContainerStyle>
                         <Style>
                             <Setter Property="FrameworkElement.Margin" Value="2"/>
@@ -53,7 +53,13 @@
                 Command="{Binding OpenBookCommand}"
                 VerticalAlignment="Center"
                 Margin="10"
-                Padding="10">Open Book</Button>
+                Padding="10">Add Book</Button>
+
+            <Button 
+                Command="{Binding RefreshAllCommand}"
+                VerticalAlignment="Center"
+                Margin="10"
+                Padding="10">Refresh All</Button>
         </StackPanel>
 
 

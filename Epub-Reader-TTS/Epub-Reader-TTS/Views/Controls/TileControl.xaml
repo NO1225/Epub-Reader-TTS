@@ -15,6 +15,7 @@
             Margin="20 0 0 0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            Command="{Binding RefreshCommand}"
             Style="{DynamicResource IconGrowButton}"
             Content="{StaticResource FontAwesomeReLoadIcon}"
             Height="40"
@@ -25,19 +26,22 @@
             HorizontalAlignment="Right"
             Style="{DynamicResource IconGrowButton}"
             Content="{StaticResource FontAwesomeCloseIcon}"
+            Command="{Binding RemoveCommand}"
             Height="40"
             />
+        
         <Button Style="{StaticResource TileStyle}" 
                 Grid.Row="0" 
                 Margin="10" 
-                Padding="10" 
-                Command="{Binding SwitchPageCommand}" 
+                VerticalContentAlignment="Center"
+                Command="{Binding OpenCommand}" 
                 Background="{StaticResource PrimaryBackGroundColorBrush}">
-            <Image  
-                Margin="20" 
+            <Image                  
+                Stretch="UniformToFill" 
                 Grid.Row="0" 
-                Source="{Binding TileImage}" />
+                Source="{Binding CoverPath}" />
         </Button>
+        
         <DockPanel 
             Grid.Row="1"
             Margin="0 10" >
@@ -47,7 +51,7 @@
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 TextWrapping="Wrap"
-                Text="{Binding Id}" 
+                Text="{Binding Book.BookName}" 
                 Foreground="{DynamicResource PrimaryFontColorBrush}" />
 
         </DockPanel>

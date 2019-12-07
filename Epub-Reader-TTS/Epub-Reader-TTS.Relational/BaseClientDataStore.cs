@@ -49,7 +49,7 @@ namespace Epub_Reader_TTS.Relational
 
         public Task<List<Book>> GetBooks()
         {
-            return Task.FromResult(mDbContext.Books.OrderBy(b=>b.LastOpenDate).ToList());
+            return Task.FromResult(mDbContext.Books.OrderByDescending(b=>b.LastOpenDate).ToList());
         }
 
         public async Task AddBook(Book book)

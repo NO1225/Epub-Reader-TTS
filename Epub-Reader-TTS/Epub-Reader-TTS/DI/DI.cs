@@ -29,5 +29,7 @@ namespace Epub_Reader_TTS
         public static IClientDataStore ClientDataStore => Framework.Service<IClientDataStore>();
 
         public static IFileManager FileManager => Framework.Service<IFileManager>();
+
+        public static ITaskManager TaskManager => Framework.Service<ITaskManager>();
     }
 }

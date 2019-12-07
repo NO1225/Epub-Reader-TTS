@@ -7,6 +7,7 @@ using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Epub_Reader_TTS.Core;
 using static Epub_Reader_TTS.DI;
 
 namespace Epub_Reader_TTS
@@ -28,6 +29,8 @@ namespace Epub_Reader_TTS
         public bool Focused { get; set; }
 
         public string FilePath { get; set; }
+
+        public string Title { get; set; }
 
         public int PageIndex => CurrentPage != null ? CurrentPage.Index : -1;
 
@@ -109,41 +112,40 @@ namespace Epub_Reader_TTS
             ToggleSettingsCommand = new RelayCommand(ToggleSettings);
 
             this.PageViewModels = new ObservableCollection<PageViewModel>();
-
-
+            
             SpeechSynthesizer = new SpeechSynthesizer();
             // Configure the audio output.   
             SpeechSynthesizer.SetOutputToDefaultAudioDevice();
 
             InstalledVoices = SpeechSynthesizer.GetInstalledVoices();
 
-            AddPage(new PageViewModel()
-            {
-                Focused = true,
-                Index = 0,
-                Title = "Chapter 1",
-                ParagraphIndex = 0,
-            });
+            //AddPage(new PageViewModel()
+            //{
+            //    Focused = true,
+            //    Index = 0,
+            //    Title = "Chapter 1",
+            //    ParagraphIndex = 0,
+            //});
 
-            AddPage(new PageViewModel()
-            {
-                Focused = true,
-                Index = 1,
-                Title = "Chapter 2",
-                ParagraphIndex = 0,
-            });
+            //AddPage(new PageViewModel()
+            //{
+            //    Focused = true,
+            //    Index = 1,
+            //    Title = "Chapter 2",
+            //    ParagraphIndex = 0,
+            //});
 
-            AddPage(new PageViewModel()
-            {
-                Focused = true,
-                Index = 2,
-                Title = "Chapter 3",
-                ParagraphIndex = 0,
-            });
+            //AddPage(new PageViewModel()
+            //{
+            //    Focused = true,
+            //    Index = 2,
+            //    Title = "Chapter 3",
+            //    ParagraphIndex = 0,
+            //});
 
             PauseButtonText = "Play";
 
-            CurrentPage = PageViewModels.First();
+            //CurrentPage = PageViewModels.First();
 
             Initiate();
 
@@ -186,6 +188,14 @@ namespace Epub_Reader_TTS
             }
         }
 
+        internal void Initialize(Book book)
+        {
+            CurrentPage = PageViewModels.First(p=>p.Index == book.CurrentPageIndex);
+
+            CurrentPage.ParagraphIndex = book.CurrentParagraphIndex;
+
+            CurrentPage.CurrentParagraph.Active = true;
+        }
 
         private void SelecteVoice(InstalledVoice selectedVoice, int readingSpeed)
         {
@@ -238,6 +248,8 @@ namespace Epub_Reader_TTS
             {
                 CurrentPage = page;
                 TogglePause().GetAwaiter().GetResult();
+
+                TaskManager.Run(async () => ViewModelApplication.SavePosition(CurrentPage.Index, 0));
 
             }
             else

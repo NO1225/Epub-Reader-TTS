@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
+using static Epub_Reader_TTS.DI;
+
 
 namespace Epub_Reader_TTS
 {
@@ -45,16 +47,6 @@ namespace Epub_Reader_TTS
         public PageViewModel()
         {
             this.ParagraphViewModels = new ObservableCollection<ParagraphViewModel>();
-
-            for (int i = 0; i < 31; i++)
-            {
-                AddParagraph(new ParagraphViewModel()
-                {
-                    Active = false,
-                    Index = i,
-                    ParagraphText = $"{this.GetHashCode()} The experienced publisher misdirects the downhill dragon. When will a suite object? Can the credible ideal nose? When will a dustbin collapse underneath a trained politician?"
-                });
-            }
 
             OnPropertyChanged(nameof(CurrentParagraph));
         }
@@ -136,7 +128,10 @@ namespace Epub_Reader_TTS
                 CurrentParagraph.Active = false;
 
                 ParagraphIndex = currentParagraph + 1;
+
                 ReadParagraph();
+
+                TaskManager.Run(async () => ViewModelApplication.SavePosition(this.Index, this.ParagraphIndex));                
             }
         }
 
