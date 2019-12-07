@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Dna;
+using Epub_Reader_TTS.Relational;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -6,6 +8,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using static Dna.FrameworkDI;
+using static Epub_Reader_TTS.Core.CoreDI;
+using static Epub_Reader_TTS.DI;
 
 namespace Epub_Reader_TTS
 {
@@ -19,10 +24,19 @@ namespace Epub_Reader_TTS
         /// Custom startup so we load our IoC immediately before anything else
         /// </summary>
         /// <param name="e"></param>
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             // Let the base application do what it needs
             base.OnStartup(e);
+
+
+            // Setup the main application 
+            await ApplicationSetupAsync();
+
+            // Log it
+            Logger.LogDebugSource("Application starting...");
+
+            ViewModelApplication.GoToPage(ApplicationPage.Book);
 
             // Setup IoC 
             //IoC.Setup();
@@ -35,5 +49,23 @@ namespace Epub_Reader_TTS
 
         }
 
+
+        /// <summary>
+        /// Configures our application ready for use
+        /// </summary>
+        private async Task ApplicationSetupAsync()
+        {
+            // Setup the Dna Framework
+            Framework.Construct<DefaultFrameworkConstruction>()
+                .AddFileLogger()
+                .AddClientDataStore()
+                .AddApplicationViewModels()
+                .AddClientServices()
+                .Build();
+
+            // Ensure the client data store 
+            await ClientDataStore.EnsureDataStoreAsync();
+
+        }
     }
 }

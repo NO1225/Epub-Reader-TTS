@@ -1,4 +1,4 @@
-﻿using Ninject;
+﻿//using Ninject;
 
 namespace Epub_Reader_TTS
 {
@@ -12,7 +12,7 @@ namespace Epub_Reader_TTS
         /// <summary>
         /// The kernel for our IoC container
         /// </summary>
-        public static IKernel Kernel { get; private set; } = new StandardKernel();
+        //public static IKernel Kernel { get; private set; } = new StandardKernel();
 
         #endregion
 
@@ -48,7 +48,7 @@ namespace Epub_Reader_TTS
         private static void BindViewModels()
         {
             // Bind to a single instance of application view model
-            Kernel.Bind<ApplicationViewModel>().ToConstant(new ApplicationViewModel());
+            //Kernel.Bind<ApplicationViewModel>().ToConstant(new ApplicationViewModel());
         }
 
         /// <summary>
@@ -75,10 +75,10 @@ namespace Epub_Reader_TTS
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T Get<T>()
-        {
-            return Kernel.Get<T>();
-        }
+        //public static T Get<T>()
+        //{
+        //    return Kernel.Get<T>();
+        //}
 
         #region Helping Methods
 
