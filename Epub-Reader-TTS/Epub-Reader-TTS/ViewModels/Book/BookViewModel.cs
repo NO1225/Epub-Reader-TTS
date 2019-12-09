@@ -184,7 +184,7 @@ namespace Epub_Reader_TTS
 
             InstalledVoices = SpeechSynthesizer.GetInstalledVoices();
 
-            PauseButtonText = "Play";
+            PauseButtonText = "\uf04b";
 
             SetSelectedVoice(DI.SettingsManager.GetSelectedVoice(), DI.SettingsManager.GetReadingSpeed());
         }
@@ -215,7 +215,7 @@ namespace Epub_Reader_TTS
         {
             await CurrentPage.TogglePause(forcePause);
             Debug.WriteLine(CurrentPage.IsReading);
-            PauseButtonText = CurrentPage.IsReading ? "Pause" : "Resume";
+            PauseButtonText = CurrentPage.IsReading ? "\uf04c" : "\uf04b";
 
         }
 

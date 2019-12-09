@@ -27,21 +27,24 @@
             Grid.Row="0"
             Background="{DynamicResource SecondaryBackGroundColorBrush}">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition  Width="auto"/>
                 <ColumnDefinition  Width="*"/>
-                <ColumnDefinition  Width="2*"/>
-                <ColumnDefinition  Width="2*"/>
-                <ColumnDefinition  Width="2*"/>
+                <ColumnDefinition  Width="auto"/>
                 <ColumnDefinition  Width="*"/>
+                <ColumnDefinition  Width="auto"/>
             </Grid.ColumnDefinitions>
             <StackPanel 
                 Grid.Column="0"
                 HorizontalAlignment="Left"
                 Orientation="Horizontal">
                 <Button 
+                    Style="{DynamicResource IconGrowButton}"
                     Command="{Binding ToggleBookmarksCommand}"
                     VerticalAlignment="Center"
-                    Margin="10"
-                    Padding="10">Bookmarks</Button>
+                    Margin="5"
+                    Content="{StaticResource FontAwesomeBookMarksIcon}"
+                    Height="40"
+                    />
             </StackPanel>
             <TextBlock
                 Grid.Column="1"
@@ -54,23 +57,31 @@
                 Orientation="Horizontal">
 
                 <Button 
+                    Style="{DynamicResource IconGrowButton}"
                     Command="{Binding PreviousCommand}" 
                     VerticalAlignment="Center"
-                    Margin="10"
-                    Padding="10">Previous</Button>
-                
-                <Button 
-                    Command="{Binding PlayCommand}" 
-                    VerticalAlignment="Center"
-                    Margin="10"
-                    Content="{Binding PauseButtonText}"
-                    Padding="10"/>
+                    Margin="5"
+                    Content="{StaticResource FontAwesomeBackwardIcon}"
+                    Height="40"
+                    />
 
                 <Button 
+                    Style="{DynamicResource IconGrowButton}"
+                    Command="{Binding PlayCommand}" 
+                    VerticalAlignment="Center"
+                    Margin="5"
+                    Content="{Binding PauseButtonText}"
+                    Height="40"
+                    />
+
+                <Button 
+                    Style="{DynamicResource IconGrowButton}"
                     Command="{Binding NextCommand}" 
                     VerticalAlignment="Center"
-                    Margin="10"
-                    Padding="10">Next</Button>
+                    Margin="5"
+                    Content="{StaticResource FontAwesomeForwardIcon}"
+                    Height="40"
+                    />
             </StackPanel>
             <TextBlock
                 Grid.Column="3"
@@ -83,10 +94,21 @@
                 Orientation="Horizontal">
 
                 <Button 
+                    Style="{DynamicResource IconGrowButton}"
                     Command="{Binding ToggleSettingsCommand}"
                     VerticalAlignment="Center"
-                    Margin="10"
-                    Padding="10">Settings</Button>
+                    Margin="5"
+                    Content="{StaticResource FontAwesomeSettingsIcon}"
+                    Height="40"
+                    />
+                <Button 
+                    Style="{DynamicResource IconGrowButton}"
+                    Command="{Binding CloseBookCommand}"
+                    VerticalAlignment="Center"
+                    Margin="5"
+                    Content="{StaticResource FontAwesomeCloseIcon}"
+                    Height="40"
+                    />
             </StackPanel>
         </Grid>
         

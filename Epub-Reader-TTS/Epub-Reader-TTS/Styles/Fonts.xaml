@@ -35,7 +35,7 @@
     <system:String x:Key="FontAwesomeBackIcon">&#xf053;</system:String>
     <system:String x:Key="FontAwesomeConfirmIcon">&#xf00c;</system:String>
     <system:String x:Key="FontAwesomeCancelIcon">&#xf00d;</system:String>
-    <system:String x:Key="BrowseIcon">&#xf141;</system:String>
+    <system:String x:Key="FontAwesomeBrowseIcon">&#xf141;</system:String>
     <system:String x:Key="FontAwesomeCloseIcon">&#xf00d;</system:String>
     <system:String x:Key="FontAwesomeRemoveIcon">&#xf00d;</system:String>
     <system:String x:Key="FontAwesomeAddIcon">&#xf067;</system:String>
@@ -45,6 +45,13 @@
     <system:String x:Key="FontAwesomeUpIcon">&#xf077;</system:String>
     <system:String x:Key="FontAwesomeDownIcon">&#xf078;</system:String>
     <system:String x:Key="FontAwesomeReLoadIcon">&#xf021;</system:String>
+    <system:String x:Key="FontAwesomeBookMarksIcon">&#xf0ca;</system:String>
+    <system:String x:Key="FontAwesomePlayIcon">&#xf04b;</system:String>
+    <system:String x:Key="FontAwesomePauseIcon">&#xf04c;</system:String>
+    <system:String x:Key="FontAwesomeForwardIcon">&#xf04e;</system:String>
+    <system:String x:Key="FontAwesomeBackwardIcon">&#xf04a;</system:String>
+    <system:String x:Key="FontAwesomeSettingsIcon">&#xf1de;</system:String>
+    <system:String x:Key="FontAwesomeRedoAltIcon">&#xf01e;</system:String>
     
     
 

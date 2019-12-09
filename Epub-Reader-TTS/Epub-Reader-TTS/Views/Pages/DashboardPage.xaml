@@ -50,16 +50,24 @@
             Grid.Row="0"
             Orientation="Horizontal">
             <Button 
+                Style="{DynamicResource IconGrowButton}"
                 Command="{Binding OpenBookCommand}"
                 VerticalAlignment="Center"
                 Margin="10"
-                Padding="10">Add Book</Button>
+                Padding="10"
+                Content="{StaticResource FontAwesomeAddIcon}"
+                Height="40"
+                />
 
             <Button 
+                Style="{DynamicResource IconGrowButton}"
                 Command="{Binding RefreshAllCommand}"
                 VerticalAlignment="Center"
                 Margin="10"
-                Padding="10">Refresh All</Button>
+                Padding="10"
+                Content="{StaticResource FontAwesomeRedoAltIcon}"
+                Height="40"
+                />
         </StackPanel>
 
 

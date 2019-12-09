@@ -8,8 +8,10 @@
              HorizontalAlignment="Right"
              VerticalAlignment="Top"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid
-        Background="White"
+    <Border
+        Background="{DynamicResource PrimaryBackGroundColorBrush}"
+        BorderBrush="{DynamicResource PrimaryFontColorBrush}"
+        BorderThickness="1 0 1 1"
         MinWidth="300"
         MinHeight="400"
         >
@@ -100,5 +102,5 @@
 
             </Grid>
         </ScrollViewer>
-    </Grid>
+    </Border>
 </UserControl>

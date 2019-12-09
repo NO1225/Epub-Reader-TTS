@@ -88,7 +88,7 @@ namespace Epub_Reader_TTS
         /// <param name="dictionary"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static Color ToColor(this Dictionary<string, string> dictionary, string key)
+        public static System.Drawing.Color ToColor(this Dictionary<string, string> dictionary, string key)
         {
             return ColorTranslator.FromHtml(dictionary[key]);
         }
