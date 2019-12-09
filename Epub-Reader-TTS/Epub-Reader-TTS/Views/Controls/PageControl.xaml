@@ -11,8 +11,11 @@
         x:Name="ScrollContainer"
         HorizontalScrollBarVisibility="Auto"
         VerticalScrollBarVisibility="Disabled"
+        local:HorizantalWheelScrollingProperty.Value="True"
         >
-        <ItemsControl ItemsSource="{Binding ParagraphViewModels}">
+        <ItemsControl 
+            ItemsSource="{Binding ParagraphViewModels}"
+            >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel 

@@ -5,6 +5,8 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Windows;
+using System.Windows.Media;
 
 namespace Epub_Reader_TTS
 {
@@ -89,6 +91,26 @@ namespace Epub_Reader_TTS
         public static Color ToColor(this Dictionary<string, string> dictionary, string key)
         {
             return ColorTranslator.FromHtml(dictionary[key]);
+        }
+
+        public static T FindDescendant<T>(this DependencyObject d) where T : DependencyObject
+        {
+            if (d == null)
+                return null;
+
+            var childCount = VisualTreeHelper.GetChildrenCount(d);
+
+            for (var i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(d, i);
+
+                var result = child as T ?? FindDescendant<T>(child);
+
+                if (result != null)
+                    return result;
+            }
+
+            return null;
         }
 
 
