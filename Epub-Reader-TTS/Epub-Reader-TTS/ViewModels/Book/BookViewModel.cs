@@ -34,6 +34,11 @@ namespace Epub_Reader_TTS
         /// </summary>
         private PageViewModel currentPage;
 
+        /// <summary>
+        /// Detrmine if the book is currently being read to aid with page transitions 
+        /// </summary>
+        private bool reading;
+
         #endregion
 
         #region Public Properties
@@ -66,16 +71,16 @@ namespace Epub_Reader_TTS
             get => currentPage; 
             set
             {
+                reading=false;
 
                 if(currentPage!=null)
                 {
-                    TogglePause(true).GetAwaiter().GetResult();
+                    reading = currentPage.IsReading;
+                    //TogglePause(true).GetAwaiter().GetResult();
                     CurrentPage.OnClose().GetAwaiter().GetResult();
                 }
 
                 currentPage = value;
-
-                CurrentPage.Initiate();
             }
         }
 
@@ -113,7 +118,7 @@ namespace Epub_Reader_TTS
             set
             {
                 selectedVoice = value;
-                TaskManager.Run(()=>UpdateSelecteVoice(selectedVoice, readingSpeed));
+                TaskManager.Run(()=>UpdateSelectedVoice(selectedVoice, readingSpeed));
             }
         }
 
@@ -126,7 +131,7 @@ namespace Epub_Reader_TTS
             set
             {
                 readingSpeed = value;
-                UpdateSelecteVoice(selectedVoice, readingSpeed);
+                UpdateSelectedVoice(selectedVoice, readingSpeed);
             }
         }
 
@@ -138,7 +143,13 @@ namespace Epub_Reader_TTS
         /// Command to start reading or toggle pause resume...
         /// </summary>
         public ICommand PlayCommand { get; set; }
-        
+
+        public ICommand PreviousCommand { get; set; }
+
+        public ICommand NextCommand { get; set; }
+
+        public ICommand CloseBookCommand { get; set; }
+                
         /// <summary>
         /// Command to show the bookmarks popup
         /// </summary>
@@ -159,6 +170,12 @@ namespace Epub_Reader_TTS
         public BookViewModel()
         {
             PlayCommand = new RelayCommand(async () => await TogglePause());
+
+            PreviousCommand = new RelayCommand(async () => await PreviousParagraph());
+
+            NextCommand = new RelayCommand(async () => await NextParagraph());
+
+            CloseBookCommand = new RelayCommand(async () => await CloseBook());
 
             ToggleBookmarksCommand = new RelayCommand(ToggleBookmarks);
 
@@ -197,14 +214,14 @@ namespace Epub_Reader_TTS
         {
             CurrentPage = PageViewModels.First(p => p.Index == book.CurrentPageIndex);
 
-            CurrentPage.ParagraphIndex = book.CurrentParagraphIndex;
+            CurrentPage.Initiate(false, book.CurrentParagraphIndex);
 
             CurrentPage.CurrentParagraph.Active = true;
         }
 
         #endregion
 
-        #region Public Commands
+        #region Commands Methods
 
         /// <summary>
         /// Start reading or toggle pause/resume ... 
@@ -251,6 +268,23 @@ namespace Epub_Reader_TTS
             }
         }
 
+        private async Task CloseBook()
+        {
+            await CurrentPage.TogglePause(true);
+
+            ViewModelApplication.GoToPage(ApplicationPage.Dashboard);
+        }
+
+        private async Task NextParagraph()
+        {
+            await CurrentPage.GoToNextParagraph();
+        }
+
+        private async Task PreviousParagraph()
+        {
+            await CurrentPage.GoToPreviousParagraph();
+        }
+
         #endregion
 
         #region Public Methods
@@ -262,6 +296,7 @@ namespace Epub_Reader_TTS
         public void AddPage(PageViewModel pageViewModel)
         {
             pageViewModel.OnFinnished = NextPage;
+            pageViewModel.OnPreviousPage = PriviousPage;
 
             pageViewModel.parent = this;
 
@@ -279,13 +314,34 @@ namespace Epub_Reader_TTS
             if (page != null)
             {
                 CurrentPage = page;
-                TogglePause().GetAwaiter().GetResult();
+
+                CurrentPage.Initiate(reading);
 
                 TaskManager.Run(async () => ViewModelApplication.SavePosition(CurrentPage.Index, 0));
 
             }
             else
                 Finnished();
+        }     
+        
+        /// <summary>
+        /// Go to the next page
+        /// </summary>
+        /// <param name="currentPage">the index of the current page</param>
+        public void PriviousPage(int currentPage)
+        {
+            var page = PageViewModels.FirstOrDefault(p => p.Index == currentPage - 1);
+
+            if (page != null)
+            {
+                CurrentPage = page;
+
+                CurrentPage.Initiate(reading,CurrentPage.ParagraphViewModels.Last().Index);
+
+                TaskManager.Run(async () => ViewModelApplication.SavePosition(CurrentPage.Index, 0));
+            }
+            //else
+            //    Finnished();
         }
 
 
@@ -307,7 +363,7 @@ namespace Epub_Reader_TTS
         /// </summary>
         /// <param name="selectedVoice"></param>
         /// <param name="readingSpeed"></param>
-        private void UpdateSelecteVoice(InstalledVoice selectedVoice, int readingSpeed)
+        private void UpdateSelectedVoice(InstalledVoice selectedVoice, int readingSpeed)
         {
             SpeechSynthesizer.SelectVoice(selectedVoice.VoiceInfo.Name);
 

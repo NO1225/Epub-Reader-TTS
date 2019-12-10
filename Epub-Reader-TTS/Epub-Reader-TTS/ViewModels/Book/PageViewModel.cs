@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,12 @@ namespace Epub_Reader_TTS
     /// </summary>
     public class PageViewModel : BaseViewModel
     {
+        #region Private Fields
+        
+        private ParagraphViewModel currentParagraph;
+        
+        #endregion
+
         #region Public Properties
 
         /// <summary>
@@ -26,6 +33,8 @@ namespace Epub_Reader_TTS
         /// Action to be stored to be fired when the reading of this page is finnished
         /// </summary>
         public Action<int> OnFinnished;
+
+        public Action<int> OnPreviousPage;
 
         /// <summary>
         /// The index of this page
@@ -43,24 +52,27 @@ namespace Epub_Reader_TTS
         public ObservableCollection<ParagraphViewModel> ParagraphViewModels { get; set; }
 
         /// <summary>
-        /// The index of the current paragraph
-        /// </summary>
-        public int ParagraphIndex { get; set; }
-
-        /// <summary>
         /// The current active paragraph 
         /// </summary>
-        public ParagraphViewModel CurrentParagraph { get => ParagraphViewModels != null && ParagraphViewModels.Count > 0 ? ParagraphViewModels[ParagraphIndex] : null; }
+        public ParagraphViewModel CurrentParagraph
+        {
+            get => currentParagraph; 
+            set
+            {
+                if (currentParagraph != null)
+                    currentParagraph.Active = false;
+
+                currentParagraph = value;
+
+                if (IsReading)
+                    StartReading().GetAwaiter().GetResult();
+            }
+        }
 
         /// <summary>
         /// If the applicaiton is reading 
         /// </summary>
-        public bool IsReading { get => parent.SpeechSynthesizer.State == SynthesizerState.Speaking; }
-
-        /// <summary>
-        /// If this page is closing or first run 
-        /// </summary>
-        public bool IsClosing { get; set; }
+        public bool IsReading { get; set; }
 
         #endregion
 
@@ -72,8 +84,6 @@ namespace Epub_Reader_TTS
         public PageViewModel()
         {
             this.ParagraphViewModels = new ObservableCollection<ParagraphViewModel>();
-
-            OnPropertyChanged(nameof(CurrentParagraph));
         }
 
         #endregion
@@ -84,19 +94,17 @@ namespace Epub_Reader_TTS
         /// Initiate this page
         /// </summary>
         /// <param name="reading">weither if the application is reading or not</param>
-        public void Initiate(bool reading = false)
+        public void Initiate(bool reading = false,int paragraphIndex = 0)
         {
-            IsClosing = true;
+            if (CurrentParagraph == null)
+                CurrentParagraph = ParagraphViewModels.First();
+            
+            SelectParagraph(paragraphIndex);
 
-            Debug.WriteLine($"Initiating: {this.GetHashCode()} son of {this.parent.GetHashCode()}");
-
-            parent.SpeechSynthesizer.SpeakProgress += SpeakProgress;
-
-            parent.SpeechSynthesizer.SpeakCompleted += SpeakCompleted;
-
-            CurrentParagraph.Active = true;
+            if (reading)
+                StartReading();
         }
-        
+
         /// <summary>
         /// Start reading or toggle between pause play ... 
         /// </summary>
@@ -104,24 +112,22 @@ namespace Epub_Reader_TTS
         /// <returns></returns>
         public async Task TogglePause(bool forcePause)
         {
-            IsClosing = false;
-
             if (forcePause)
             {
-                parent.SpeechSynthesizer.Pause();
+                await StopReading();
                 return;
             }
-            if (parent.SpeechSynthesizer.State == SynthesizerState.Speaking)
-                parent.SpeechSynthesizer.Pause();
-            else if (parent.SpeechSynthesizer.State == SynthesizerState.Paused)
-            {
-                parent.SpeechSynthesizer.Resume();
-                if (parent.SpeechSynthesizer.State == SynthesizerState.Ready)
-                    await ReadParagraph();
 
+            if (IsReading)
+            {
+                await StopReading();
             }
             else
-                await ReadParagraph();
+            {
+                await StartReading();
+            }
+
+
         }
 
         /// <summary>
@@ -135,25 +141,16 @@ namespace Epub_Reader_TTS
             this.ParagraphViewModels.Add(paragraphViewModel);
         }
 
-        /// <summary>
-        /// Go to the next paragraph
-        /// </summary>
-        /// <param name="currentParagraph"></param>
-        public void NextParagraph(int currentParagraph)
+ 
+
+        internal async Task GoToNextParagraph()
         {
-            if (ParagraphViewModels.Count <= currentParagraph + 1)
-                Finnished();
-            // TODO: ;
-            else
-            {
-                CurrentParagraph.Active = false;
+            NextParagraph();
+        }
 
-                ParagraphIndex = currentParagraph + 1;
-
-                ReadParagraph();
-
-                TaskManager.Run(async () => ViewModelApplication.SavePosition(this.Index, this.ParagraphIndex));                
-            }
+        internal async Task GoToPreviousParagraph()
+        {
+            PreviousParagraph();
         }
 
         /// <summary>
@@ -162,48 +159,85 @@ namespace Epub_Reader_TTS
         /// <returns></returns>
         public async Task OnClose()
         {
-            IsClosing = true;
+            await StopReading();            
+        }
 
-            Debug.WriteLine($"Closing: {this.GetHashCode()} son of {this.parent.GetHashCode()} isclosibg is {IsClosing}");
-
-            parent.SpeechSynthesizer.SpeakProgress -= SpeakProgress;
-
-            parent.SpeechSynthesizer.SpeakCompleted -= SpeakCompleted;
-
-            parent.SpeechSynthesizer.SpeakAsyncCancelAll();
-
-            Debug.WriteLine($"Closed: {this.GetHashCode()} son of {this.parent.GetHashCode()} isclosibg is {IsClosing}");
+        internal void SelectParagraph(int currentParagraphIndex)
+        {
+            CurrentParagraph = ParagraphViewModels.First(p => p.Index == currentParagraphIndex);
         }
 
         #endregion
 
         #region Private Methods
-        
-        /// <summary>
-        /// Start reading the current paragraph
-        /// </summary>
-        /// <returns></returns>
-        private async Task ReadParagraph()
+
+        private async Task StartReading()
         {
             parent.SpeechSynthesizer.SpeakAsyncCancelAll();
 
-            CurrentParagraph.Active = true;
+            if (!IsReading)
+            {
+                parent.SpeechSynthesizer.SpeakProgress += SpeakProgress;
+                parent.SpeechSynthesizer.SpeakCompleted += SpeakCompleted;
+                IsReading = true;
+            }
 
-            Debug.WriteLine("starting");
+            CurrentParagraph.Active = true;
 
             parent.SpeechSynthesizer.SpeakAsync(CurrentParagraph.ParagraphText);
 
-            Debug.WriteLine("finished");
         }
-        
+
+        private async Task StopReading()
+        {
+            IsReading = false;
+
+            CurrentParagraph.Active = false;
+            
+            parent.SpeechSynthesizer.SpeakProgress -= SpeakProgress;
+
+            parent.SpeechSynthesizer.SpeakCompleted -= SpeakCompleted;
+
+            parent.SpeechSynthesizer.SpeakAsyncCancelAll();
+        }
+
+        /// <summary>
+        /// Go to the next paragraph
+        /// </summary>
+        /// <param name="currentParagraph"></param>
+        private void NextParagraph()
+        {
+            if (ParagraphViewModels.Count <= CurrentParagraph.Index + 1)
+                Finnished();
+            else
+            {
+                SelectParagraph(CurrentParagraph.Index + 1);
+
+                TaskManager.Run(async () => ViewModelApplication.SavePosition(this.Index, this.CurrentParagraph.Index));
+            }
+        }
+
+        /// <summary>
+        /// Go to the next paragraph
+        /// </summary>
+        /// <param name="currentParagraph"></param>
+        private void PreviousParagraph()
+        {
+            if (CurrentParagraph.Index==0)
+                PreviousPage();
+            else
+            {
+                SelectParagraph(CurrentParagraph.Index - 1);
+
+                TaskManager.Run(async () => ViewModelApplication.SavePosition(this.Index, this.CurrentParagraph.Index));
+            }
+        }
+
         /// <summary>
         /// To be fired when the reading of this page is finnished
         /// </summary>
-        private void Finnished()
-        {
-            if (OnFinnished != null)
-                OnFinnished(this.Index);
-        }
+        private void Finnished() => OnFinnished?.Invoke(Index);
+        private void PreviousPage() => OnPreviousPage?.Invoke(Index);
 
         #endregion
 
@@ -216,8 +250,6 @@ namespace Epub_Reader_TTS
         /// <param name="e"></param>
         private void SpeakProgress(object sender, SpeakProgressEventArgs e)
         {
-            if (IsClosing)
-                return;
             CurrentParagraph.WordIndex = e.CharacterPosition;
 
             CurrentParagraph.WordLength = e.CharacterCount;
@@ -230,13 +262,15 @@ namespace Epub_Reader_TTS
         /// <param name="e"></param>
         private void SpeakCompleted(object sender, SpeakCompletedEventArgs e)
         {
-            if (IsClosing)
+
+            if (e.Cancelled)
                 return;
+
             CurrentParagraph.Active = false;
 
             CurrentParagraph.WordLength = 0;
 
-            NextParagraph(ParagraphIndex);
+            NextParagraph();
         }
 
         #endregion

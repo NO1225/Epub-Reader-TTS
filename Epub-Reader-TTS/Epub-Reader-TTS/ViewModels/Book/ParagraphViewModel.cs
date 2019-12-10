@@ -7,17 +7,31 @@ namespace Epub_Reader_TTS
     /// </summary>
     public class ParagraphViewModel : BaseViewModel
     {
+        private bool active;
+
         #region Public Properties
 
         /// <summary>
         /// Action to be called when the reading of this paragraph is finnished
         /// </summary>
-        public Action<int> OnFinnished;
+        public Action OnFinnished;
 
         /// <summary>
         /// If this paragpraph is active and the application is currently reading it 
         /// </summary>
-        public bool Active { get; set; }
+        public bool Active
+        {
+            get => active; set
+            {
+                if(!value)
+                {
+                    WordIndex = 0;
+                    WordLength = 0;
+                }
+
+                active = value;
+            }
+        }
 
         /// <summary>
         /// The index of this paragraph
@@ -40,7 +54,7 @@ namespace Epub_Reader_TTS
         public string ParagraphText { get; set; }
 
         #endregion
-        
+
         #region Private Methods
 
         /// <summary>
@@ -49,7 +63,7 @@ namespace Epub_Reader_TTS
         private void Finnished()
         {
             if (OnFinnished != null)
-                OnFinnished(this.Index);
+                OnFinnished();
         }
 
         #endregion
