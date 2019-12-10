@@ -140,6 +140,13 @@ namespace Epub_Reader_TTS
             DI.TaskManager.Run(() => DI.SettingsManager.SetDarkMode(isDarkMode));
         }
 
+        public void SetFontSize(int fontSize)
+        {
+            Application.Current.Resources["MainFontSize"] = (double)fontSize;
+
+            DI.TaskManager.Run(() => DI.SettingsManager.SetFontSize(fontSize));
+        }
+
         /// <summary>
         /// Save the location of the reading of this book in the database 
         /// </summary>

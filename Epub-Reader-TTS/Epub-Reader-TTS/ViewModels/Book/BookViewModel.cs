@@ -39,6 +39,9 @@ namespace Epub_Reader_TTS
         /// </summary>
         private bool reading;
 
+
+        private bool isDarkMode;
+
         #endregion
 
         #region Public Properties
@@ -135,7 +138,6 @@ namespace Epub_Reader_TTS
             }
         }
 
-        private bool isDarkMode;
 
         public bool IsDarkMode
         {
@@ -145,6 +147,18 @@ namespace Epub_Reader_TTS
                 ViewModelApplication.SetDarkMode(IsDarkMode);
             }
         }
+
+        private int fontSize;
+
+        public int FontSize
+        {
+            get { return fontSize; }
+            set { 
+                fontSize = value;
+                ViewModelApplication.SetFontSize(FontSize);
+            }
+        }
+
 
         #endregion
 
@@ -207,6 +221,8 @@ namespace Epub_Reader_TTS
         private void Initiate()
         {
             IsDarkMode = DI.SettingsManager.IsDarkMode();
+
+            FontSize = DI.SettingsManager.GetFontSize();
 
             SpeechSynthesizer = new SpeechSynthesizer();
 

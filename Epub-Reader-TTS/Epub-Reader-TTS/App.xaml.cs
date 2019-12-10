@@ -38,6 +38,8 @@ namespace Epub_Reader_TTS
 
             ViewModelApplication.SetDarkMode(DI.SettingsManager.IsDarkMode());
 
+            ViewModelApplication.SetFontSize(DI.SettingsManager.GetFontSize());
+
             ViewModelApplication.GoToPage(ApplicationPage.Dashboard);
 
             Current.MainWindow = new MainWindow();
