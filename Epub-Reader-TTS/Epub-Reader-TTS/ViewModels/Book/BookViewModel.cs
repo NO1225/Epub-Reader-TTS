@@ -135,6 +135,17 @@ namespace Epub_Reader_TTS
             }
         }
 
+        private bool isDarkMode;
+
+        public bool IsDarkMode
+        {
+            get { return isDarkMode; }
+            set { 
+                isDarkMode = value;
+                ViewModelApplication.SetDarkMode(IsDarkMode);
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -195,6 +206,8 @@ namespace Epub_Reader_TTS
         /// </summary>
         private void Initiate()
         {
+            IsDarkMode = DI.SettingsManager.IsDarkMode();
+
             SpeechSynthesizer = new SpeechSynthesizer();
 
             SpeechSynthesizer.SetOutputToDefaultAudioDevice();

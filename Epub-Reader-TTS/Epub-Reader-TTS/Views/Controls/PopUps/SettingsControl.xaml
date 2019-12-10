@@ -11,6 +11,7 @@
     <Border
         Background="{DynamicResource PrimaryBackGroundColorBrush}"
         BorderBrush="{DynamicResource PrimaryFontColorBrush}"
+        TextElement.Foreground="{DynamicResource PrimaryFontColorBrush}"
         BorderThickness="1 0 1 1"
         MinWidth="300"
         MinHeight="400"
@@ -28,25 +29,54 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <!-- Font Settings -->
-                <Label 
+                <!-- DarkMode Settings -->
+                <TextBlock 
                     VerticalAlignment="Center"
                     Grid.Row="0"
                     Grid.Column="0"
-                    Content="Font Size"/>
+                    Text="Mode"/>
+
+                <UniformGrid
+                    Rows="1"
+                    Grid.Row="0"
+                    Grid.Column="1">
+                    <RadioButton 
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding IsDarkMode,Mode=TwoWay}">
+                        <TextBlock 
+                            Foreground="{DynamicResource PrimaryFontColorBrush}"
+                            Text="Dark"/>
+                    </RadioButton>
+                    <RadioButton 
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding IsDarkMode,Mode=TwoWay,Converter={local:BoolianInverseConverter}}"
+                        >
+                        <TextBlock
+                            Foreground="{DynamicResource PrimaryFontColorBrush}"
+                            Text="Light"/>
+                    </RadioButton>
+                </UniformGrid>
+                
+                <!-- Font Settings -->
+                <TextBlock 
+                    VerticalAlignment="Center"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="Font Size"/>
 
                 <DockPanel
-                    Grid.Row="0"
+                    Grid.Row="1"
                     Grid.Column="1">
                     <TextBlock 
                         VerticalAlignment="Center"
                         DockPanel.Dock="Left"
                         Text="A" 
                         FontSize="12"/>
-                    
+
                     <TextBlock 
                         VerticalAlignment="Center"
                         DockPanel.Dock="Right"
@@ -65,15 +95,15 @@
 
 
                 <!-- Voice Settings -->
-                <Label 
+                <TextBlock 
                     VerticalAlignment="Center"
-                    Grid.Row="1"
+                    Grid.Row="2"
                     Grid.Column="0"
-                    Content="Voice"/>
+                    Text="Voice"/>
 
                 <ComboBox 
                     VerticalAlignment="Center"
-                    Grid.Row="1"
+                    Grid.Row="2"
                     Grid.Column="1"
                     ItemsSource="{Binding InstalledVoices}"
                     SelectedItem="{Binding SelectedVoice}">
@@ -85,15 +115,15 @@
                 </ComboBox>
 
                 <!-- Speed Settings -->
-                <Label 
+                <TextBlock 
                     VerticalAlignment="Center"
-                    Grid.Row="2"
+                    Grid.Row="3"
                     Grid.Column="0"
-                    Content="Speed"/>
+                    Text="Speed"/>
 
                 <Slider 
                     VerticalAlignment="Center"
-                    Grid.Row="2"
+                    Grid.Row="3"
                     Grid.Column="1"
                     Minimum="1"
                     Maximum="10"

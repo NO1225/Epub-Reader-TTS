@@ -1,6 +1,9 @@
 ﻿using Epub_Reader_TTS.Core;
+using System.Drawing;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Epub_Reader_TTS
 {
@@ -36,10 +39,6 @@ namespace Epub_Reader_TTS
             private set;
         }// = Properties.Resources.Logo.ToByteArray(true);
 
-        /// <summary>
-        /// Back button visability switch
-        /// </summary>
-        public bool BackVisible { get => CurrentPage != ApplicationPage.Dashboard; }
 
         /// <summary>
         /// Colors properties
@@ -62,14 +61,6 @@ namespace Epub_Reader_TTS
 
         #endregion
 
-        #region Commands
-
-        /// <summary>
-        /// Command to go back to the dashboard
-        /// </summary>
-        public ICommand BackCommand { get; set; }
-
-        #endregion
 
         #region Default Constructor
 
@@ -78,22 +69,10 @@ namespace Epub_Reader_TTS
         /// </summary>
         public ApplicationViewModel()
         {
-            BackCommand = new RelayCommand(() => BackToHome());
         }
 
         #endregion
 
-        #region Command Methods
-
-        /// <summary>
-        /// Go back to the dashboard page
-        /// </summary>
-        private void BackToHome()
-        {
-            GoToPage(ApplicationPage.Dashboard);
-        }
-
-        #endregion
 
         #region Public Methods
 
@@ -112,24 +91,53 @@ namespace Epub_Reader_TTS
         /// <param name="color"></param>
         public void SetDarkMode(bool isDarkMode)
         {
-            // TODO: 
 
-            //MainColor = color;
-            //MainHoverColor = color.ChangeBrightness(Constants.BrightnessFactor);
-            //MainPressedColor = color.ChangeBrightness(-Constants.BrightnessFactor / 2);
+            if(isDarkMode)
+            {
+                var primaryFontColor = ColorTranslator.FromHtml("#ffffff").ToMediaColor();
+                var secondaryFontColor = ColorTranslator.FromHtml("#f0f0f0").ToMediaColor();
+                var primaryBackGroundColor = ColorTranslator.FromHtml("#000000").ToMediaColor();
+                var secondaryBackGroundColor = ColorTranslator.FromHtml("#2b2b2b").ToMediaColor();
 
-            //MainColorBrush = new SolidColorBrush(MainColor);
-            //MainHoverColorBrush = new SolidColorBrush(MainHoverColor);
-            //MainPressedColorBrush = new SolidColorBrush(MainPressedColor);
+                var primaryFontColorBrush = new SolidColorBrush(primaryFontColor);
+                var secondaryFontColorBrush = new SolidColorBrush(secondaryFontColor);
+                var primaryBackGroundColorBrush = new SolidColorBrush(primaryBackGroundColor);
+                var secondaryBackGroundColorBrush = new SolidColorBrush(secondaryBackGroundColor);
 
-            //Application.Current.Resources["MainColor"] = MainColor;
-            //Application.Current.Resources["MainHoverColor"] = MainHoverColor;
-            //Application.Current.Resources["MainPressedColor"] = MainPressedColor;
+                Application.Current.Resources["PrimaryFontColor"] = primaryFontColor;
+                Application.Current.Resources["SecondaryFontColor"] = secondaryFontColor;
+                Application.Current.Resources["PrimaryBackGroundColor"] = primaryBackGroundColor;
+                Application.Current.Resources["SecondaryBackGroundColor"] = secondaryBackGroundColor;
 
-            //Application.Current.Resources["MainColorBrush"] = MainColorBrush;
-            //Application.Current.Resources["MainHoverColorBrush"] = MainHoverColorBrush;
-            //Application.Current.Resources["MainPressedColorBrush"] = MainPressedColorBrush;
+                Application.Current.Resources["PrimaryFontColorBrush"] = primaryFontColorBrush;
+                Application.Current.Resources["SecondaryFontColorBrush"] = secondaryFontColorBrush;
+                Application.Current.Resources["PrimaryBackGroundColorBrush"] = primaryBackGroundColorBrush;
+                Application.Current.Resources["SecondaryBackGroundColorBrush"] = secondaryBackGroundColorBrush;
+            }
+            else
+            {
+                var primaryFontColor = ColorTranslator.FromHtml("#000000").ToMediaColor();
+                var secondaryFontColor = ColorTranslator.FromHtml("#2b2b2b").ToMediaColor();
+                var primaryBackGroundColor = ColorTranslator.FromHtml("#ffffff").ToMediaColor();
+                var secondaryBackGroundColor = ColorTranslator.FromHtml("#f0f0f0").ToMediaColor();
 
+                var primaryFontColorBrush = new SolidColorBrush(primaryFontColor);
+                var secondaryFontColorBrush = new SolidColorBrush(secondaryFontColor);
+                var primaryBackGroundColorBrush = new SolidColorBrush(primaryBackGroundColor);
+                var secondaryBackGroundColorBrush = new SolidColorBrush(secondaryBackGroundColor);
+
+                Application.Current.Resources["PrimaryFontColor"] = primaryFontColor;
+                Application.Current.Resources["SecondaryFontColor"] = secondaryFontColor;
+                Application.Current.Resources["PrimaryBackGroundColor"] = primaryBackGroundColor;
+                Application.Current.Resources["SecondaryBackGroundColor"] = secondaryBackGroundColor;
+
+                Application.Current.Resources["PrimaryFontColorBrush"] = primaryFontColorBrush;
+                Application.Current.Resources["SecondaryFontColorBrush"] = secondaryFontColorBrush;
+                Application.Current.Resources["PrimaryBackGroundColorBrush"] = primaryBackGroundColorBrush;
+                Application.Current.Resources["SecondaryBackGroundColorBrush"] = secondaryBackGroundColorBrush;
+            }
+
+            DI.TaskManager.Run(() => DI.SettingsManager.SetDarkMode(isDarkMode));
         }
 
         /// <summary>

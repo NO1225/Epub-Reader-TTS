@@ -81,6 +81,17 @@ namespace Epub_Reader_TTS
 
             return System.Windows.Media.Color.FromRgb((byte)R, (byte)G, (byte)B);
         }
+        
+        /// <summary>
+        /// Change the brightness of the color with a given amount
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="factor"></param>
+        /// <returns>New color with the added / removed brightness</returns>
+        public static System.Windows.Media.Color ToMediaColor(this System.Drawing.Color color)
+        {
+            return System.Windows.Media.Color.FromRgb((byte)color.R, (byte)color.G, (byte)color.B);
+        }
 
         /// <summary>
         /// Easier way to use the color directory

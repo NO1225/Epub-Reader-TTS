@@ -36,12 +36,13 @@ namespace Epub_Reader_TTS
             // Log it
             Logger.LogDebugSource("Application starting...");
 
+            ViewModelApplication.SetDarkMode(DI.SettingsManager.IsDarkMode());
+
             ViewModelApplication.GoToPage(ApplicationPage.Dashboard);
 
-
             Current.MainWindow = new MainWindow();
-            Current.MainWindow.Show();
 
+            Current.MainWindow.Show();
         }
 
 
