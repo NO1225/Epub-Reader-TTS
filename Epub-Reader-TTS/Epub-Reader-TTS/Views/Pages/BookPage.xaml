@@ -27,7 +27,7 @@
             Grid.Row="0"
             Background="{DynamicResource SecondaryBackGroundColorBrush}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition  Width="auto"/>
+                <ColumnDefinition  Width="100"/>
                 <ColumnDefinition  Width="*"/>
                 <ColumnDefinition  Width="auto"/>
                 <ColumnDefinition  Width="*"/>

@@ -99,20 +99,28 @@ namespace Epub_Reader_TTS
                 var primaryBackGroundColor = ColorTranslator.FromHtml("#000000").ToMediaColor();
                 var secondaryBackGroundColor = ColorTranslator.FromHtml("#2b2b2b").ToMediaColor();
 
+                var accentColor1 = ColorTranslator.FromHtml("#3baaf5").ToMediaColor();
+
                 var primaryFontColorBrush = new SolidColorBrush(primaryFontColor);
                 var secondaryFontColorBrush = new SolidColorBrush(secondaryFontColor);
                 var primaryBackGroundColorBrush = new SolidColorBrush(primaryBackGroundColor);
                 var secondaryBackGroundColorBrush = new SolidColorBrush(secondaryBackGroundColor);
+                
+                var accentColor1Brush = new SolidColorBrush(accentColor1);
 
                 Application.Current.Resources["PrimaryFontColor"] = primaryFontColor;
                 Application.Current.Resources["SecondaryFontColor"] = secondaryFontColor;
                 Application.Current.Resources["PrimaryBackGroundColor"] = primaryBackGroundColor;
                 Application.Current.Resources["SecondaryBackGroundColor"] = secondaryBackGroundColor;
 
+                Application.Current.Resources["AccentColor1"] = accentColor1;
+
                 Application.Current.Resources["PrimaryFontColorBrush"] = primaryFontColorBrush;
                 Application.Current.Resources["SecondaryFontColorBrush"] = secondaryFontColorBrush;
                 Application.Current.Resources["PrimaryBackGroundColorBrush"] = primaryBackGroundColorBrush;
                 Application.Current.Resources["SecondaryBackGroundColorBrush"] = secondaryBackGroundColorBrush;
+
+                Application.Current.Resources["AccentColor1Brush"] = accentColor1Brush;
             }
             else
             {
@@ -121,20 +129,29 @@ namespace Epub_Reader_TTS
                 var primaryBackGroundColor = ColorTranslator.FromHtml("#ffffff").ToMediaColor();
                 var secondaryBackGroundColor = ColorTranslator.FromHtml("#f0f0f0").ToMediaColor();
 
+                var accentColor1 = ColorTranslator.FromHtml("#00569f").ToMediaColor();
+
                 var primaryFontColorBrush = new SolidColorBrush(primaryFontColor);
                 var secondaryFontColorBrush = new SolidColorBrush(secondaryFontColor);
                 var primaryBackGroundColorBrush = new SolidColorBrush(primaryBackGroundColor);
                 var secondaryBackGroundColorBrush = new SolidColorBrush(secondaryBackGroundColor);
+
+                var accentColor1Brush = new SolidColorBrush(accentColor1);
 
                 Application.Current.Resources["PrimaryFontColor"] = primaryFontColor;
                 Application.Current.Resources["SecondaryFontColor"] = secondaryFontColor;
                 Application.Current.Resources["PrimaryBackGroundColor"] = primaryBackGroundColor;
                 Application.Current.Resources["SecondaryBackGroundColor"] = secondaryBackGroundColor;
 
+                Application.Current.Resources["AccentColor1"] = accentColor1;
+
                 Application.Current.Resources["PrimaryFontColorBrush"] = primaryFontColorBrush;
                 Application.Current.Resources["SecondaryFontColorBrush"] = secondaryFontColorBrush;
                 Application.Current.Resources["PrimaryBackGroundColorBrush"] = primaryBackGroundColorBrush;
                 Application.Current.Resources["SecondaryBackGroundColorBrush"] = secondaryBackGroundColorBrush;
+
+                Application.Current.Resources["AccentColor1Brush"] = accentColor1Brush;
+
             }
 
             DI.TaskManager.Run(() => DI.SettingsManager.SetDarkMode(isDarkMode));

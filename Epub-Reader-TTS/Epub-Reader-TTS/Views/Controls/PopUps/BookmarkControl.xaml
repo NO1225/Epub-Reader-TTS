@@ -17,6 +17,7 @@
             SelectedItem="{Binding CurrentPage}"
             SelectionMode="Single"
             BorderBrush="{DynamicResource PrimaryFontColorBrush}"
+            Background="{DynamicResource PrimaryBackGroundColorBrush}"
             BorderThickness="1 0 1 1"
             >
             <ListView.ItemsPanel>
@@ -28,7 +29,9 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock 
+                        Foreground="{DynamicResource PrimaryFontColorBrush}"
+                        Text="{Binding Title}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

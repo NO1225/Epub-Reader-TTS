@@ -259,6 +259,9 @@ namespace Epub_Reader_TTS
         /// <returns></returns>
         private async Task TogglePause(bool forcePause = false)
         {
+            if (CurrentPage.CurrentParagraph == null)
+                CurrentPage.Initiate();
+
             await CurrentPage.TogglePause(forcePause);
             Debug.WriteLine(CurrentPage.IsReading);
             PauseButtonText = CurrentPage.IsReading ? "\uf04c" : "\uf04b";
