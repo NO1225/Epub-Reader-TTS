@@ -168,7 +168,14 @@ namespace Epub_Reader_TTS
 
                 var image = book.CoverImage.ToImage();
 
-                image.Save(file.BookCoverPath, System.Drawing.Imaging.ImageFormat.Png);
+                if(image != null)
+                {
+                    image.Save(file.BookCoverPath, System.Drawing.Imaging.ImageFormat.Png);
+                }
+                else
+                {
+                    file.BookCoverPath = string.Empty;
+                }
             }
 
             await DI.ClientDataStore.AddBook(file);
@@ -202,10 +209,18 @@ namespace Epub_Reader_TTS
             var i = 0;
             foreach (EpubTextFile text in html)
             {
+                var chapter = book.TableOfContents.FirstOrDefault(tof => tof.FileName == text.FileName);
+
+                if(chapter==null)
+                {
+                    continue;
+                }
+
+                // TODO: out of index
                 var pageVM = new PageViewModel()
                 {
                     Index = i,
-                    Title = book.TableOfContents[i].Title
+                    Title = chapter.Title
                 };
 
                 var j = 0;
