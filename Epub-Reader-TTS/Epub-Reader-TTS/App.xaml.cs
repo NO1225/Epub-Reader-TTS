@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using static Dna.FrameworkDI;
@@ -37,26 +39,20 @@ namespace Epub_Reader_TTS
             // Log it
             Logger.LogDebugSource("Application starting...");
 
-            ViewModelApplication.SetDarkMode(DI.SettingsManager.IsDarkMode());
-
-            ViewModelApplication.SetFontSize(DI.SettingsManager.GetFontSize());
-
-            ViewModelApplication.GoToPage(ApplicationPage.Dashboard);
 
             // To be used with open with command 
-            if(e.Args.Length>0)
+            if (e.Args.Length>0)
             {
                 var dashboardViewModel = new DashboardViewModel();
 
                 foreach (string file in e.Args)
                 {
-                    dashboardViewModel.RefreshBook(new Core.Book() { BookFilePath = file });
+                    dashboardViewModel.OpenBookFile(file).GetAwaiter().GetResult();
                 }
-            }
+            }                       
 
-            
-
-
+            ViewModelApplication.GoToPage(ApplicationPage.Dashboard);
+                       
             Current.MainWindow = new MainWindow();
 
             Current.MainWindow.Show();
@@ -68,13 +64,21 @@ namespace Epub_Reader_TTS
         /// </summary>
         private async Task ApplicationSetupAsync()
         {
+            // Set the default working directory
+            Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? Directory.GetCurrentDirectory());
+
             // Setup the Dna Framework
             Framework.Construct<DefaultFrameworkConstruction>()
                 .AddFileLogger()
                 .AddClientDataStore()
                 .AddApplicationViewModels()
-                .AddClientServices()
+                .AddClientServices()    
                 .Build();
+
+            // Load settings
+            ViewModelApplication.SetDarkMode(DI.SettingsManager.IsDarkMode());
+
+            ViewModelApplication.SetFontSize(DI.SettingsManager.GetFontSize());
 
             // Ensure the client data store 
             await ClientDataStore.EnsureDataStoreAsync();

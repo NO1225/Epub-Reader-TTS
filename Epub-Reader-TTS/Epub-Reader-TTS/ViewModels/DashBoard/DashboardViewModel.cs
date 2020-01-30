@@ -4,6 +4,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -73,7 +74,7 @@ namespace Epub_Reader_TTS
         /// <returns></returns>
         private async Task Initiate()
         {
-            this.bookList = await DI.ClientDataStore.GetBooks();
+            this.bookList = (await DI.ClientDataStore.GetBooks()).Where(b => b.IsDisabled != true).ToList() ;
 
             Tiles = new ObservableCollection<TileViewModel>();
 
@@ -111,28 +112,44 @@ namespace Epub_Reader_TTS
 
             if ((result != null) && (bool)result)
             {
-                var book = bookList.FirstOrDefault(b => b.BookFilePath == openFileDialog.FileName);
-
-
-                if (book != null)
-                {
-                    book.LastOpenDate = DateTime.Now;
-
-                    await RefreshBook(book);
-                }
-                else
-                {
-                    book = new Book()
-                    {
-                        LastOpenDate = DateTime.Now,
-                        BookFilePath = openFileDialog.FileName,
-                    };
-
-                    await RefreshBook(book);
-
-                }
-                await Initiate();
+                await OpenBookFile(openFileDialog.FileName);
             }
+        }
+        
+        /// <summary>
+        /// Open the file and assosiate it with a book model
+        /// </summary>
+        /// <param name="path">The path to the file</param>
+        /// <returns></returns>
+        public async Task OpenBookFile(string path)
+        {
+            if(!(Path.GetExtension(path).Substring(1).ToLower() == "epub"))
+            {
+                MessageBox.Show("Wrong file");
+                return;
+            }
+
+            var book = (await DI.ClientDataStore.GetBooks()).FirstOrDefault(b => b.BookFilePath == path);
+
+
+            if (book != null)
+            {
+                book.LastOpenDate = DateTime.Now;
+
+                await RefreshBook(book);
+            }
+            else
+            {
+                book = new Book()
+                {
+                    LastOpenDate = DateTime.Now,
+                    BookFilePath = path,
+                };
+
+                await RefreshBook(book);
+
+            }
+            await Initiate();
         }
 
         #endregion
@@ -157,6 +174,8 @@ namespace Epub_Reader_TTS
 
             file.BookName = book.Title;
 
+            file.IsDisabled = false;
+
             await DI.ClientDataStore.AddBook(file);
 
             if (!DI.FileManager.PathExists(file.BookCoverPath))
@@ -168,7 +187,7 @@ namespace Epub_Reader_TTS
 
                 var image = book.CoverImage.ToImage();
 
-                if(image != null)
+                if (image != null)
                 {
                     image.Save(file.BookCoverPath, System.Drawing.Imaging.ImageFormat.Png);
                 }
@@ -211,7 +230,7 @@ namespace Epub_Reader_TTS
             {
                 var chapter = book.TableOfContents.FirstOrDefault(tof => tof.FileName == text.FileName);
 
-                if(chapter==null)
+                if (chapter == null)
                 {
                     continue;
                 }
@@ -263,6 +282,15 @@ namespace Epub_Reader_TTS
         public async Task RemoveBook(Book file)
         {
             // TODO:  
+
+            var result = MessageBox.Show("Are you sure you want to delete this book", "Delete Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            await DI.ClientDataStore.RemoveBook(file);
+
+            await Initiate();
         }
 
         #endregion

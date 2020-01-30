@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Epub_Reader_TTS.Core;
@@ -49,7 +50,9 @@ namespace Epub_Reader_TTS.Relational
 
         public Task<List<Book>> GetBooks()
         {
-            return Task.FromResult(mDbContext.Books.OrderByDescending(b=>b.LastOpenDate).ToList());
+            return Task.FromResult(mDbContext.Books
+                //.Where(b=>b.IsDisabled!=true)
+                .OrderByDescending(b=>b.LastOpenDate).ToList());
         }
 
         public async Task AddBook(Book book)
@@ -57,9 +60,29 @@ namespace Epub_Reader_TTS.Relational
             // Clear all entries
             //var exists = mDbContext.Books.FirstOrDefault(b=>b.Id == book.Id)!=null;
 
-            if (string.IsNullOrEmpty(book.Id.ToString()))
+            if (Guid.Empty.Equals(book.Id))
                 // Add new one
                 mDbContext.Books.Add(book);
+            else
+                // Update the existing one
+                mDbContext.Books.Update(book);
+
+            // Save changes
+            await mDbContext.SaveChangesAsync();
+        }
+
+        public async Task RemoveBook(Book book)
+        {
+            // Clear all entries
+            //var exists = mDbContext.Books.FirstOrDefault(b=>b.Id == book.Id)!=null;
+
+            book.IsDisabled = true;
+
+            book.DisabledOn = DateTime.Now;
+
+            if (string.IsNullOrEmpty(book.Id.ToString())) ;
+                // There is no book to remove 
+
             else
                 // Update the existing one
                 mDbContext.Books.Update(book);
