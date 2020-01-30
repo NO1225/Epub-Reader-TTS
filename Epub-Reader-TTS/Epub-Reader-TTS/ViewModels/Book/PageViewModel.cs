@@ -193,7 +193,7 @@ namespace Epub_Reader_TTS
             IsReading = false;
 
             if(CurrentParagraph!=null)
-            CurrentParagraph.Active = false;
+                CurrentParagraph.Active = false;
             
             parent.SpeechSynthesizer.SpeakProgress -= SpeakProgress;
 

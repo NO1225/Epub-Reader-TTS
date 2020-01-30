@@ -29,7 +29,8 @@ namespace Epub_Reader_TTS
             // Let the base application do what it needs
             base.OnStartup(e);
 
-
+            //MessageBox.Show(e.Args.Length.ToString());
+            //MessageBox.Show(e.Args.FirstOrDefault().ToString());
             // Setup the main application 
             await ApplicationSetupAsync();
 
@@ -41,6 +42,20 @@ namespace Epub_Reader_TTS
             ViewModelApplication.SetFontSize(DI.SettingsManager.GetFontSize());
 
             ViewModelApplication.GoToPage(ApplicationPage.Dashboard);
+
+            // To be used with open with command 
+            if(e.Args.Length>0)
+            {
+                var dashboardViewModel = new DashboardViewModel();
+
+                foreach (string file in e.Args)
+                {
+                    dashboardViewModel.RefreshBook(new Core.Book() { BookFilePath = file });
+                }
+            }
+
+            
+
 
             Current.MainWindow = new MainWindow();
 
