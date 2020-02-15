@@ -51,7 +51,12 @@
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
                 Foreground="{DynamicResource SecondaryFontColorBrush}"
-                Text="{Binding Title}"/>
+                Text="{Binding Title}"
+                TextWrapping="NoWrap"
+                TextTrimming="CharacterEllipsis"
+                ToolTip="{Binding Title}"
+                />
+            
             <StackPanel 
                 Grid.Column="2"                
                 HorizontalAlignment="Center"
@@ -59,10 +64,17 @@
 
                 <Button 
                     Style="{DynamicResource IconGrowButton}"
-                    Command="{Binding PreviousCommand}" 
+                    Command="{Binding PreviousPageCommand}" 
                     VerticalAlignment="Center"
-                    Margin="5"
                     Content="{StaticResource FontAwesomeBackwardIcon}"
+                    Height="40"
+                    />
+                
+                <Button 
+                    Style="{DynamicResource IconGrowButton}"
+                    Command="{Binding PreviousParagraphCommand}" 
+                    VerticalAlignment="Center"
+                    Content="{StaticResource FontAwesomeBackwardStepIcon}"
                     Height="40"
                     />
 
@@ -70,16 +82,22 @@
                     Style="{DynamicResource IconGrowButton}"
                     Command="{Binding PlayCommand}" 
                     VerticalAlignment="Center"
-                    Margin="5"
                     Content="{Binding PauseButtonText}"
                     Height="40"
                     />
 
                 <Button 
                     Style="{DynamicResource IconGrowButton}"
-                    Command="{Binding NextCommand}" 
+                    Command="{Binding NextParagraphCommand}" 
                     VerticalAlignment="Center"
-                    Margin="5"
+                    Content="{StaticResource FontAwesomeForwardStepIcon}"
+                    Height="40"
+                    />
+                
+                <Button 
+                    Style="{DynamicResource IconGrowButton}"
+                    Command="{Binding NextPageCommand}" 
+                    VerticalAlignment="Center"
                     Content="{StaticResource FontAwesomeForwardIcon}"
                     Height="40"
                     />
@@ -89,7 +107,11 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Foreground="{DynamicResource SecondaryFontColorBrush}"
-                Text="{Binding CurrentPage.Title}"/>
+                Text="{Binding CurrentPage.Title}"
+                TextWrapping="NoWrap"
+                TextTrimming="CharacterEllipsis"
+                ToolTip="{Binding CurrentPage.Title}"
+                />
             <StackPanel 
                 Grid.Column="4"
                 HorizontalAlignment="Right"

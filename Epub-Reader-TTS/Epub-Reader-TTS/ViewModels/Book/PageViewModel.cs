@@ -165,6 +165,11 @@ namespace Epub_Reader_TTS
         internal void SelectParagraph(int currentParagraphIndex)
         {
             CurrentParagraph = ParagraphViewModels.First(p => p.Index == currentParagraphIndex);
+
+            CurrentParagraph.Active = true;
+
+            TaskManager.Run(async () => ViewModelApplication.SavePosition(this.Index, this.CurrentParagraph.Index));
+
         }
 
         #endregion
@@ -183,6 +188,8 @@ namespace Epub_Reader_TTS
             }
 
             CurrentParagraph.Active = true;
+
+            CurrentParagraph.OnPropertyChanged(nameof(CurrentParagraph.Active));
 
             parent.SpeechSynthesizer.SpeakAsync(CurrentParagraph.ParagraphText);
 
@@ -213,8 +220,6 @@ namespace Epub_Reader_TTS
             else
             {
                 SelectParagraph(CurrentParagraph.Index + 1);
-
-                TaskManager.Run(async () => ViewModelApplication.SavePosition(this.Index, this.CurrentParagraph.Index));
             }
         }
 
@@ -229,8 +234,6 @@ namespace Epub_Reader_TTS
             else
             {
                 SelectParagraph(CurrentParagraph.Index - 1);
-
-                TaskManager.Run(async () => ViewModelApplication.SavePosition(this.Index, this.CurrentParagraph.Index));
             }
         }
 

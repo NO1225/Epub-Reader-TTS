@@ -84,6 +84,9 @@ namespace Epub_Reader_TTS
                 }
 
                 currentPage = value;
+
+                currentPage.Initiate(reading);
+
             }
         }
 
@@ -169,9 +172,13 @@ namespace Epub_Reader_TTS
         /// </summary>
         public ICommand PlayCommand { get; set; }
 
-        public ICommand PreviousCommand { get; set; }
+        public ICommand PreviousParagraphCommand { get; set; }
 
-        public ICommand NextCommand { get; set; }
+        public ICommand NextParagraphCommand { get; set; }
+
+        public ICommand PreviousPageCommand { get; set; }
+
+        public ICommand NextPageCommand { get; set; }
 
         public ICommand CloseBookCommand { get; set; }
                 
@@ -196,9 +203,13 @@ namespace Epub_Reader_TTS
         {
             PlayCommand = new RelayCommand(async () => await TogglePause());
 
-            PreviousCommand = new RelayCommand(async () => await PreviousParagraph());
+            PreviousParagraphCommand = new RelayCommand(async () => await PreviousParagraph());
 
-            NextCommand = new RelayCommand(async () => await NextParagraph());
+            NextParagraphCommand = new RelayCommand(async () => await NextParagraph());     
+            
+            PreviousPageCommand = new RelayCommand(() => PriviousPage());
+
+            NextPageCommand = new RelayCommand(() => NextPage(CurrentPage.Index));
 
             CloseBookCommand = new RelayCommand(async () => await CloseBook());
 
@@ -242,10 +253,6 @@ namespace Epub_Reader_TTS
         internal void Initialize(Book book)
         {
             CurrentPage = PageViewModels.First(p => p.Index == book.CurrentPageIndex);
-
-            CurrentPage.Initiate(false, book.CurrentParagraphIndex);
-
-            CurrentPage.CurrentParagraph.Active = true;
         }
 
         #endregion
@@ -346,18 +353,13 @@ namespace Epub_Reader_TTS
             if (page != null)
             {
                 CurrentPage = page;
-
-                CurrentPage.Initiate(reading);
-
-                TaskManager.Run(async () => ViewModelApplication.SavePosition(CurrentPage.Index, 0));
-
             }
             else
                 Finnished();
         }     
         
         /// <summary>
-        /// Go to the next page
+        /// Go to the next page and focus the last paragraph of that page
         /// </summary>
         /// <param name="currentPage">the index of the current page</param>
         public void PriviousPage(int currentPage)
@@ -368,12 +370,22 @@ namespace Epub_Reader_TTS
             {
                 CurrentPage = page;
 
-                CurrentPage.Initiate(reading,CurrentPage.ParagraphViewModels.Last().Index);
-
-                TaskManager.Run(async () => ViewModelApplication.SavePosition(CurrentPage.Index, 0));
+                CurrentPage.SelectParagraph(CurrentPage.ParagraphViewModels.Last().Index);
             }
-            //else
-            //    Finnished();
+        }    
+        
+        /// <summary>
+        /// Go to the start of the previous page
+        /// </summary>
+        /// <param name="currentPage">the index of the current page</param>
+        public void PriviousPage()
+        {
+            var page = PageViewModels.FirstOrDefault(p => p.Index == CurrentPage.Index - 1);
+
+            if (page != null)
+            {
+                CurrentPage = page;
+            }
         }
 
 
