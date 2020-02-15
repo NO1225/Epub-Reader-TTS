@@ -71,6 +71,7 @@
                     VerticalAlignment="Center"
                     Content="{StaticResource FontAwesomeBackwardIcon}"
                     Height="40"
+                    ToolTip="Previous Page"
                     />
                 
                 <Button 
@@ -79,6 +80,7 @@
                     VerticalAlignment="Center"
                     Content="{StaticResource FontAwesomeBackwardStepIcon}"
                     Height="40"
+                    ToolTip="Previos Paragraph"
                     />
 
                 <Button 
@@ -87,6 +89,7 @@
                     VerticalAlignment="Center"
                     Content="{Binding PauseButtonText}"
                     Height="40"
+                    ToolTip="Play/Pause"
                     />
 
                 <Button 
@@ -95,6 +98,7 @@
                     VerticalAlignment="Center"
                     Content="{StaticResource FontAwesomeForwardStepIcon}"
                     Height="40"
+                    ToolTip="Next Paragraph"
                     />
                 
                 <Button 
@@ -103,6 +107,7 @@
                     VerticalAlignment="Center"
                     Content="{StaticResource FontAwesomeForwardIcon}"
                     Height="40"
+                    ToolTip="Next Page"
                     />
             </StackPanel>
             <TextBlock

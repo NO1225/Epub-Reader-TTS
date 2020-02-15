@@ -209,7 +209,7 @@ namespace Epub_Reader_TTS
 
             NextParagraphCommand = new RelayCommand(async () => await NextParagraph());     
             
-            PreviousPageCommand = new RelayCommand(() => PriviousPage());
+            PreviousPageCommand = new RelayCommand(() => PreviousPage());
 
             NextPageCommand = new RelayCommand(() => NextPage(CurrentPage.Index));
 
@@ -382,7 +382,7 @@ namespace Epub_Reader_TTS
         /// Go to the start of the previous page
         /// </summary>
         /// <param name="currentPage">the index of the current page</param>
-        public void PriviousPage()
+        public void PreviousPage()
         {
             var page = PageViewModels.FirstOrDefault(p => p.Index == CurrentPage.Index - 1);
 
