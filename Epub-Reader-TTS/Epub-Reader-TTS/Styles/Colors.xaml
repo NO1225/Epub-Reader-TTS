@@ -36,6 +36,11 @@
     <Color x:Key="ColorHighlight3">#D9ff4747</Color>
     <SolidColorBrush x:Key="ColorHighlight3Brush" Color="{DynamicResource ColorHighlight3}"/>
 
+    <Color x:Key="DimOverlayColor">#33A4B0FF</Color>
+    <SolidColorBrush x:Key="DimOverlayColorBrush" Color="{DynamicResource DimOverlayColor}"/>
+    
+    
+
     <Color x:Key="PrimaryHoverColor">#e81123</Color>
     <SolidColorBrush x:Key="PrimaryHoverColorBrush" Color="{DynamicResource PrimaryHoverColor}"/>
 

@@ -17,11 +17,14 @@
             Grid.Row="1"
             DataContext="{Binding CurrentPage}"/>
 
-        <local:AdditionalContentControl 
-            Grid.Row="1"
-            local:AnimateSlideInFromTopProperty.Value="{Binding AdditionalContentVisible}"
-            Content="{Binding CurrentAdditionalContent, Converter={local:AdditionalContentConverter}}"
-            />
+        <Grid Grid.Row="1" >
+            <Button Style="{StaticResource Hoverless}" Command="{Binding HidePopUpCommand}" Background="{DynamicResource DimOverlayColorBrush}" Visibility="{Binding AdditionalContentVisible, Converter={local:BoolianToVisibilityConverter}}"/>
+            <local:AdditionalContentControl                 
+                local:AnimateSlideInFromTopProperty.Value="{Binding AdditionalContentVisible}"
+                Content="{Binding CurrentAdditionalContent, Converter={local:AdditionalContentConverter}}"
+                />
+        </Grid>
+        
         
         <Grid
             Grid.Row="0"

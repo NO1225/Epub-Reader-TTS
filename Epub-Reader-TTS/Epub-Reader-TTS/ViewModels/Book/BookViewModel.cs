@@ -192,6 +192,8 @@ namespace Epub_Reader_TTS
         /// </summary>
         public ICommand ToggleSettingsCommand { get; set; }
 
+        public ICommand HidePopUpCommand { get; set; }
+
         #endregion
 
         #region Default Constructor
@@ -216,6 +218,8 @@ namespace Epub_Reader_TTS
             ToggleBookmarksCommand = new RelayCommand(ToggleBookmarks);
 
             ToggleSettingsCommand = new RelayCommand(ToggleSettings);
+
+            HidePopUpCommand = new RelayCommand(() => AdditionalContentVisible = false);
 
             this.PageViewModels = new ObservableCollection<PageViewModel>();
             

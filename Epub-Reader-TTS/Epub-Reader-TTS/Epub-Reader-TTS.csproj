@@ -116,6 +116,7 @@
     <Compile Include="AttachedProperties\ScrollViewerHelper.cs" />
     <Compile Include="ExtensionMethods\ExtensionMethods.cs" />
     <Compile Include="Helpers\Html.cs" />
+    <Compile Include="ValueConverters\BoolianToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\FocusVisibilityConverter.cs" />
     <Compile Include="ValueConverters\BoolianInverseConverter.cs" />
     <Compile Include="ViewModels\DashBoard\TileViewModel.cs" />
