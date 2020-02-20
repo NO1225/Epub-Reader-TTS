@@ -85,8 +85,6 @@ namespace Epub_Reader_TTS
 
                 currentPage = value;
 
-                currentPage.Initiate(reading);
-
             }
         }
 
@@ -257,6 +255,8 @@ namespace Epub_Reader_TTS
         internal void Initialize(Book book)
         {
             CurrentPage = PageViewModels.First(p => p.Index == book.CurrentPageIndex);
+
+            CurrentPage.Initiate(reading, book.CurrentParagraphIndex);
         }
 
         #endregion
@@ -357,6 +357,8 @@ namespace Epub_Reader_TTS
             if (page != null)
             {
                 CurrentPage = page;
+
+                CurrentPage.Initiate(reading);
             }
             else
                 Finnished();
@@ -374,7 +376,7 @@ namespace Epub_Reader_TTS
             {
                 CurrentPage = page;
 
-                CurrentPage.SelectParagraph(CurrentPage.ParagraphViewModels.Last().Index);
+                CurrentPage.Initiate(reading, CurrentPage.ParagraphViewModels.Last().Index);
             }
         }    
         
@@ -389,6 +391,8 @@ namespace Epub_Reader_TTS
             if (page != null)
             {
                 CurrentPage = page;
+
+                CurrentPage.Initiate(reading);
             }
         }
 

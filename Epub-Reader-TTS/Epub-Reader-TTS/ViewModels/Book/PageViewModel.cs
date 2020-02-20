@@ -96,8 +96,8 @@ namespace Epub_Reader_TTS
         /// <param name="reading">weither if the application is reading or not</param>
         public void Initiate(bool reading = false,int paragraphIndex = 0)
         {
-            if (CurrentParagraph == null)
-                CurrentParagraph = ParagraphViewModels.First();
+            //if (CurrentParagraph == null)
+            //    CurrentParagraph = ParagraphViewModels.First();
             
             SelectParagraph(paragraphIndex);
 
@@ -162,7 +162,7 @@ namespace Epub_Reader_TTS
             await StopReading();            
         }
 
-        internal void SelectParagraph(int currentParagraphIndex)
+        private void SelectParagraph(int currentParagraphIndex)
         {
             CurrentParagraph = ParagraphViewModels.First(p => p.Index == currentParagraphIndex);
 
