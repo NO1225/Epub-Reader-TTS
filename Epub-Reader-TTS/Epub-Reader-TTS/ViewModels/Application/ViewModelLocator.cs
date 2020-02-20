@@ -17,6 +17,11 @@
         /// </summary>
         public static ApplicationViewModel ApplicationViewModel => DI.ViewModelApplication;
 
+        /// <summary>
+        /// The dashboard view model
+        /// </summary>
+        public static DashboardViewModel DashboardViewModel => DI.ViewModelDashboard;
+
         #endregion
     }
 }

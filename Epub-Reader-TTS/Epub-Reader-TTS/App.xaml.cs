@@ -41,17 +41,24 @@ namespace Epub_Reader_TTS
 
 
             // To be used with open with command 
-            if (e.Args.Length>0)
+            if(e.Args.Length == 1)
             {
-                var dashboardViewModel = new DashboardViewModel();
-
                 foreach (string file in e.Args)
                 {
-                    dashboardViewModel.OpenBookFile(file).GetAwaiter().GetResult();
-                }
-            }                       
+                    var book = DI.ViewModelDashboard.OpenBookFile(file).GetAwaiter().GetResult();
 
-            ViewModelApplication.GoToPage(ApplicationPage.Dashboard);
+                    DI.ViewModelDashboard.OpenBook(book).GetAwaiter().GetResult();
+                }                
+            }
+            else
+            {
+                foreach (string file in e.Args)
+                {
+                    DI.ViewModelDashboard.OpenBookFile(file).GetAwaiter().GetResult();
+                }
+
+                ViewModelApplication.GoToPage(ApplicationPage.Dashboard);
+            }
                        
             Current.MainWindow = new MainWindow();
 

@@ -20,6 +20,11 @@ namespace Epub_Reader_TTS
         public static ApplicationViewModel ViewModelApplication => Framework.Service<ApplicationViewModel>();
 
         /// <summary>
+        /// A shortcut to access the <see cref="DashboardViewModel"/>
+        /// </summary>
+        public static DashboardViewModel ViewModelDashboard => Framework.Service<DashboardViewModel>();
+
+        /// <summary>
         /// A shortcut to access toe <see cref="IClientDataStore"/> service
         /// </summary>
         public static IClientDataStore ClientDataStore => Framework.Service<IClientDataStore>();

@@ -121,12 +121,12 @@ namespace Epub_Reader_TTS
         /// </summary>
         /// <param name="path">The path to the file</param>
         /// <returns></returns>
-        public async Task OpenBookFile(string path)
+        public async Task<Book> OpenBookFile(string path)
         {
             if(!(Path.GetExtension(path).Substring(1).ToLower() == "epub"))
             {
                 MessageBox.Show("Wrong file");
-                return;
+                return null;
             }
 
             var book = (await DI.ClientDataStore.GetBooks()).FirstOrDefault(b => b.BookFilePath == path);
@@ -150,6 +150,8 @@ namespace Epub_Reader_TTS
 
             }
             await Initiate();
+
+            return book;
         }
 
         #endregion

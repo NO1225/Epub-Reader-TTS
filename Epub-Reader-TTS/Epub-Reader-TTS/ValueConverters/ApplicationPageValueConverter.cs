@@ -18,7 +18,7 @@ namespace Epub_Reader_TTS
             switch ((ApplicationPage)value)
             {
                 case ApplicationPage.Dashboard:
-                    return new DashboardPage();
+                    return new DashboardPage(ViewModelLocator.DashboardViewModel);
                 case ApplicationPage.Book:
                     return new BookPage(ViewModelLocator.ApplicationViewModel.CurrentBookViewModel);
                 default:

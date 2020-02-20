@@ -18,7 +18,7 @@ namespace Epub_Reader_TTS
     /// </summary>
     public partial class DashboardPage : BasePage<DashboardViewModel>
     {
-        public DashboardPage() 
+        public DashboardPage(DashboardViewModel dashboardViewModel) : base(dashboardViewModel)
         {
             InitializeComponent();
         }
