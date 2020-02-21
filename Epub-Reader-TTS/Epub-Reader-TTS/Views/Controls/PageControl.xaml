@@ -40,7 +40,7 @@
                             >
 
                         </Border>
-                        
+                                                
                         <!-- Paragraph text -->
                         <local:IndexHighlightTextBlock 
                             Margin="10"     
@@ -49,7 +49,9 @@
                             HighlightIndex="{Binding WordIndex}"
                             HighlightLength="{Binding WordLength}"
                             IsActive="{Binding Active,Mode=TwoWay}"
+                            FontFamily="{StaticResource OpenSansRegular}"
                             FontSize="{DynamicResource MainFontSize}"
+                            TextAlignment="Justify"
                             HighlightBackground="{DynamicResource PrimaryHoverColorBrush}"
                             HighlightForeground="{DynamicResource PrimaryFontColorBrush}" 
                             TextWrapping="Wrap"

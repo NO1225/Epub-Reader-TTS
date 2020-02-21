@@ -32,10 +32,19 @@ namespace Epub_Reader_TTS
         public static readonly DependencyProperty TextWrappingProperty = TextBlock.TextWrappingProperty.AddOwner(
             typeof(IndexHighlightTextBlock),
             new PropertyMetadata(TextWrapping.NoWrap));
-
+        
         public static readonly DependencyProperty TextTrimmingProperty = TextBlock.TextTrimmingProperty.AddOwner(
             typeof(IndexHighlightTextBlock),
             new PropertyMetadata(TextTrimming.None));
+
+        public static readonly DependencyProperty TextAlignmentProperty =
+            DependencyProperty.Register("TextAlignment", typeof(TextAlignment),
+                typeof(IndexHighlightTextBlock), 
+                new PropertyMetadata(TextAlignment.Left));
+            
+            //TextBlock.TextAlignmentProperty.AddOwner(
+            //typeof(IndexHighlightTextBlock),
+            //new PropertyMetadata(TextAlignment.Left));
 
         public static readonly DependencyProperty HighlightForegroundProperty =
             DependencyProperty.Register("HighlightForeground", typeof(Brush),
@@ -101,6 +110,12 @@ namespace Epub_Reader_TTS
         {
             get => (TextTrimming)GetValue(TextTrimmingProperty);
             set => SetValue(TextTrimmingProperty, value);
+        }
+        
+        public TextAlignment TextAlignment
+        {
+            get => (TextAlignment)GetValue(TextAlignmentProperty);
+            set => SetValue(TextAlignmentProperty, value);
         }
 
         private static void IsActivePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
