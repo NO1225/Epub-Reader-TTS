@@ -31,8 +31,6 @@ namespace Epub_Reader_TTS
             // Let the base application do what it needs
             base.OnStartup(e);
 
-            //MessageBox.Show(e.Args.Length.ToString());
-            //MessageBox.Show(e.Args.FirstOrDefault().ToString());
             // Setup the main application 
             await ApplicationSetupAsync();
 

@@ -30,34 +30,16 @@ namespace Epub_Reader_TTS
         /// </summary>
         public Book CurrentBook { get; set; }
 
-        /// <summary>
-        /// The logo of the application
-        /// </summary>
-        public byte[] Logo
-        {
-            get;
-            private set;
-        }// = Properties.Resources.Logo.ToByteArray(true);
+        ///// <summary>
+        ///// The logo of the application
+        ///// </summary>
+        //public byte[] Logo
+        //{
+        //    get;
+        //    private set;
+        //} = Properties.Resources.Logo.ToByteArray(true);
 
-
-        /// <summary>
-        /// Colors properties
-        /// </summary>
-        #region Colors
-
-        //public Color MainColor { get; set; }
-
-        //public Brush MainColorBrush { get; set; }
-
-        //public Color MainHoverColor { get; set; }
-
-        //public Brush MainHoverColorBrush { get; set; }
-
-        //public Color MainPressedColor { get; set; }
-
-        //public Brush MainPressedColorBrush { get; set; }
-
-        #endregion
+        public string Title => CurrentBook == null ? "Epub-Reader-TTS" : $"Epub-Reader-TTS - {CurrentBook.BookName}";
 
         #endregion
 
@@ -83,6 +65,9 @@ namespace Epub_Reader_TTS
         public void GoToPage(ApplicationPage page)
         {
             CurrentPage = page;
+
+            if (page == ApplicationPage.Dashboard)
+                CurrentBook = null;
         }
 
         /// <summary>

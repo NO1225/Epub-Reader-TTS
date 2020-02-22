@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
@@ -22,11 +22,11 @@ namespace Epub_Reader_TTS
         /// </summary>
         /// <param name="bmp">The image to be converted</param>
         /// <returns></returns>
-        public static byte[] ToByteArray(this Image bmp, bool transperant = false)
+        public static byte[] ToByteArray(this System.Drawing.Image bmp, bool transperant = false)
         {
             if (transperant)
             {
-                var converter = new ImageConverter();
+                var converter = new System.Drawing.ImageConverter();
                 var imageBytes = (byte[])converter.ConvertTo(bmp, typeof(byte[]));
                 return imageBytes;
             }
@@ -59,11 +59,11 @@ namespace Epub_Reader_TTS
         /// </summary>
         /// <param name="byteArrayIn">The byte array to be converted</param>
         /// <returns></returns>
-        public static Image ToImage(this byte[] byteArrayIn)
+        public static System.Drawing.Image ToImage(this byte[] byteArrayIn)
         {
             // Using the system converter ...
             System.Drawing.ImageConverter converter = new System.Drawing.ImageConverter();
-            Image img = byteArrayIn != null ? (Image)converter.ConvertFrom(byteArrayIn) : null;
+            System.Drawing.Image img = byteArrayIn != null ? (System.Drawing.Image)converter.ConvertFrom(byteArrayIn) : null;
             return img;
         }
 
@@ -93,17 +93,6 @@ namespace Epub_Reader_TTS
             return System.Windows.Media.Color.FromRgb((byte)color.R, (byte)color.G, (byte)color.B);
         }
 
-        /// <summary>
-        /// Easier way to use the color directory
-        /// </summary>
-        /// <param name="dictionary"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public static System.Drawing.Color ToColor(this Dictionary<string, string> dictionary, string key)
-        {
-            return ColorTranslator.FromHtml(dictionary[key]);
-        }
-
         public static T FindDescendant<T>(this DependencyObject d) where T : DependencyObject
         {
             if (d == null)
@@ -124,6 +113,21 @@ namespace Epub_Reader_TTS
             return null;
         }
 
+        public static double GetParagraphHeight(this string paragraph, double width, double fontSize, string fontFamily = "OpenSansRegular")
+        {
+            var formattedText = new FormattedText(paragraph, 
+                CultureInfo.CurrentCulture, 
+                FlowDirection.LeftToRight, 
+                new Typeface((FontFamily)Application.Current.Resources[fontFamily], new FontStyle(),new FontWeight(), new FontStretch()), 
+                fontSize,
+                Brushes.Black, 
+                new NumberSubstitution(), 1);
+
+            formattedText.MaxTextWidth = width;
+
+            return formattedText.Height;
+
+        }
 
         #endregion
 

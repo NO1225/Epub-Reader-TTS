@@ -41,10 +41,6 @@ namespace Epub_Reader_TTS
             DependencyProperty.Register("TextAlignment", typeof(TextAlignment),
                 typeof(IndexHighlightTextBlock), 
                 new PropertyMetadata(TextAlignment.Left));
-            
-            //TextBlock.TextAlignmentProperty.AddOwner(
-            //typeof(IndexHighlightTextBlock),
-            //new PropertyMetadata(TextAlignment.Left));
 
         public static readonly DependencyProperty HighlightForegroundProperty =
             DependencyProperty.Register("HighlightForeground", typeof(Brush),

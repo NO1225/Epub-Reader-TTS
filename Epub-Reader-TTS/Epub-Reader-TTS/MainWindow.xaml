@@ -7,7 +7,10 @@
         mc:Ignorable="d"
         MinHeight="600"
         MinWidth="800"
-        Title="MainWindow" Height="450" Width="800" Icon="logo_icon.ico">
+        Title="{Binding ApplicationViewModel.Title, Source={x:Static local:ViewModelLocator.Instance}}"
+        Height="450" 
+        Width="800"
+        Icon="logo_icon.ico">
     <Grid>
         <local:PageHost 
             d:DataContext=""
