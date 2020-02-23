@@ -9,8 +9,4 @@
     <PackageReference Include="Dna.Framework" Version="1.0.7.15" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

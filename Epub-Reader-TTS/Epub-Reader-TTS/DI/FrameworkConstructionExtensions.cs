@@ -42,7 +42,7 @@ namespace Epub_Reader_TTS
             construction.Services.AddTransient<IFileManager, BaseFileManager>();
 
             // Bind a Settings manager
-            construction.Services.AddTransient<ISettingsManager, SettingsManager>();
+            construction.Services.AddSingleton<ISettingsManager, SettingsManager>();
 
 
             construction.Services.AddSingleton<ISpeechSynthesizer, SpeechSynthesizer>();

@@ -1,14 +1,20 @@
-﻿namespace Epub_Reader_TTS
+﻿using System.Threading.Tasks;
+
+namespace Epub_Reader_TTS
 {
     public interface ISettingsManager
     {
+        Task Initiate();
+
         int GetFontSize();
-        int GetReadingSpeed();
+        double GetReadingSpeed();
+        double GetVoicePitch();
         string GetSelectedVoice();
         bool IsDarkMode();
-        void SetDarkMode(bool value);
-        void SetFontSize(int value);
-        void SetReadingSpeed(int value);
-        void SetSelectedVoice(string value);
+        Task SetDarkMode(bool value);
+        Task SetFontSize(int value);
+        Task SetReadingSpeed(double value);
+        Task SetVoicePitch(double value);
+        Task SetSelectedVoice(string value);
     }
 }

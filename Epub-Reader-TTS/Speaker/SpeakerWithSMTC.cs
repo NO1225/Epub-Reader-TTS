@@ -129,7 +129,8 @@ namespace Speaker
             updater.MusicProperties.AlbumArtist = chapter;
             updater.MusicProperties.Title = title;
 
-            updater.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(coverPath));
+            if(!string.IsNullOrEmpty(coverPath))
+                updater.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(coverPath));
             updater.Update();
         }
 
@@ -222,7 +223,7 @@ namespace Speaker
                 var cue = args.Cue as SpeechCue;
                 if (cue != null)
                 {
-                    SpeakProgress?.Invoke((int)cue.StartPositionInInput, (int)cue.EndPositionInInput - (int)cue.StartPositionInInput);
+                    SpeakProgress?.Invoke((int)cue.StartPositionInInput, (int)cue.EndPositionInInput - (int)cue.StartPositionInInput + 1);
                 }
             }
         }

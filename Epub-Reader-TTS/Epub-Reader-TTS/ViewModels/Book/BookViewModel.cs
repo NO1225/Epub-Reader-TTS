@@ -26,7 +26,12 @@ namespace Epub_Reader_TTS
         /// <summary>
         /// The reading speed
         /// </summary>
-        private int readingSpeed;
+        private double readingSpeed;
+
+        /// <summary>
+        /// The voice pitch
+        /// </summary>
+        private double voicePitch;
 
         /// <summary>
         /// The current page
@@ -121,20 +126,33 @@ namespace Epub_Reader_TTS
             set
             {
                 selectedVoice = value;
-                TaskManager.Run(() => UpdateSelectedVoice(selectedVoice, readingSpeed));
+                TaskManager.Run(() => UpdateSelectedVoice(selectedVoice, readingSpeed, voicePitch));
             }
         }
 
         /// <summary>
         /// The reading speed 
         /// </summary>
-        public int ReadingSpeed
+        public double ReadingSpeed
         {
             get => readingSpeed;
             set
             {
                 readingSpeed = value;
-                UpdateSelectedVoice(selectedVoice, readingSpeed);
+                UpdateSelectedVoice(selectedVoice, readingSpeed, voicePitch);
+            }
+        }
+        
+        /// <summary>
+        /// The voice pitch
+        /// </summary>
+        public double VoicePitch
+        {
+            get => voicePitch;
+            set
+            {
+                voicePitch = value;
+                UpdateSelectedVoice(selectedVoice, readingSpeed, voicePitch);
             }
         }
 
@@ -238,15 +256,16 @@ namespace Epub_Reader_TTS
 
             FontSize = DI.SettingsManager.GetFontSize();
 
-            //SpeechSynthesizer = new SpeechSynthesizer();
-
-            //SpeechSynthesizer.SetOutputToDefaultAudioDevice();
-
             InstalledVoices = new ReadOnlyCollection<InstalledVoice>(DI.SpeechSynthesizer.GetInstalledVoices().ToList());
 
             PauseButtonText = "\uf04b";
 
-            SetSelectedVoice(DI.SettingsManager.GetSelectedVoice(), DI.SettingsManager.GetReadingSpeed());
+            SetSelectedVoice(DI.SettingsManager.GetSelectedVoice(), DI.SettingsManager.GetReadingSpeed(), DI.SettingsManager.GetVoicePitch());
+
+            DI.SpeechSynthesizer.PlayPressed = () => TogglePause();
+            DI.SpeechSynthesizer.PausePressed = () => TogglePause();
+            DI.SpeechSynthesizer.NextPressed = () => NextParagraph();
+            DI.SpeechSynthesizer.PreviousPressed = () => PreviousParagraph();
         }
 
         /// <summary>
@@ -278,6 +297,11 @@ namespace Epub_Reader_TTS
             Debug.WriteLine(CurrentPage.IsReading);
             PauseButtonText = CurrentPage.IsReading ? "\uf04c" : "\uf04b";
 
+            DI.SpeechSynthesizer.UpdateSystemMediaTrasportControls(
+                Title,
+                CurrentPage.
+                Title,
+                mediaPlaybackStatus: CurrentPage.IsReading ? MediaPlaybackStatus.Playing : MediaPlaybackStatus.Paused);
         }
 
         /// <summary>
@@ -360,6 +384,13 @@ namespace Epub_Reader_TTS
                 CurrentPage = page;
 
                 CurrentPage.Initiate(reading);
+
+
+                DI.SpeechSynthesizer.UpdateSystemMediaTrasportControls(
+                    Title,
+                    CurrentPage.
+                    Title,
+                    mediaPlaybackStatus: CurrentPage.IsReading ? MediaPlaybackStatus.Playing : MediaPlaybackStatus.Paused);
             }
             else
                 Finnished();
@@ -378,6 +409,13 @@ namespace Epub_Reader_TTS
                 CurrentPage = page;
 
                 CurrentPage.Initiate(reading, CurrentPage.ParagraphViewModels.Last().Index);
+
+
+                DI.SpeechSynthesizer.UpdateSystemMediaTrasportControls(
+                    Title,
+                    CurrentPage.
+                    Title,
+                    mediaPlaybackStatus: CurrentPage.IsReading ? MediaPlaybackStatus.Playing : MediaPlaybackStatus.Paused);
             }
         }
 
@@ -416,14 +454,17 @@ namespace Epub_Reader_TTS
         /// </summary>
         /// <param name="selectedVoice"></param>
         /// <param name="readingSpeed"></param>
-        private void UpdateSelectedVoice(InstalledVoice selectedVoice, int readingSpeed)
+        private void UpdateSelectedVoice(InstalledVoice selectedVoice, double readingSpeed, double voicePitch)
         {
             DI.SpeechSynthesizer.SelectVoice(selectedVoice.DisplayName);
 
             DI.SpeechSynthesizer.Rate = readingSpeed;
 
+            DI.SpeechSynthesizer.Pitch = voicePitch;
+
             DI.SettingsManager.SetSelectedVoice(selectedVoice.DisplayName);
             DI.SettingsManager.SetReadingSpeed(readingSpeed);
+            DI.SettingsManager.SetVoicePitch(voicePitch);
         }
 
         /// <summary>
@@ -431,7 +472,7 @@ namespace Epub_Reader_TTS
         /// </summary>
         /// <param name="selectedVoice"></param>
         /// <param name="readingSpeed"></param>
-        private void SetSelectedVoice(string selectedVoice, int readingSpeed)
+        private void SetSelectedVoice(string selectedVoice, double readingSpeed, double voicePitch)
         {
             if (string.IsNullOrEmpty(selectedVoice))
                 selectedVoice = InstalledVoices.First().DisplayName;
@@ -439,6 +480,8 @@ namespace Epub_Reader_TTS
             SelectedVoice = InstalledVoices.First(v => v.DisplayName == selectedVoice);
 
             ReadingSpeed = readingSpeed;
+
+            VoicePitch = voicePitch;
         }
 
         #endregion

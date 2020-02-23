@@ -1,5 +1,6 @@
 ﻿using Dna;
 using Epub_Reader_TTS.Relational;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -68,6 +69,11 @@ namespace Epub_Reader_TTS
         /// </summary>
         private async Task ApplicationSetupAsync()
         {
+            //var configurationBuilder = new ConfigurationBuilder()
+            //    // Add environment variables
+            //    .AddEnvironmentVariables();
+
+
             // Set the default working directory
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? Directory.GetCurrentDirectory());
 
@@ -82,6 +88,8 @@ namespace Epub_Reader_TTS
                 //.EnsureFileAssosiation()
 
                 .Build();
+
+            await DI.SettingsManager.Initiate();
 
             // Load settings
             ViewModelApplication.SetDarkMode(DI.SettingsManager.IsDarkMode());

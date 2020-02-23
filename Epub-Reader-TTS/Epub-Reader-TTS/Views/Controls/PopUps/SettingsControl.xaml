@@ -29,6 +29,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <!-- DarkMode Settings -->
@@ -90,6 +91,7 @@
                         Maximum="36"
                         IsSnapToTickEnabled="True"
                         TickFrequency="2"
+                        ToolTip="{Binding FontSize}"
                         Value="{Binding FontSize}"/>
                 </DockPanel>
 
@@ -126,9 +128,29 @@
                     Grid.Row="3"
                     Grid.Column="1"
                     Minimum="1"
-                    Maximum="10"
+                    Maximum="6"
                     IsSnapToTickEnabled="True"
+                    TickFrequency="0.2"
+                    ToolTip="{Binding ReadingSpeed}"
                     Value="{Binding ReadingSpeed}"/>
+                
+                <!-- Voice Pitch Settings -->
+                <TextBlock 
+                    VerticalAlignment="Center"
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Text="Voice Pitch"/>
+
+                <Slider 
+                    VerticalAlignment="Center"
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Minimum="0"
+                    Maximum="4"
+                    IsSnapToTickEnabled="True"
+                    TickFrequency="0.2"
+                    ToolTip="{Binding VoicePitch}"
+                    Value="{Binding VoicePitch}"/>
 
             </Grid>
         </ScrollViewer>
