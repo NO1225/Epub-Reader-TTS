@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epub-Reader-TTS", "Epub-Rea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speaker", "Speaker\Speaker.csproj", "{69C8F194-0C12-4649-BB54-5EB055EFE41C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dna.Framework", "C:\Users\safar\Downloads\dna-framework-develop\dna-framework-develop\Source\Dna.Framework\Dna.Framework.csproj", "{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,26 +111,6 @@ Global
 		{69C8F194-0C12-4649-BB54-5EB055EFE41C}.Release|x86.ActiveCfg = Release|x86
 		{69C8F194-0C12-4649-BB54-5EB055EFE41C}.Release|x86.Build.0 = Release|x86
 		{69C8F194-0C12-4649-BB54-5EB055EFE41C}.Release|x86.Deploy.0 = Release|x86
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Debug|ARM.Build.0 = Debug|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Debug|x64.Build.0 = Debug|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Debug|x86.Build.0 = Debug|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Release|ARM.ActiveCfg = Release|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Release|ARM.Build.0 = Release|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Release|ARM64.Build.0 = Release|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Release|x64.ActiveCfg = Release|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Release|x64.Build.0 = Release|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Release|x86.ActiveCfg = Release|Any CPU
-		{4D4A3955-5580-4DBD-A200-C37D55C1A0CE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
