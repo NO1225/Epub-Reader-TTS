@@ -3,7 +3,7 @@
     public class Program
     {
         [System.STAThreadAttribute()]
-        public static void Main()
+        public static void Main(string[] args)
         {
             using (new Speaker.App())
             {
