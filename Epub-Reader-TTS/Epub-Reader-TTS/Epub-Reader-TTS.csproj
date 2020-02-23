@@ -118,6 +118,7 @@
     <Compile Include="AttachedProperties\BaseAttachedProperty.cs" />
     <Compile Include="AttachedProperties\ScrollViewerHelper.cs" />
     <Compile Include="ExtensionMethods\ExtensionMethods.cs" />
+    <Compile Include="Helpers\FileAssociation.cs" />
     <Compile Include="Helpers\Html.cs" />
     <Compile Include="ValueConverters\BoolianToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\FocusVisibilityConverter.cs" />

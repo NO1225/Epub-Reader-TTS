@@ -37,7 +37,6 @@ namespace Epub_Reader_TTS
             // Log it
             Logger.LogDebugSource("Application starting...");
 
-
             // To be used with open with command 
             if(e.Args.Length == 1)
             {
@@ -77,7 +76,11 @@ namespace Epub_Reader_TTS
                 .AddFileLogger()
                 .AddClientDataStore()
                 .AddApplicationViewModels()
-                .AddClientServices()    
+                .AddClientServices()
+
+                // Need some fixing
+                //.EnsureFileAssosiation()
+
                 .Build();
 
             // Load settings

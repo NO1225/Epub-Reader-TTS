@@ -47,5 +47,28 @@ namespace Epub_Reader_TTS
             // Return the construction for chaining
             return construction;
         }
+
+        /// <summary>
+        /// Injects the Fasetto Word client application services needed
+        /// for the Fasetto Word application
+        /// </summary>
+        /// <param name="construction"></param>
+        /// <returns></returns>
+        public static FrameworkConstruction EnsureFileAssosiation(this FrameworkConstruction construction)
+        {
+#if DEBUG
+
+#else
+
+            FileAssociations.EnsureAssociationsSet();
+
+#endif
+            FileAssociations.EnsureAssociationsSet();
+
+            var a = FileAssociations.GetExecFileAssociatedToExtension("epub","open");
+
+            // Return the construction for chaining
+            return construction;
+        }
     }
 }
