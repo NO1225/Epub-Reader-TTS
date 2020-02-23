@@ -1,0 +1,61 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Epub_Reader_TTS"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <FontFamily x:Key="OpenSansRegular" >pack://application;,,,/Fonts/#Open Sans Regular</FontFamily>
+    <FontFamily x:Key="OpenSansLight" >pack://application;,,,/Fonts/#Open Sans Light</FontFamily>
+    <FontFamily x:Key="OpenSansBold" >pack://application;,,,/Fonts/#Open Sans Bold</FontFamily>
+    <FontFamily x:Key="FontAwesome">pack://application;,,,/Fonts/#FontAwesome</FontFamily>
+
+    <Style TargetType="{x:Type TextBlock}" x:Key="BaseTextBlockStyle">
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansRegular}"/>
+    </Style>
+    
+    <Style TargetType="{x:Type Control}" x:Key="BaseStyle">
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansRegular}"/>
+    </Style>
+
+    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}"/>
+    <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseStyle}"/>
+    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseStyle}"/>
+    <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource BaseStyle}"/>
+    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockStyle}"/>
+    <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource BaseStyle}"/>
+
+    <system:Double x:Key="MainFontSize">18</system:Double>
+    <system:Double x:Key="SecondaryFontSize">18</system:Double>
+    <system:Double x:Key="ThirdFontSize">14</system:Double>
+    
+    
+    <!-- IconGrowButton -->
+
+    <system:String x:Key="FontAwesomeNextIcon">&#xf054;</system:String>
+    <system:String x:Key="FontAwesomeHelpIcon">&#xf128;</system:String>
+    <system:String x:Key="FontAwesomeBackIcon">&#xf053;</system:String>
+    <system:String x:Key="FontAwesomeConfirmIcon">&#xf00c;</system:String>
+    <system:String x:Key="FontAwesomeCancelIcon">&#xf00d;</system:String>
+    <system:String x:Key="FontAwesomeBrowseIcon">&#xf141;</system:String>
+    <system:String x:Key="FontAwesomeCloseIcon">&#xf00d;</system:String>
+    <system:String x:Key="FontAwesomeRemoveIcon">&#xf00d;</system:String>
+    <system:String x:Key="FontAwesomeAddIcon">&#xf067;</system:String>
+    <system:String x:Key="FontAwesomeSearchIcon">&#xf002;</system:String>
+    <system:String x:Key="FontAwesomeClockIcon">&#xf017;</system:String>
+    <system:String x:Key="FontAwesomeClenderIcon">&#xf073;</system:String>
+    <system:String x:Key="FontAwesomeUpIcon">&#xf077;</system:String>
+    <system:String x:Key="FontAwesomeDownIcon">&#xf078;</system:String>
+    <system:String x:Key="FontAwesomeReLoadIcon">&#xf021;</system:String>
+    <system:String x:Key="FontAwesomeBookMarksIcon">&#xf0ca;</system:String>
+    <system:String x:Key="FontAwesomePlayIcon">&#xf04b;</system:String>
+    <system:String x:Key="FontAwesomePauseIcon">&#xf04c;</system:String>
+    <system:String x:Key="FontAwesomeForwardIcon">&#xf04e;</system:String>
+    <system:String x:Key="FontAwesomeBackwardIcon">&#xf04a;</system:String>
+    <system:String x:Key="FontAwesomeForwardStepIcon">&#xf051;</system:String>
+    <system:String x:Key="FontAwesomeBackwardStepIcon">&#xf048;</system:String>
+    <system:String x:Key="FontAwesomeSettingsIcon">&#xf1de;</system:String>
+    <system:String x:Key="FontAwesomeRedoAltIcon">&#xf01e;</system:String>
+    
+    
+
+
+</ResourceDictionary>

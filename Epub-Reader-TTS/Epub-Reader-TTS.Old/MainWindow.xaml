@@ -1,0 +1,23 @@
+﻿<Window x:Class="Epub_Reader_TTS.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Epub_Reader_TTS"
+        mc:Ignorable="d"
+        MinHeight="600"
+        MinWidth="800"
+        Title="{Binding ApplicationViewModel.Title, Source={x:Static local:ViewModelLocator.Instance}}"
+        Height="450" 
+        Width="800"
+        Icon="logo_icon.ico">
+    <Grid>
+        <local:PageHost 
+            d:DataContext=""
+            DataContext="{Binding ApplicationViewModel, Source={x:Static local:ViewModelLocator.Instance}}"
+            CurrentPage="{Binding CurrentPage, 
+            Converter={local:ApplicationPageValueConverter}, 
+            UpdateSourceTrigger=PropertyChanged}"/>
+
+    </Grid>
+</Window>

@@ -1,0 +1,56 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Epub_Reader_TTS">
+
+
+    <Color x:Key="PrimaryFontColor">#000000</Color>
+    <SolidColorBrush x:Key="PrimaryFontColorBrush" Color="{DynamicResource PrimaryFontColor}"/>
+
+    <Color x:Key="SecondaryFontColor">#404040</Color>
+    <SolidColorBrush x:Key="SecondaryFontColorBrush" Color="{DynamicResource SecondaryFontColor}"/>
+
+    <Color x:Key="PrimaryBackGroundColor">#ffffff</Color>
+    <SolidColorBrush x:Key="PrimaryBackGroundColorBrush" Color="{DynamicResource PrimaryBackGroundColor}"/>
+
+    <Color x:Key="SecondaryBackGroundColor">#dbdbdb</Color>
+    <SolidColorBrush x:Key="SecondaryBackGroundColorBrush" Color="{DynamicResource SecondaryBackGroundColor}"/>
+
+    <Color x:Key="AccentColor1">#00569f</Color>
+    <SolidColorBrush x:Key="AccentColor1Brush" Color="{DynamicResource AccentColor1}"/>
+
+    <Color x:Key="AccentColor2">#ffa800</Color>
+    <SolidColorBrush x:Key="AccentColor2Brush" Color="{DynamicResource AccentColor2}"/>
+
+    <Color x:Key="AccentColor3">#df0024</Color>
+    <SolidColorBrush x:Key="AccentColor3Brush" Color="{DynamicResource AccentColor3}"/>
+
+    <Color x:Key="AccentColor4">#12cd39</Color>
+    <SolidColorBrush x:Key="AccentColor4Brush" Color="{DynamicResource AccentColor4}"/>
+
+    <Color x:Key="ColorHighlight1">#90FFFF00</Color>
+    <SolidColorBrush x:Key="ColorHighlight1Brush" Color="{DynamicResource ColorHighlight1}"/>
+
+    <Color x:Key="ColorHighlight2">#9000ff73</Color>
+    <SolidColorBrush x:Key="ColorHighlight2Brush" Color="{DynamicResource ColorHighlight2}"/>
+
+    <Color x:Key="ColorHighlight3">#D9ff4747</Color>
+    <SolidColorBrush x:Key="ColorHighlight3Brush" Color="{DynamicResource ColorHighlight3}"/>
+
+    <Color x:Key="DimOverlayColor">#33A4B0FF</Color>
+    <SolidColorBrush x:Key="DimOverlayColorBrush" Color="{DynamicResource DimOverlayColor}"/>
+    
+    
+
+    <Color x:Key="PrimaryHoverColor">#e81123</Color>
+    <SolidColorBrush x:Key="PrimaryHoverColorBrush" Color="{DynamicResource PrimaryHoverColor}"/>
+
+    <Color x:Key="SecondaryHoverColor">#e81123</Color>
+    <SolidColorBrush x:Key="SecondaryHoverColorBrush" Color="{DynamicResource SecondaryHoverColor}"/>
+
+    <Color x:Key="PrimaryPressedColor">#e81123</Color>
+    <SolidColorBrush x:Key="PrimaryPressedColorBrush" Color="{DynamicResource PrimaryPressedColor}"/>
+    
+    <Color x:Key="SecondaryPressedColor">#e81123</Color>
+    <SolidColorBrush x:Key="SecondaryPressedColorBrush" Color="{DynamicResource SecondaryPressedColor}"/>
+    
+</ResourceDictionary>

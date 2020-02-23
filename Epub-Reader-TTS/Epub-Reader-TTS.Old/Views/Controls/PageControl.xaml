@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="Epub_Reader_TTS.PageControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Epub_Reader_TTS"
+             mc:Ignorable="d" 
+             DataContext="{Binding CurrentPage}"
+             x:Name="page_view"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <ScrollViewer 
+        Background="{DynamicResource PrimaryBackGroundColorBrush}"
+        x:Name="ScrollContainer"
+        HorizontalScrollBarVisibility="Auto"
+        VerticalScrollBarVisibility="Disabled"
+        local:HorizantalWheelScrollingProperty.Value="True"
+        >
+        <ItemsControl             
+            ItemsSource="{Binding ParagraphViewModels}"
+            >
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel 
+                        Orientation="Vertical"
+                        ItemWidth="{Binding ElementName=ScrollContainer, Path=ActualWidth,
+                        Converter={local:MultiplyConverter},ConverterParameter=0.5}"
+                    />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        
+                        <!-- Active paragraph border -->
+                        <Border 
+                            Margin="5"
+                            Visibility="{Binding Active, Converter={local:FocusVisibilityConverter}, ConverterParameter={x:Reference Name=page_view}}"
+                            BorderBrush="{DynamicResource SecondaryBackGroundColorBrush}"
+                            BorderThickness="2"
+                            >
+
+                        </Border>
+                                                
+                        <!-- Paragraph text -->
+                        <local:IndexHighlightTextBlock 
+                            Margin="10"     
+                            Text="{Binding ParagraphText}"
+                            Foreground="{DynamicResource PrimaryFontColorBrush}"
+                            HighlightIndex="{Binding WordIndex}"
+                            HighlightLength="{Binding WordLength}"
+                            IsActive="{Binding Active,Mode=TwoWay}"
+                            FontFamily="{StaticResource OpenSansRegular}"
+                            FontSize="{DynamicResource MainFontSize}"
+                            TextAlignment="Justify"
+                            HighlightBackground="{DynamicResource PrimaryHoverColorBrush}"
+                            HighlightForeground="{DynamicResource PrimaryFontColorBrush}" 
+                            TextWrapping="Wrap"
+                        />
+                        
+                    </Grid>
+                    
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
+
+</UserControl>

@@ -7,6 +7,9 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Drawing;
+using System.Drawing.Imaging;
+
 using System.Windows;
 using System.Windows.Input;
 
@@ -186,12 +189,10 @@ namespace Epub_Reader_TTS
                     file.BookCoverPath = DI.FileManager.ResolvePath($"Covers/{file.Id}.png");
 
                 DI.FileManager.EnsurePathExist(DI.FileManager.ResolvePath("Covers/"));
-
-                var image = book.CoverImage.ToImage();
-
-                if (image != null)
+                
+                if (book.CoverImage != null)
                 {
-                    image.Save(file.BookCoverPath, System.Drawing.Imaging.ImageFormat.Png);
+                    File.WriteAllBytes(file.BookCoverPath, book.CoverImage);
                 }
                 else
                 {

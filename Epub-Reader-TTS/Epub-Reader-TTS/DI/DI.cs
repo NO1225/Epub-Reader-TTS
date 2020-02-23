@@ -15,6 +15,11 @@ namespace Epub_Reader_TTS
         public static ISettingsManager SettingsManager => Framework.Service<ISettingsManager>();
 
         /// <summary>
+        /// A shortcut to access the <see cref="ISettingsManager"/>
+        /// </summary>
+        public static ISpeechSynthesizer SpeechSynthesizer => Framework.Service<ISpeechSynthesizer>();
+
+        /// <summary>
         /// A shortcut to access the <see cref="ApplicationViewModel"/>
         /// </summary>
         public static ApplicationViewModel ViewModelApplication => Framework.Service<ApplicationViewModel>();

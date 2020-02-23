@@ -109,7 +109,7 @@
                     SelectedItem="{Binding SelectedVoice}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding VoiceInfo.Name}"/>
+                            <TextBlock Text="{Binding DisplayName}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>

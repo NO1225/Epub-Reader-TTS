@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Epub_Reader_TTS.Core;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
 using static Epub_Reader_TTS.DI;
@@ -178,12 +178,12 @@ namespace Epub_Reader_TTS
 
         private async Task StartReading()
         {
-            parent.SpeechSynthesizer.SpeakAsyncCancelAll();
+            DI.SpeechSynthesizer.SpeakAsyncCancelAll();
 
             if (!IsReading)
             {
-                parent.SpeechSynthesizer.SpeakProgress += SpeakProgress;
-                parent.SpeechSynthesizer.SpeakCompleted += SpeakCompleted;
+                DI.SpeechSynthesizer.SpeakProgress = SpeakProgress;
+                DI.SpeechSynthesizer.SpeakComplete = SpeakComplete;
                 IsReading = true;
             }
 
@@ -191,22 +191,24 @@ namespace Epub_Reader_TTS
 
             CurrentParagraph.OnPropertyChanged(nameof(CurrentParagraph.Active));
 
-            parent.SpeechSynthesizer.SpeakAsync(CurrentParagraph.ParagraphText);
+            DI.SpeechSynthesizer.SpeakAsync(CurrentParagraph.ParagraphText);
 
         }
+
+        
 
         private async Task StopReading()
         {
             IsReading = false;
 
-            if(CurrentParagraph!=null)
+            if (CurrentParagraph != null)
                 CurrentParagraph.Active = false;
-            
-            parent.SpeechSynthesizer.SpeakProgress -= SpeakProgress;
 
-            parent.SpeechSynthesizer.SpeakCompleted -= SpeakCompleted;
+            //DI.SpeechSynthesizer.SpeakProgress -= SpeakProgress;
 
-            parent.SpeechSynthesizer.SpeakAsyncCancelAll();
+            //DI.SpeechSynthesizer.SpeakCompleted -= SpeakCompleted;
+
+            DI.SpeechSynthesizer.SpeakAsyncCancelAll();
         }
 
         /// <summary>
@@ -247,16 +249,17 @@ namespace Epub_Reader_TTS
 
         #region Event Hundlers
 
+
         /// <summary>
         /// Event to hundle the changes on the ui with the progress of the reading
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SpeakProgress(object sender, SpeakProgressEventArgs e)
+        private void SpeakProgress(int characterPosition, int characterCount)
         {
-            CurrentParagraph.WordIndex = e.CharacterPosition;
+            CurrentParagraph.WordIndex = characterPosition;
 
-            CurrentParagraph.WordLength = e.CharacterCount;
+            CurrentParagraph.WordLength = characterCount;
         }
 
         /// <summary>
@@ -264,10 +267,9 @@ namespace Epub_Reader_TTS
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SpeakCompleted(object sender, SpeakCompletedEventArgs e)
+        private void SpeakComplete(CompletionReason reason)
         {
-
-            if (e.Cancelled)
+            if (reason == CompletionReason.Cancel)
                 return;
 
             CurrentParagraph.Active = false;
@@ -276,7 +278,7 @@ namespace Epub_Reader_TTS
 
             NextParagraph();
         }
-
+        
         #endregion
     }
 }

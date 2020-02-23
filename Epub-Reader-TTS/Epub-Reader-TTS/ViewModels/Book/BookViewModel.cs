@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -50,7 +49,7 @@ namespace Epub_Reader_TTS
         /// Action place holder to be fired when the book is finneshed
         /// </summary>
         public Action OnFinnished;
-        
+
         /// <summary>
         /// The title of this book
         /// </summary>
@@ -71,12 +70,12 @@ namespace Epub_Reader_TTS
         /// </summary>
         public PageViewModel CurrentPage
         {
-            get => currentPage; 
+            get => currentPage;
             set
             {
-                reading=false;
+                reading = false;
 
-                if(currentPage!=null)
+                if (currentPage != null)
                 {
                     reading = currentPage.IsReading;
                     //TogglePause(true).GetAwaiter().GetResult();
@@ -106,7 +105,7 @@ namespace Epub_Reader_TTS
         /// <summary>
         /// The tool responsable of speaking 
         /// </summary>
-        public SpeechSynthesizer SpeechSynthesizer { get; set; }
+        //public SpeechSynthesizer SpeechSynthesizer { get; set; }
 
         /// <summary>
         /// List of all the installed voice on this pc
@@ -122,7 +121,7 @@ namespace Epub_Reader_TTS
             set
             {
                 selectedVoice = value;
-                TaskManager.Run(()=>UpdateSelectedVoice(selectedVoice, readingSpeed));
+                TaskManager.Run(() => UpdateSelectedVoice(selectedVoice, readingSpeed));
             }
         }
 
@@ -143,7 +142,8 @@ namespace Epub_Reader_TTS
         public bool IsDarkMode
         {
             get { return isDarkMode; }
-            set { 
+            set
+            {
                 isDarkMode = value;
                 ViewModelApplication.SetDarkMode(IsDarkMode);
             }
@@ -154,7 +154,8 @@ namespace Epub_Reader_TTS
         public int FontSize
         {
             get { return fontSize; }
-            set { 
+            set
+            {
                 fontSize = value;
                 ViewModelApplication.SetFontSize(FontSize);
             }
@@ -179,7 +180,7 @@ namespace Epub_Reader_TTS
         public ICommand NextPageCommand { get; set; }
 
         public ICommand CloseBookCommand { get; set; }
-                
+
         /// <summary>
         /// Command to show the bookmarks popup
         /// </summary>
@@ -205,8 +206,8 @@ namespace Epub_Reader_TTS
 
             PreviousParagraphCommand = new RelayCommand(async () => await PreviousParagraph());
 
-            NextParagraphCommand = new RelayCommand(async () => await NextParagraph());     
-            
+            NextParagraphCommand = new RelayCommand(async () => await NextParagraph());
+
             PreviousPageCommand = new RelayCommand(() => PreviousPage());
 
             NextPageCommand = new RelayCommand(() => NextPage(CurrentPage.Index));
@@ -220,7 +221,7 @@ namespace Epub_Reader_TTS
             HidePopUpCommand = new RelayCommand(() => AdditionalContentVisible = false);
 
             this.PageViewModels = new ObservableCollection<PageViewModel>();
-            
+
             Initiate();
         }
 
@@ -237,11 +238,11 @@ namespace Epub_Reader_TTS
 
             FontSize = DI.SettingsManager.GetFontSize();
 
-            SpeechSynthesizer = new SpeechSynthesizer();
+            //SpeechSynthesizer = new SpeechSynthesizer();
 
-            SpeechSynthesizer.SetOutputToDefaultAudioDevice();
+            //SpeechSynthesizer.SetOutputToDefaultAudioDevice();
 
-            InstalledVoices = SpeechSynthesizer.GetInstalledVoices();
+            InstalledVoices = new ReadOnlyCollection<InstalledVoice>(DI.SpeechSynthesizer.GetInstalledVoices().ToList());
 
             PauseButtonText = "\uf04b";
 
@@ -362,8 +363,8 @@ namespace Epub_Reader_TTS
             }
             else
                 Finnished();
-        }     
-        
+        }
+
         /// <summary>
         /// Go to the next page and focus the last paragraph of that page
         /// </summary>
@@ -378,8 +379,8 @@ namespace Epub_Reader_TTS
 
                 CurrentPage.Initiate(reading, CurrentPage.ParagraphViewModels.Last().Index);
             }
-        }    
-        
+        }
+
         /// <summary>
         /// Go to the start of the previous page
         /// </summary>
@@ -417,11 +418,11 @@ namespace Epub_Reader_TTS
         /// <param name="readingSpeed"></param>
         private void UpdateSelectedVoice(InstalledVoice selectedVoice, int readingSpeed)
         {
-            SpeechSynthesizer.SelectVoice(selectedVoice.VoiceInfo.Name);
+            DI.SpeechSynthesizer.SelectVoice(selectedVoice.DisplayName);
 
-            SpeechSynthesizer.Rate = readingSpeed;
+            DI.SpeechSynthesizer.Rate = readingSpeed;
 
-            DI.SettingsManager.SetSelectedVoice(selectedVoice.VoiceInfo.Name);
+            DI.SettingsManager.SetSelectedVoice(selectedVoice.DisplayName);
             DI.SettingsManager.SetReadingSpeed(readingSpeed);
         }
 
@@ -433,9 +434,9 @@ namespace Epub_Reader_TTS
         private void SetSelectedVoice(string selectedVoice, int readingSpeed)
         {
             if (string.IsNullOrEmpty(selectedVoice))
-                selectedVoice = InstalledVoices.First().VoiceInfo.Name;
+                selectedVoice = InstalledVoices.First().DisplayName;
 
-            SelectedVoice = InstalledVoices.First(v => v.VoiceInfo.Name == selectedVoice);
+            SelectedVoice = InstalledVoices.First(v => v.DisplayName == selectedVoice);
 
             ReadingSpeed = readingSpeed;
         }

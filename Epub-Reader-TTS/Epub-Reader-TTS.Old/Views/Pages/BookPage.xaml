@@ -1,0 +1,148 @@
+﻿<local:BasePage x:TypeArguments="local:BookViewModel" x:Class="Epub_Reader_TTS.BookPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Epub_Reader_TTS"
+      mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+
+        <local:PageControl
+            Grid.Row="1"
+            DataContext="{Binding CurrentPage}"/>
+
+        <Grid Grid.Row="1" >
+            <Button Style="{StaticResource Hoverless}" Command="{Binding HidePopUpCommand}" Background="{DynamicResource DimOverlayColorBrush}" Visibility="{Binding AdditionalContentVisible, Converter={local:BoolianToVisibilityConverter}}"/>
+            <local:AdditionalContentControl                 
+                local:AnimateSlideInFromTopProperty.Value="{Binding AdditionalContentVisible}"
+                Content="{Binding CurrentAdditionalContent, Converter={local:AdditionalContentConverter}}"
+                />
+        </Grid>
+        
+        
+        <Grid
+            Grid.Row="0"
+            Background="{DynamicResource SecondaryBackGroundColorBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition  Width="100"/>
+                <ColumnDefinition  Width="*"/>
+                <ColumnDefinition  Width="auto"/>
+                <ColumnDefinition  Width="*"/>
+                <ColumnDefinition  Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel 
+                Grid.Column="0"
+                HorizontalAlignment="Left"
+                Orientation="Horizontal">
+                <Button 
+                    Style="{DynamicResource IconGrowButton}"
+                    Command="{Binding ToggleBookmarksCommand}"
+                    VerticalAlignment="Center"
+                    Margin="5"
+                    Content="{StaticResource FontAwesomeBookMarksIcon}"
+                    Height="40"
+                    />
+            </StackPanel>
+            <TextBlock
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Foreground="{DynamicResource SecondaryFontColorBrush}"
+                Text="{Binding Title}"
+                TextWrapping="NoWrap"
+                TextTrimming="CharacterEllipsis"
+                ToolTip="{Binding Title}"
+                />
+            
+            <StackPanel 
+                Grid.Column="2"                
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+
+                <Button 
+                    Style="{DynamicResource IconGrowButton}"
+                    Command="{Binding PreviousPageCommand}" 
+                    VerticalAlignment="Center"
+                    Content="{StaticResource FontAwesomeBackwardIcon}"
+                    Height="40"
+                    ToolTip="Previous Page"
+                    />
+                
+                <Button 
+                    Style="{DynamicResource IconGrowButton}"
+                    Command="{Binding PreviousParagraphCommand}" 
+                    VerticalAlignment="Center"
+                    Content="{StaticResource FontAwesomeBackwardStepIcon}"
+                    Height="40"
+                    ToolTip="Previos Paragraph"
+                    />
+
+                <Button 
+                    Style="{DynamicResource IconGrowButton}"
+                    Command="{Binding PlayCommand}" 
+                    VerticalAlignment="Center"
+                    Content="{Binding PauseButtonText}"
+                    Height="40"
+                    ToolTip="Play/Pause"
+                    />
+
+                <Button 
+                    Style="{DynamicResource IconGrowButton}"
+                    Command="{Binding NextParagraphCommand}" 
+                    VerticalAlignment="Center"
+                    Content="{StaticResource FontAwesomeForwardStepIcon}"
+                    Height="40"
+                    ToolTip="Next Paragraph"
+                    />
+                
+                <Button 
+                    Style="{DynamicResource IconGrowButton}"
+                    Command="{Binding NextPageCommand}" 
+                    VerticalAlignment="Center"
+                    Content="{StaticResource FontAwesomeForwardIcon}"
+                    Height="40"
+                    ToolTip="Next Page"
+                    />
+            </StackPanel>
+            <TextBlock
+                Grid.Column="3"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="{DynamicResource SecondaryFontColorBrush}"
+                Text="{Binding CurrentPage.Title}"
+                TextWrapping="NoWrap"
+                TextTrimming="CharacterEllipsis"
+                ToolTip="{Binding CurrentPage.Title}"
+                />
+            <StackPanel 
+                Grid.Column="4"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+
+                <Button 
+                    Style="{DynamicResource IconGrowButton}"
+                    Command="{Binding ToggleSettingsCommand}"
+                    VerticalAlignment="Center"
+                    Margin="5"
+                    Content="{StaticResource FontAwesomeSettingsIcon}"
+                    Height="40"
+                    />
+                <Button 
+                    Style="{DynamicResource IconGrowButton}"
+                    Command="{Binding CloseBookCommand}"
+                    VerticalAlignment="Center"
+                    Margin="5"
+                    Content="{StaticResource FontAwesomeCloseIcon}"
+                    Height="40"
+                    />
+            </StackPanel>
+        </Grid>
+        
+    </Grid>
+</local:BasePage>
