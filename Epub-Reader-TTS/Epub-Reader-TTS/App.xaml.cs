@@ -1,4 +1,5 @@
 ﻿using Dna;
+using Epub_Reader_TTS.Core;
 using Epub_Reader_TTS.Relational;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -38,29 +39,26 @@ namespace Epub_Reader_TTS
             // Log it
             Logger.LogDebugSource("Application starting...");
 
-            // To be used with open with command 
-            if(e.Args.Length == 1)
-            {
-                foreach (string file in e.Args)
-                {
-                    var book = DI.ViewModelDashboard.OpenBookFile(file).GetAwaiter().GetResult();
+            Book book = null;
 
-                    DI.ViewModelDashboard.OpenBook(book).GetAwaiter().GetResult();
-                }                
-            }
-            else
+            foreach (string file in e.Args)
             {
-                foreach (string file in e.Args)
-                {
-                    DI.ViewModelDashboard.OpenBookFile(file).GetAwaiter().GetResult();
-                }
-
-                ViewModelApplication.GoToPage(ApplicationPage.Dashboard);
+                book = DI.ViewModelDashboard.OpenBookFile(file).GetAwaiter().GetResult();
             }
-                       
+
+            ViewModelApplication.GoToPage(ApplicationPage.Dashboard);
+
             Current.MainWindow = new MainWindow();
-
             Current.MainWindow.Show();
+            
+
+            // To be used with open with command 
+            if (e.Args.Length == 1)
+            {
+                DI.ViewModelDashboard.OpenBook(book).GetAwaiter().GetResult();
+            }
+           
+
         }
 
 
@@ -69,11 +67,6 @@ namespace Epub_Reader_TTS
         /// </summary>
         private async Task ApplicationSetupAsync()
         {
-            //var configurationBuilder = new ConfigurationBuilder()
-            //    // Add environment variables
-            //    .AddEnvironmentVariables();
-
-
             // Set the default working directory
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? Directory.GetCurrentDirectory());
 
