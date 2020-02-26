@@ -32,6 +32,11 @@ namespace Epub_Reader_TTS
             // Let the base application do what it needs
             base.OnStartup(e);
 
+            var win = new Epub_Reader_TTS.SplashScreen();
+
+            win.Show();
+
+
             // Setup the main application 
             await ApplicationSetupAsync();
 
@@ -48,6 +53,8 @@ namespace Epub_Reader_TTS
             ViewModelApplication.GoToPage(ApplicationPage.Dashboard);
 
             Current.MainWindow = new MainWindow();
+
+            win.Close();
 
             Current.MainWindow.Show();
             

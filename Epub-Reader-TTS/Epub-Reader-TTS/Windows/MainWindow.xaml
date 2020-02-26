@@ -10,7 +10,7 @@
         Title="{Binding ApplicationViewModel.Title, Source={x:Static local:ViewModelLocator.Instance}}"
         Height="450" 
         Width="800"
-        Icon="logo_icon.ico">
+        Icon="../logo_icon.ico">
     <Grid>
         <local:UWPControlsHost Visibility="Hidden"/>
         <local:PageHost 
