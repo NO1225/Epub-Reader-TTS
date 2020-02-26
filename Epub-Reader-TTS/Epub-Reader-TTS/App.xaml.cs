@@ -13,7 +13,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using static Dna.FrameworkDI;
-using static Epub_Reader_TTS.Core.CoreDI;
 using static Epub_Reader_TTS.DI;
 
 namespace Epub_Reader_TTS
@@ -49,13 +48,14 @@ namespace Epub_Reader_TTS
             ViewModelApplication.GoToPage(ApplicationPage.Dashboard);
 
             Current.MainWindow = new MainWindow();
+
             Current.MainWindow.Show();
             
 
             // To be used with open with command 
             if (e.Args.Length == 1)
             {
-                DI.ViewModelDashboard.OpenBook(book).GetAwaiter().GetResult();
+                TaskManager.Run(()=> DI.ViewModelDashboard.OpenBook(book));//.GetAwaiter().GetResult();
             }
            
 

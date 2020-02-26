@@ -1,6 +1,9 @@
 ﻿using Epub_Reader_TTS.Core;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using static Epub_Reader_TTS.DI;
+
 
 namespace Epub_Reader_TTS
 {
@@ -61,7 +64,7 @@ namespace Epub_Reader_TTS
 
             RefreshCommand = new RelayCommand(async () => await Refresh());
             RemoveCommand = new RelayCommand(async () => await Remove());
-            OpenCommand = new RelayCommand(async () => await Open());
+            OpenCommand = new RelayCommand(async ()=> await Open());
         }
 
         #endregion
@@ -74,7 +77,8 @@ namespace Epub_Reader_TTS
         /// <returns></returns>
         private async Task Open()
         {
-            await Parent.OpenBook(this.Book);
+            TaskManager.Run(() => Parent.OpenBook(this.Book));
+            //Parent.OpenBook(this.Book);
         }
 
         /// <summary>

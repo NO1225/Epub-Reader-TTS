@@ -28,6 +28,12 @@ namespace Epub_Reader_TTS
         /// </summary>
         public ObservableCollection<TileViewModel> Tiles { get; set; }
 
+        /// <summary>
+        /// When the books are loading to be opened
+        /// </summary>
+        public bool Loading { get; set; }
+
+
         #endregion
 
         #region Private Fields
@@ -75,7 +81,7 @@ namespace Epub_Reader_TTS
         /// The initiator for this page to get the books from the database and store them to be displayed
         /// </summary>
         /// <returns></returns>
-        private async Task Initiate()
+        public async Task Initiate()
         {
             this.bookList = (await DI.ClientDataStore.GetBooks()).Where(b => b.IsDisabled != true).ToList() ;
 
@@ -208,9 +214,11 @@ namespace Epub_Reader_TTS
         /// </summary>
         /// <param name="file">the selected book</param>
         /// <returns></returns>
-        public async Task OpenBook(Book file)
+        public void OpenBook(Book file)
         {
             //await RefreshBook(file);
+
+            Loading = true;
 
             if (!DI.FileManager.PathExists(file.BookFilePath))
             {
@@ -274,6 +282,8 @@ namespace Epub_Reader_TTS
             ViewModelLocator.ApplicationViewModel.CurrentBookViewModel.Initialize(file);
 
             ViewModelLocator.ApplicationViewModel.GoToPage(ApplicationPage.Book);
+
+            Loading = false;
 
         }
 

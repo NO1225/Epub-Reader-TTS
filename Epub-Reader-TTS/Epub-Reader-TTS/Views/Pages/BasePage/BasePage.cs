@@ -202,13 +202,15 @@ namespace Epub_Reader_TTS
         /// Constructor with specific view model
         /// </summary>
         /// <param name="specificViewModel">The specific view model to use, if any</param>
-        public BasePage(VM specificViewModel = null) : base()
+        public BasePage(VM specificViewModel = null, bool empty = false) : base()
         {
             // Set specific view model
             if (specificViewModel != null)
                 ViewModel = specificViewModel;
             else
             {
+                if (empty)
+                    return;
                 // If in design time mode...
                 if (DesignerProperties.GetIsInDesignMode(this))
                     // Just use a new instance of the VM

@@ -82,9 +82,11 @@ namespace Epub_Reader_TTS
                     Application.Current.Dispatcher.Invoke(() => oldPageFrame.Content = null);
                 });
             }
-
+           
             // Set the new page content
             newPageFrame.Content = e.NewValue;
+
+            (newPageFrame.Content as BasePage).ShouldAnimateOut = false;
         }
 
         #endregion
