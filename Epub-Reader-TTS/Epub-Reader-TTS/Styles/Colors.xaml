@@ -38,10 +38,10 @@
 
     <Color x:Key="DimOverlayColor">#33A4B0FF</Color>
     <SolidColorBrush x:Key="DimOverlayColorBrush" Color="{DynamicResource DimOverlayColor}"/>
-    
-    
 
-    <Color x:Key="PrimaryHoverColor">#e81123</Color>
+
+
+    <Color x:Key="PrimaryHoverColor">#9f4900</Color>
     <SolidColorBrush x:Key="PrimaryHoverColorBrush" Color="{DynamicResource PrimaryHoverColor}"/>
 
     <Color x:Key="SecondaryHoverColor">#e81123</Color>

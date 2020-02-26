@@ -6,11 +6,11 @@ namespace Epub_Reader_TTS.Core
 {
     public class UserSettings
     {
-        public int FontSize { get; set; } = 14;
+        public int FontSize { get; set; } = 16;
 
         public string SelectedVoice { get; set; }
 
-        public double ReadingSpeed { get; set; } = 3;
+        public double ReadingSpeed { get; set; } = 1;
 
         public double VoicePitch { get; set; } = 1;
 

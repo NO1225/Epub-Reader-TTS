@@ -61,6 +61,7 @@ namespace Epub_Reader_TTS
                 speaker.PlayPressed = value;
             }
         }
+
         public Action PausePressed
         {
             set
@@ -68,6 +69,7 @@ namespace Epub_Reader_TTS
                 speaker.PausePressed = value;
             }
         }
+
         public Action NextPressed
         {
             set
@@ -75,6 +77,7 @@ namespace Epub_Reader_TTS
                 speaker.NextPressed = value;
             }
         }
+
         public Action PreviousPressed
         {
             set
@@ -88,7 +91,6 @@ namespace Epub_Reader_TTS
             windowsXamlHost.InitialTypeName = typeof(Speaker.SpeakerWithSMTC).FullName;
 
             speaker = new Speaker.SpeakerWithSMTC();
-
         }
 
         public async Task SpeakAsync(string text)
