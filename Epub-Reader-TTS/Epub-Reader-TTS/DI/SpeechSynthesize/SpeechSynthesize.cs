@@ -1,5 +1,4 @@
 ﻿using Epub_Reader_TTS.Core;
-using Microsoft.Toolkit.Wpf.UI.XamlHost;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +9,7 @@ namespace Epub_Reader_TTS
 {
     public class SpeechSynthesizer : ISpeechSynthesizer
     {
-        private WindowsXamlHost windowsXamlHost = new WindowsXamlHost();
+        //private WindowsXamlHost windowsXamlHost = new WindowsXamlHost();
 
         private Speaker.SpeakerWithSMTC speaker;
 
@@ -86,11 +85,9 @@ namespace Epub_Reader_TTS
             }
         }
 
-        public SpeechSynthesizer()
+        public SpeechSynthesizer(global::Speaker.SpeakerWithSMTC speaker)
         {
-            windowsXamlHost.InitialTypeName = typeof(Speaker.SpeakerWithSMTC).FullName;
-
-            speaker = new Speaker.SpeakerWithSMTC();
+            this.speaker = speaker;
         }
 
         public async Task SpeakAsync(string text)

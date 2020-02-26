@@ -12,6 +12,7 @@
         Width="800"
         Icon="logo_icon.ico">
     <Grid>
+        <local:UWPControlsHost Visibility="Hidden"/>
         <local:PageHost 
             d:DataContext=""
             DataContext="{Binding ApplicationViewModel, Source={x:Static local:ViewModelLocator.Instance}}"
