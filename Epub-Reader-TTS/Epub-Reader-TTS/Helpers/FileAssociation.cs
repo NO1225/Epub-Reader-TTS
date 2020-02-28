@@ -88,7 +88,7 @@ namespace Epub_Reader_TTS
             }
         }
 
-        public static bool SetAssociation(string extension, string progId, string fileTypeDescription, string fileType, string applicationFilePath)
+        private static bool SetAssociation(string extension, string progId, string fileTypeDescription, string fileType, string applicationFilePath)
         {
             bool madeChanges = false;
             madeChanges |= SetKeyDefaultValue(@"Software\Classes\" + extension, "");
@@ -124,7 +124,7 @@ namespace Epub_Reader_TTS
         /// <param name="ext"></param>
         /// <param name="verb"></param>
         /// <returns>Return null if not found</returns>
-        public static string GetExecFileAssociatedToExtension(string ext, string verb = null)
+        private static string GetExecFileAssociatedToExtension(string ext, string verb = null)
         {
             if (ext[0] != '.')
             {
@@ -183,7 +183,7 @@ namespace Epub_Reader_TTS
         }
 
         [Flags]
-        public enum AssocF
+        private enum AssocF
         {
             Init_NoRemapCLSID = 0x1,
             Init_ByExeName = 0x2,
@@ -198,7 +198,7 @@ namespace Epub_Reader_TTS
             IgnoreBaseClass = 0x200
         }
 
-        public enum AssocStr
+        private enum AssocStr
         {
             Command = 1,
             Executable,
@@ -216,7 +216,7 @@ namespace Epub_Reader_TTS
         static extern bool ShellExecuteEx(ref SHELLEXECUTEINFO lpExecInfo);
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        public struct SHELLEXECUTEINFO
+        private struct SHELLEXECUTEINFO
         {
             public int cbSize;
             public uint fMask;
@@ -242,7 +242,7 @@ namespace Epub_Reader_TTS
 
         private const int SW_SHOW = 5;
         private const uint SEE_MASK_INVOKEIDLIST = 12;
-        public static bool ShowFileProperties(string Filename)
+        private static bool ShowFileProperties(string Filename)
         {
             SHELLEXECUTEINFO info = new SHELLEXECUTEINFO();
             info.cbSize = System.Runtime.InteropServices.Marshal.SizeOf(info);
