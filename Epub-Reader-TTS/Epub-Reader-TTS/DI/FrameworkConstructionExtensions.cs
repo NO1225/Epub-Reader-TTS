@@ -66,9 +66,9 @@ namespace Epub_Reader_TTS
             FileAssociations.EnsureAssociationsSet();
 
 #endif
-            FileAssociations.EnsureAssociationsSet();
 
-            var a = FileAssociations.GetExecFileAssociatedToExtension("epub","open");
+            //FileAssociations.EnsureAssociationsSet();
+
 
             // Return the construction for chaining
             return construction;

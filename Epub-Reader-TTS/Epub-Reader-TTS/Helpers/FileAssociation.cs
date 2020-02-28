@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Epub_Reader_TTS
 {
@@ -16,6 +17,7 @@ namespace Epub_Reader_TTS
         public string ProgId { get; set; }
         public string FileTypeDescription { get; set; }
         public string ExecutableFilePath { get; set; }
+        public string FileType { get; internal set; }
     }
 
     public class FileAssociations
@@ -29,18 +31,45 @@ namespace Epub_Reader_TTS
 
         public static void EnsureAssociationsSet()
         {
-            var filePath = Process.GetCurrentProcess().MainModule.FileName;
-            EnsureAssociationsSet(
-                new FileAssociation
+
+            var filePath = Process.GetCurrentProcess().MainModule;
+
+            var epubSampleName = "epub-sample.epub";
+
+            var epubSample = filePath.FileName.Substring(0, filePath.FileName.Length - filePath.FileName.Split("\\").Last().Length) + epubSampleName;
+
+            var a = GetExecFileAssociatedToExtension(".epub");
+
+            if (GetExecFileAssociatedToExtension(".epub") != filePath.FileName)
+            {
+                var result = MessageBox.Show("Do you want to open epub files by default with this program?", "Default Program", MessageBoxButton.YesNo, MessageBoxImage.Information);
+
+                if(result == MessageBoxResult.Yes)
                 {
-                    Extension = ".epub",
-                    ProgId = "EPUB_Viewer_File",
-                    FileTypeDescription = "EPUB File",
-                    ExecutableFilePath = filePath
-                });
+
+                    EnsureAssociationsSet(
+                                new FileAssociation
+                                {
+                                    Extension = ".epub",
+                                    ProgId = filePath.ModuleName,
+                                    FileTypeDescription = "EPUB File",
+                                    ExecutableFilePath = filePath.FileName,
+                                    FileType = "E-Book"
+                                });
+
+                    ShowFileProperties(epubSample);
+
+                    // TODO: Show a windows that explain what the user has to do
+                    MessageBox.Show("Our hero, this is your last mession before being able to make this the default program... \nYou are required to press Change from the shown window then select this program, \nPress Ok, then press Ok and you are done, Hero...", "A mession to save the world",
+                        MessageBoxButton.OK,MessageBoxImage.Information);
+
+                }
+            }
+
+
         }
 
-        public static void EnsureAssociationsSet(params FileAssociation[] associations)
+        private static void EnsureAssociationsSet(params FileAssociation[] associations)
         {
             bool madeChanges = false;
             foreach (var association in associations)
@@ -49,6 +78,7 @@ namespace Epub_Reader_TTS
                     association.Extension,
                     association.ProgId,
                     association.FileTypeDescription,
+                    association.FileType,
                     association.ExecutableFilePath);
             }
 
@@ -58,23 +88,29 @@ namespace Epub_Reader_TTS
             }
         }
 
-        public static bool SetAssociation(string extension, string progId, string fileTypeDescription, string applicationFilePath)
+        public static bool SetAssociation(string extension, string progId, string fileTypeDescription, string fileType, string applicationFilePath)
         {
             bool madeChanges = false;
-            madeChanges |= SetKeyDefaultValue(@"Software\Classes\" + extension, progId);
-            madeChanges |= SetKeyDefaultValue(@"Software\Classes\" + progId, fileTypeDescription);
-            madeChanges |= SetKeyDefaultValue($@"Software\Classes\{progId}\shell\open\command", "\"" + applicationFilePath + "\" \"%1\"");
+            madeChanges |= SetKeyDefaultValue(@"Software\Classes\" + extension, "");
+            madeChanges |= SetKeyDefaultValue(@"Software\Classes\" + extension + @"\PerceivedType\", fileType);
+
+            madeChanges |= SetKeyDefaultValue(@"Software\Classes\Applications\" + progId, "");
+            madeChanges |= SetKeyDefaultValue(@"Software\Classes\Applications\" + progId + @"\shell\open\command", $"\"{applicationFilePath}\" \"%1\"");
+
+            madeChanges |= SetKeyDefaultValue($@"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\{extension}", "");
+            madeChanges |= SetKeyDefaultValue($@"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\{extension}\OpenWithList", $@"{progId}", "b");
+            madeChanges |= SetKeyDefaultValue($@"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\{extension}\OpenWithList", $@"b", "MRUList");
             return madeChanges;
         }
 
-        private static bool SetKeyDefaultValue(string keyPath, string value)
+        private static bool SetKeyDefaultValue(string keyPath, string value, string name = null)
         {
-            using (var key = Registry.CurrentUser.CreateSubKey(keyPath))
+            using (var key = Registry.CurrentUser.CreateSubKey(keyPath, true))
             {
-                var a = key.GetValue(null);
-                if (key.GetValue(null) as string != value)
+                var a = key.GetValue(name);
+                if (key.GetValue(name) as string != value)
                 {
-                    key.SetValue(null, value);
+                    key.SetValue(name, value);
                     return true;
                 }
             }
@@ -174,6 +210,47 @@ namespace Epub_Reader_TTS
             DDEIfExec,
             DDEApplication,
             DDETopic
+        }
+
+        [DllImport("shell32.dll", CharSet = CharSet.Auto)]
+        static extern bool ShellExecuteEx(ref SHELLEXECUTEINFO lpExecInfo);
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        public struct SHELLEXECUTEINFO
+        {
+            public int cbSize;
+            public uint fMask;
+            public IntPtr hwnd;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpVerb;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpFile;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpParameters;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpDirectory;
+            public int nShow;
+            public IntPtr hInstApp;
+            public IntPtr lpIDList;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpClass;
+            public IntPtr hkeyClass;
+            public uint dwHotKey;
+            public IntPtr hIcon;
+            public IntPtr hProcess;
+        }
+
+        private const int SW_SHOW = 5;
+        private const uint SEE_MASK_INVOKEIDLIST = 12;
+        public static bool ShowFileProperties(string Filename)
+        {
+            SHELLEXECUTEINFO info = new SHELLEXECUTEINFO();
+            info.cbSize = System.Runtime.InteropServices.Marshal.SizeOf(info);
+            info.lpVerb = "properties";
+            info.lpFile = Filename;
+            info.nShow = SW_SHOW;
+            info.fMask = SEE_MASK_INVOKEIDLIST;
+            return ShellExecuteEx(ref info);
         }
 
 

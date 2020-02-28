@@ -101,6 +101,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="epub-sample.epub">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

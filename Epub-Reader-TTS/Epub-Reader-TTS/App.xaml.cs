@@ -85,7 +85,7 @@ namespace Epub_Reader_TTS
                 .AddClientServices()
 
                 // Need some fixing
-                //.EnsureFileAssosiation()
+                .EnsureFileAssosiation()
 
                 .Build();
 
