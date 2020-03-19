@@ -17,9 +17,9 @@ namespace Epub_Reader_TTS
     public class PageViewModel : BaseViewModel
     {
         #region Private Fields
-        
+
         private ParagraphViewModel currentParagraph;
-        
+
         #endregion
 
         #region Public Properties
@@ -34,7 +34,14 @@ namespace Epub_Reader_TTS
         /// </summary>
         public Action<int> OnFinnished;
 
+        /// <summary>
+        /// Action to be stored
+        /// </summary>
         public Action<int> OnPreviousPage;
+
+        private double actualHeight = 501;
+
+        private double actualWidth = 392;
 
         /// <summary>
         /// The index of this page
@@ -51,12 +58,14 @@ namespace Epub_Reader_TTS
         /// </summary>
         public ObservableCollection<ParagraphViewModel> ParagraphViewModels { get; set; }
 
+        public ObservableCollection<ParagraphTextViewModel> ParagraphTextViewModels { get; set; }
+
         /// <summary>
         /// The current active paragraph 
         /// </summary>
         public ParagraphViewModel CurrentParagraph
         {
-            get => currentParagraph; 
+            get => currentParagraph;
             set
             {
                 if (currentParagraph != null)
@@ -73,6 +82,28 @@ namespace Epub_Reader_TTS
         /// If the applicaiton is reading 
         /// </summary>
         public bool IsReading { get; set; }
+
+        #region UI Properties
+
+        public double ActualHeight
+        {
+            get => actualHeight; set
+            {
+                actualHeight = value;
+            }
+        }
+        public double ActualWidth
+        {
+            get => actualWidth; set
+            {
+                actualWidth = value/2;
+                //if(ActualWidth != 0 && ActualHeight !=0)
+                //SortParagraphs();
+
+            }
+        }
+
+        #endregion
 
         #endregion
 
@@ -94,16 +125,69 @@ namespace Epub_Reader_TTS
         /// Initiate this page
         /// </summary>
         /// <param name="reading">weither if the application is reading or not</param>
-        public void Initiate(bool reading = false,int paragraphIndex = 0)
+        public void Initiate(bool reading = false, int paragraphIndex = 0)
         {
             //if (CurrentParagraph == null)
             //    CurrentParagraph = ParagraphViewModels.First();
-            
+            //SortParagraphs();
+
             SelectParagraph(paragraphIndex);
 
             if (reading)
                 StartReading();
         }
+
+        public void SortParagraphs()
+        {
+            int currentPage = 0;
+            double currentHeight = 0;
+            double allowedHeight = ActualHeight;
+            double allowedWidth = ActualWidth - 20;
+
+            var minHeight = " ".GetParagraphHeight(allowedWidth, parent.FontSize);
+
+            var paragraphsText = new List<ParagraphTextViewModel>();
+
+            foreach (var paragraph in ParagraphViewModels)
+            {
+                if(currentHeight + minHeight > allowedHeight)
+                {
+                    currentPage++;
+                    currentHeight = 0;
+                }
+
+                var paragraphHeight = paragraph.GetParagraphHeight(allowedWidth, parent.FontSize);
+
+                if(currentHeight + paragraphHeight > allowedHeight)
+                {
+                    paragraph.Split(paragraph.ParagraphText, allowedHeight - currentHeight, allowedHeight, allowedWidth, parent.FontSize);
+
+                    currentPage++;
+                    currentHeight = 0;
+                    for(int i =1;i<paragraph.Paragraphs.Count;i++)
+                    {
+                        if (currentHeight > allowedHeight)
+                            currentPage++;
+                        paragraphHeight = paragraph.Paragraphs[i].GetParagraphHeight(allowedWidth, parent.FontSize);
+                        currentHeight += paragraphHeight;
+                    }
+                    // Split
+                    // If split add the number to the next page 
+                }
+                else
+                {
+                    paragraph.Split(paragraph.ParagraphText, allowedHeight - currentHeight, allowedHeight, allowedWidth, parent.FontSize);
+                    currentHeight += paragraphHeight;
+                }
+
+                paragraphsText.AddRange(paragraph.Paragraphs.Select(paragraph => paragraph));
+            }
+
+            ParagraphTextViewModels = new ObservableCollection<ParagraphTextViewModel>(paragraphsText);
+        }
+
+
+
 
         /// <summary>
         /// Start reading or toggle between pause play ... 
@@ -141,7 +225,7 @@ namespace Epub_Reader_TTS
             this.ParagraphViewModels.Add(paragraphViewModel);
         }
 
- 
+
 
         internal async Task GoToNextParagraph()
         {
@@ -159,7 +243,7 @@ namespace Epub_Reader_TTS
         /// <returns></returns>
         public async Task OnClose()
         {
-            await StopReading();            
+            await StopReading();
         }
 
         private void SelectParagraph(int currentParagraphIndex)
@@ -195,7 +279,7 @@ namespace Epub_Reader_TTS
 
         }
 
-        
+
 
         private async Task StopReading()
         {
@@ -231,7 +315,7 @@ namespace Epub_Reader_TTS
         /// <param name="currentParagraph"></param>
         private void PreviousParagraph()
         {
-            if (CurrentParagraph.Index==0)
+            if (CurrentParagraph.Index == 0)
                 PreviousPage();
             else
             {
@@ -278,7 +362,7 @@ namespace Epub_Reader_TTS
 
             NextParagraph();
         }
-        
+
         #endregion
     }
 }

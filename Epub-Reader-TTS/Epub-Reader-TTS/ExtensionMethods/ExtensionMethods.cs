@@ -123,7 +123,7 @@ namespace Epub_Reader_TTS
                 Brushes.Black, 
                 new NumberSubstitution(), 1);
 
-            formattedText.MaxTextWidth = width;
+            formattedText.MaxTextWidth = width + 20;
 
             return formattedText.Height;
 
