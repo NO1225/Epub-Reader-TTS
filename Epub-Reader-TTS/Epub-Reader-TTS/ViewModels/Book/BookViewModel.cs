@@ -42,9 +42,10 @@ namespace Epub_Reader_TTS
         /// Detrmine if the book is currently being read to aid with page transitions 
         /// </summary>
         private bool reading;
-
-
+        
         private bool isDarkMode;
+        private int fontSize;
+
 
         #endregion
 
@@ -108,11 +109,6 @@ namespace Epub_Reader_TTS
         public bool AdditionalContentVisible { get; set; }
 
         /// <summary>
-        /// The tool responsable of speaking 
-        /// </summary>
-        //public SpeechSynthesizer SpeechSynthesizer { get; set; }
-
-        /// <summary>
         /// List of all the installed voice on this pc
         /// </summary>
         public ReadOnlyCollection<InstalledVoice> InstalledVoices { get; set; }
@@ -156,7 +152,9 @@ namespace Epub_Reader_TTS
             }
         }
 
-
+        /// <summary>
+        /// The trigger to enable darkmode
+        /// </summary>
         public bool IsDarkMode
         {
             get { return isDarkMode; }
@@ -167,8 +165,9 @@ namespace Epub_Reader_TTS
             }
         }
 
-        private int fontSize;
-
+        /// <summary>
+        /// The setting to change teh font size
+        /// </summary>
         public int FontSize
         {
             get { return fontSize; }
@@ -187,6 +186,9 @@ namespace Epub_Reader_TTS
 
         private double actualWidth = 784;
 
+        /// <summary>
+        /// The actual height of the page container
+        /// </summary>
         public double ActualHeight
         {
             get => actualHeight; set
@@ -197,6 +199,10 @@ namespace Epub_Reader_TTS
                     CurrentPage.SortParagraphs();
             }
         }
+
+        /// <summary>
+        /// The actual width of the page container
+        /// </summary>
         public double ActualWidth
         {
             get => actualWidth; set
@@ -367,6 +373,10 @@ namespace Epub_Reader_TTS
             }
         }
 
+        /// <summary>
+        /// Close the book and return to the dashboard page
+        /// </summary>
+        /// <returns></returns>
         private async Task CloseBook()
         {
             await CurrentPage.TogglePause(true);
@@ -374,11 +384,19 @@ namespace Epub_Reader_TTS
             ViewModelApplication.GoToPage(ApplicationPage.Dashboard);
         }
 
+        /// <summary>
+        /// tell the page to jump to the next paragraph
+        /// </summary>
+        /// <returns></returns>
         private async Task NextParagraph()
         {
             await CurrentPage.GoToNextParagraph();
         }
 
+        /// <summary>
+        /// tell the page to step back to the previous paragraph
+        /// </summary>
+        /// <returns></returns>
         private async Task PreviousParagraph()
         {
             await CurrentPage.GoToPreviousParagraph();
@@ -428,7 +446,7 @@ namespace Epub_Reader_TTS
         }
 
         /// <summary>
-        /// Go to the next page and focus the last paragraph of that page
+        /// Go to the previous page and focus the last paragraph of that page
         /// </summary>
         /// <param name="currentPage">the index of the current page</param>
         public void PriviousPage(int currentPage)

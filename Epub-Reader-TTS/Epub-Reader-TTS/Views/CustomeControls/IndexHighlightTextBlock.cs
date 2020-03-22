@@ -152,7 +152,7 @@ namespace Epub_Reader_TTS
 
             if (highlightTextBlock == null || string.IsNullOrWhiteSpace(mainText)) return;
 
-            if (highlightLength == 0 || highlightIndex > mainText.Length - highlightLength)
+            if (!isActive &&( highlightLength == 0 || highlightIndex > mainText.Length - highlightLength))
             {
                 var completeRun = new Run(mainText);
                 highlightTextBlock.Inlines.Add(completeRun);

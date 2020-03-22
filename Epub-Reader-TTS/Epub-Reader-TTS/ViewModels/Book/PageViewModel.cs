@@ -20,6 +20,9 @@ namespace Epub_Reader_TTS
 
         private ParagraphViewModel currentParagraph;
 
+        private bool sorting;
+        private bool waiting;
+
         #endregion
 
         #region Public Properties
@@ -54,6 +57,9 @@ namespace Epub_Reader_TTS
         /// </summary>
         public ObservableCollection<ParagraphViewModel> ParagraphViewModels { get; set; }
 
+        /// <summary>
+        /// The list of the sorted paragraphs on this page
+        /// </summary>
         public ObservableCollection<ParagraphTextViewModel> ParagraphTextViewModels { get; set; }
 
         /// <summary>
@@ -102,8 +108,8 @@ namespace Epub_Reader_TTS
         /// <param name="reading">weither if the application is reading or not</param>
         public void Initiate(bool reading = false, int paragraphIndex = 0)
         {
-            //if (CurrentParagraph == null)
-            //    CurrentParagraph = ParagraphViewModels.First();
+
+            SortParagraphs();
 
             SelectParagraph(paragraphIndex);
 
@@ -111,6 +117,9 @@ namespace Epub_Reader_TTS
                 StartReading();
         }
 
+        /// <summary>
+        /// Hundle the sorrting of the paragraphs to prevent synchronous updates
+        /// </summary>
         public void SortParagraphs()
         {
             if (sorting)
@@ -123,13 +132,78 @@ namespace Epub_Reader_TTS
                 sorting = true;
                 Task.Run(async () => StartSorting());
             }
-            
-
         }
 
-        bool sorting;
-        bool waiting;
+        /// <summary>
+        /// Start reading or toggle between pause play ... 
+        /// </summary>
+        /// <param name="forcePause"></param>
+        /// <returns></returns>
+        public async Task TogglePause(bool forcePause)
+        {
+            if (forcePause)
+            {
+                await StopReading();
+                return;
+            }
 
+            if (IsReading)
+            {
+                await StopReading();
+            }
+            else
+            {
+                await StartReading();
+            }
+        }
+
+        /// <summary>
+        /// Add paragraph to this page
+        /// </summary>
+        /// <param name="paragraphViewModel"></param>
+        public void AddParagraph(ParagraphViewModel paragraphViewModel)
+        {
+            paragraphViewModel.OnFinnished = NextParagraph;
+
+            this.ParagraphViewModels.Add(paragraphViewModel);
+        }
+
+        /// <summary>
+        /// Go to the next paragraph
+        /// </summary>
+        /// <returns></returns>
+        internal async Task GoToNextParagraph()
+        {
+            NextParagraph();
+        }
+
+        /// <summary>
+        /// Step back to the previous paragraph
+        /// </summary>
+        /// <returns></returns>
+        internal async Task GoToPreviousParagraph()
+        {
+            PreviousParagraph();
+        }
+
+        /// <summary>
+        /// To be fired when closing this page and navigation to other page
+        /// </summary>
+        /// <returns></returns>
+        public async Task OnClose()
+        {
+            await StopReading();
+        }
+
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Sorting the paragraphs so that there won't be any text hidden 
+        /// </summary>
+        /// <returns></returns>
         private async Task StartSorting()
         {
             Stopwatch stopwatch = new Stopwatch();
@@ -168,8 +242,7 @@ namespace Epub_Reader_TTS
                         paragraphHeight = paragraph.Paragraphs[i].GetParagraphHeight(allowedWidth, parent.FontSize);
                         currentHeight += paragraphHeight;
                     }
-                    // Split
-                    // If split add the number to the next page 
+
                 }
                 else
                 {
@@ -199,78 +272,10 @@ namespace Epub_Reader_TTS
 
         }
 
-
         /// <summary>
-        /// Start reading or toggle between pause play ... 
-        /// </summary>
-        /// <param name="forcePause"></param>
-        /// <returns></returns>
-        public async Task TogglePause(bool forcePause)
-        {
-            if (forcePause)
-            {
-                await StopReading();
-                return;
-            }
-
-            if (IsReading)
-            {
-                await StopReading();
-            }
-            else
-            {
-                await StartReading();
-            }
-
-
-        }
-
-        /// <summary>
-        /// Add paragraph to this page
-        /// </summary>
-        /// <param name="paragraphViewModel"></param>
-        public void AddParagraph(ParagraphViewModel paragraphViewModel)
-        {
-            paragraphViewModel.OnFinnished = NextParagraph;
-
-            this.ParagraphViewModels.Add(paragraphViewModel);
-        }
-
-
-
-        internal async Task GoToNextParagraph()
-        {
-            NextParagraph();
-        }
-
-        internal async Task GoToPreviousParagraph()
-        {
-            PreviousParagraph();
-        }
-
-        /// <summary>
-        /// To be fired when closing this page and navigation to other page
+        /// Start reading 
         /// </summary>
         /// <returns></returns>
-        public async Task OnClose()
-        {
-            await StopReading();
-        }
-
-        private void SelectParagraph(int currentParagraphIndex)
-        {
-            CurrentParagraph = ParagraphViewModels.First(p => p.Index == currentParagraphIndex);
-
-            CurrentParagraph.Active = true;
-
-            TaskManager.Run(async () => ViewModelApplication.SavePosition(this.Index, this.CurrentParagraph.Index));
-
-        }
-
-        #endregion
-
-        #region Private Methods
-
         private async Task StartReading()
         {
             DI.SpeechSynthesizer.SpeakAsyncCancelAll();
@@ -284,14 +289,14 @@ namespace Epub_Reader_TTS
 
             CurrentParagraph.Active = true;
 
-            CurrentParagraph.OnPropertyChanged(nameof(CurrentParagraph.Active));
-
             DI.SpeechSynthesizer.SpeakAsync(CurrentParagraph.ParagraphText);
 
         }
 
-
-
+        /// <summary>
+        /// Stop the reading
+        /// </summary>
+        /// <returns></returns>
         private async Task StopReading()
         {
             IsReading = false;
@@ -304,6 +309,20 @@ namespace Epub_Reader_TTS
             //DI.SpeechSynthesizer.SpeakCompleted -= SpeakCompleted;
 
             DI.SpeechSynthesizer.SpeakAsyncCancelAll();
+        }
+
+        /// <summary>
+        /// Jump to a paragraph
+        /// </summary>
+        /// <param name="currentParagraphIndex">the index of the paragraph to jump to</param>
+        private void SelectParagraph(int currentParagraphIndex)
+        {
+            CurrentParagraph = ParagraphViewModels.First(p => p.Index == currentParagraphIndex);
+
+            CurrentParagraph.Active = true;
+
+            TaskManager.Run(async () => ViewModelApplication.SavePosition(this.Index, this.CurrentParagraph.Index));
+
         }
 
         /// <summary>
@@ -343,8 +362,7 @@ namespace Epub_Reader_TTS
         #endregion
 
         #region Event Hundlers
-
-
+        
         /// <summary>
         /// Event to hundle the changes on the ui with the progress of the reading
         /// </summary>
@@ -352,9 +370,7 @@ namespace Epub_Reader_TTS
         /// <param name="e"></param>
         private void SpeakProgress(int characterPosition, int characterCount)
         {
-            CurrentParagraph.WordIndex = characterPosition;
-
-            CurrentParagraph.WordLength = characterCount;
+            CurrentParagraph.SetWordIndexAndLength(characterPosition, characterCount);
         }
 
         /// <summary>
@@ -368,8 +384,6 @@ namespace Epub_Reader_TTS
                 return;
 
             CurrentParagraph.Active = false;
-
-            CurrentParagraph.WordLength = 0;
 
             NextParagraph();
         }

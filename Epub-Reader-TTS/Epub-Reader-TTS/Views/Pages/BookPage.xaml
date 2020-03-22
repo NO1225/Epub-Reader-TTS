@@ -12,14 +12,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border                Grid.Row="1"
-     local:SizeObserver.Observe="True"
+        <Border   
+            Grid.Row="1"
+            local:SizeObserver.Observe="True"
             local:SizeObserver.ObservedHeight="{Binding ActualHeight, Mode=OneWayToSource}"
             local:SizeObserver.ObservedWidth="{Binding ActualWidth, Mode=OneWayToSource}">
             <local:PageControl
-            DataContext="{Binding CurrentPage}"/>
+                DataContext="{Binding CurrentPage}"/>
         </Border>
-        
+
 
         <Grid Grid.Row="1" >
             <Button Style="{StaticResource Hoverless}" Command="{Binding HidePopUpCommand}" Background="{DynamicResource DimOverlayColorBrush}" Visibility="{Binding AdditionalContentVisible, Converter={local:BoolianToVisibilityConverter}}"/>
@@ -28,8 +29,8 @@
                 Content="{Binding CurrentAdditionalContent, Converter={local:AdditionalContentConverter}}"
                 />
         </Grid>
-        
-        
+
+
         <Grid
             Grid.Row="0"
             Background="{DynamicResource SecondaryBackGroundColorBrush}">
@@ -63,7 +64,7 @@
                 TextTrimming="CharacterEllipsis"
                 ToolTip="{Binding Title}"
                 />
-            
+
             <StackPanel 
                 Grid.Column="2"                
                 HorizontalAlignment="Center"
@@ -77,7 +78,7 @@
                     Height="40"
                     ToolTip="Previous Page"
                     />
-                
+
                 <Button 
                     Style="{DynamicResource IconGrowButton}"
                     Command="{Binding PreviousParagraphCommand}" 
@@ -104,7 +105,7 @@
                     Height="40"
                     ToolTip="Next Paragraph"
                     />
-                
+
                 <Button 
                     Style="{DynamicResource IconGrowButton}"
                     Command="{Binding NextPageCommand}" 
@@ -147,6 +148,6 @@
                     />
             </StackPanel>
         </Grid>
-        
+
     </Grid>
 </local:BasePage>
