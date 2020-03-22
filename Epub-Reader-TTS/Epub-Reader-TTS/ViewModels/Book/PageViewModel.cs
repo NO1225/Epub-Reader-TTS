@@ -39,10 +39,6 @@ namespace Epub_Reader_TTS
         /// </summary>
         public Action<int> OnPreviousPage;
 
-        private double actualHeight = 501;
-
-        private double actualWidth = 392;
-
         /// <summary>
         /// The index of this page
         /// </summary>
@@ -83,27 +79,6 @@ namespace Epub_Reader_TTS
         /// </summary>
         public bool IsReading { get; set; }
 
-        #region UI Properties
-
-        public double ActualHeight
-        {
-            get => actualHeight; set
-            {
-                actualHeight = value;
-            }
-        }
-        public double ActualWidth
-        {
-            get => actualWidth; set
-            {
-                actualWidth = value/2;
-                //if(ActualWidth != 0 && ActualHeight !=0)
-                //SortParagraphs();
-
-            }
-        }
-
-        #endregion
 
         #endregion
 
@@ -129,7 +104,6 @@ namespace Epub_Reader_TTS
         {
             //if (CurrentParagraph == null)
             //    CurrentParagraph = ParagraphViewModels.First();
-            //SortParagraphs();
 
             SelectParagraph(paragraphIndex);
 
@@ -139,10 +113,33 @@ namespace Epub_Reader_TTS
 
         public void SortParagraphs()
         {
+            if (sorting)
+            {
+                waiting = true;
+                return;
+            }
+            else
+            {
+                sorting = true;
+                Task.Run(async () => StartSorting());
+            }
+            
+
+        }
+
+        bool sorting;
+        bool waiting;
+
+        private async Task StartSorting()
+        {
+            Stopwatch stopwatch = new Stopwatch();
+
+            stopwatch.Start();
+
             int currentPage = 0;
             double currentHeight = 0;
-            double allowedHeight = ActualHeight;
-            double allowedWidth = ActualWidth - 20;
+            double allowedHeight = parent.ActualHeight;
+            double allowedWidth = parent.ActualWidth / 2 - 40;
 
             var minHeight = " ".GetParagraphHeight(allowedWidth, parent.FontSize);
 
@@ -150,7 +147,7 @@ namespace Epub_Reader_TTS
 
             foreach (var paragraph in ParagraphViewModels)
             {
-                if(currentHeight + minHeight > allowedHeight)
+                if (currentHeight + minHeight > allowedHeight)
                 {
                     currentPage++;
                     currentHeight = 0;
@@ -158,13 +155,13 @@ namespace Epub_Reader_TTS
 
                 var paragraphHeight = paragraph.GetParagraphHeight(allowedWidth, parent.FontSize);
 
-                if(currentHeight + paragraphHeight > allowedHeight)
+                if (currentHeight + paragraphHeight > allowedHeight)
                 {
-                    paragraph.Split(paragraph.ParagraphText, allowedHeight - currentHeight, allowedHeight, allowedWidth, parent.FontSize);
+                    paragraph.StartSpliting(paragraph.ParagraphText, allowedHeight - currentHeight, allowedHeight, allowedWidth, parent.FontSize);
 
                     currentPage++;
                     currentHeight = 0;
-                    for(int i =1;i<paragraph.Paragraphs.Count;i++)
+                    for (int i = 1; i < paragraph.Paragraphs.Count; i++)
                     {
                         if (currentHeight > allowedHeight)
                             currentPage++;
@@ -176,7 +173,7 @@ namespace Epub_Reader_TTS
                 }
                 else
                 {
-                    paragraph.Split(paragraph.ParagraphText, allowedHeight - currentHeight, allowedHeight, allowedWidth, parent.FontSize);
+                    paragraph.StartSpliting(paragraph.ParagraphText, allowedHeight - currentHeight, allowedHeight, allowedWidth, parent.FontSize);
                     currentHeight += paragraphHeight;
                 }
 
@@ -184,9 +181,23 @@ namespace Epub_Reader_TTS
             }
 
             ParagraphTextViewModels = new ObservableCollection<ParagraphTextViewModel>(paragraphsText);
+
+            stopwatch.Stop();
+
+            Debug.WriteLine("Elapsed Time is {0} ms", stopwatch.ElapsedMilliseconds);
+
+            if (waiting && (allowedHeight != parent.ActualHeight || allowedWidth != parent.ActualWidth / 2 - 40))
+            {
+                waiting = false;
+                StartSorting();
+            }
+            else
+            {
+                sorting = false;
+                waiting = false;
+            }
+
         }
-
-
 
 
         /// <summary>

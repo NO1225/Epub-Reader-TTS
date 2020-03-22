@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
@@ -26,7 +25,7 @@ namespace Epub_Reader_TTS
         {
             get => active; set
             {
-                if(!value)
+                if (!value)
                 {
                     WordIndex = 0;
                     WordLength = 0;
@@ -79,13 +78,16 @@ namespace Epub_Reader_TTS
                 OnFinnished();
         }
 
-        internal void Split(string paragraphText, double currentAllowedHeight, double fullAllowedHeight, double allowedWidth, int fontSize)
+        internal void StartSpliting(string paragraphText, double currentAllowedHeight, double fullAllowedHeight, double allowedWidth, int fontSize)
         {
-            if (Paragraphs == null)
-                Paragraphs = new ObservableCollection<ParagraphTextViewModel>();
+            Paragraphs = new ObservableCollection<ParagraphTextViewModel>();
+            Split(paragraphText, currentAllowedHeight, fullAllowedHeight, allowedWidth, fontSize);
+        }
 
+        private void Split(string paragraphText, double currentAllowedHeight, double fullAllowedHeight, double allowedWidth, int fontSize)
+        {
             var paragrpahHeight = paragraphText.GetParagraphHeight(allowedWidth, fontSize);
-            if(paragrpahHeight<currentAllowedHeight)
+            if (paragrpahHeight < currentAllowedHeight)
             {
                 Paragraphs.Add(new ParagraphTextViewModel()
                 {
@@ -111,15 +113,15 @@ namespace Epub_Reader_TTS
             {
                 var firstHalf = paragraphText.Substring(0, matches[startingIndex].Index);
                 string secondHalf;
-                if (firstHalf.GetParagraphHeight(allowedWidth,fontSize)>currentAllowedHeight)
+                if (firstHalf.GetParagraphHeight(allowedWidth, fontSize) > currentAllowedHeight)
                 {
                     decreasing = true;
                     startingIndex--;
 
                     if (increasing)
                     {
-                        firstHalf = paragraphText.Substring(0, matches[startingIndex].Index);
-                        secondHalf = paragraphText.Substring(matches[startingIndex].Index + 1 ,paragraphText.Length-(matches[startingIndex].Index + 1));
+                        firstHalf = paragraphText.Substring(0, matches[startingIndex].Index+1);
+                        secondHalf = paragraphText.Substring(matches[startingIndex].Index + 1, paragraphText.Length - (matches[startingIndex].Index + 1));
 
                         Paragraphs.Add(new ParagraphTextViewModel()
                         {
@@ -135,7 +137,7 @@ namespace Epub_Reader_TTS
                     increasing = true;
                     if (decreasing)
                     {
-                        firstHalf = paragraphText.Substring(0, matches[startingIndex].Index);
+                        firstHalf = paragraphText.Substring(0, matches[startingIndex].Index+1);
                         secondHalf = paragraphText.Substring(matches[startingIndex].Index + 1, paragraphText.Length - (matches[startingIndex].Index + 1));
 
                         Paragraphs.Add(new ParagraphTextViewModel()

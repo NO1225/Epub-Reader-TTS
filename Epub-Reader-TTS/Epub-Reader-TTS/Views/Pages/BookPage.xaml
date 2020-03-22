@@ -12,10 +12,14 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-
-        <local:PageControl
-            Grid.Row="1"
+        <Border                Grid.Row="1"
+     local:SizeObserver.Observe="True"
+            local:SizeObserver.ObservedHeight="{Binding ActualHeight, Mode=OneWayToSource}"
+            local:SizeObserver.ObservedWidth="{Binding ActualWidth, Mode=OneWayToSource}">
+            <local:PageControl
             DataContext="{Binding CurrentPage}"/>
+        </Border>
+        
 
         <Grid Grid.Row="1" >
             <Button Style="{StaticResource Hoverless}" Command="{Binding HidePopUpCommand}" Background="{DynamicResource DimOverlayColorBrush}" Visibility="{Binding AdditionalContentVisible, Converter={local:BoolianToVisibilityConverter}}"/>

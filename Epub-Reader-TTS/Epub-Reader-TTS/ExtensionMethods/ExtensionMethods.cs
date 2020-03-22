@@ -123,9 +123,9 @@ namespace Epub_Reader_TTS
                 Brushes.Black, 
                 new NumberSubstitution(), 1);
 
-            formattedText.MaxTextWidth = width + 20;
+            formattedText.MaxTextWidth = width;
 
-            return formattedText.Height;
+            return formattedText.Height + 40;
 
         }
 

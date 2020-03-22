@@ -176,9 +176,40 @@ namespace Epub_Reader_TTS
             {
                 fontSize = value;
                 ViewModelApplication.SetFontSize(FontSize);
+                if (CurrentPage != null && actualWidth != 0 && actualHeight != 0)
+                    CurrentPage.SortParagraphs();
             }
         }
 
+        #region UI Properties
+
+        private double actualHeight = 501;
+
+        private double actualWidth = 784;
+
+        public double ActualHeight
+        {
+            get => actualHeight; set
+            {
+                actualHeight = value;
+
+                if (CurrentPage != null && actualWidth != 0 && actualHeight != 0)
+                    CurrentPage.SortParagraphs();
+            }
+        }
+        public double ActualWidth
+        {
+            get => actualWidth; set
+            {
+                actualWidth = value;
+
+                if (CurrentPage != null && actualWidth != 0 && actualHeight != 0)
+                    CurrentPage.SortParagraphs();
+
+            }
+        }
+
+        #endregion
 
         #endregion
 
