@@ -6,8 +6,9 @@
     <RootNamespace>Epub_Reader_TTS</RootNamespace>
     <UseWPF>true</UseWPF>
     <StartupObject>Epub_Reader_TTS.Program</StartupObject>
-    <Platforms>AnyCPU;x64</Platforms>
+    <Platforms>AnyCPU;x64;x86</Platforms>
     <ApplicationIcon>logo_icon.ico</ApplicationIcon>
+    <AssetTargetFallback>uap10.0.18362</AssetTargetFallback>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,6 +36,7 @@
     <PackageReference Include="EpubSharp.dll" Version="1.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.2" />
     <PackageReference Include="Microsoft.Toolkit.Wpf.UI.XamlHost" Version="6.0.0" />
+    <PackageReference Include="Microsoft.VCRTForwarders.140" Version="1.0.2-rc" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.6" />
   </ItemGroup>
 
@@ -158,9 +160,4 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.VCRTForwarders.140" Version="1.0.5" />
-  </ItemGroup>
-
 </Project>
