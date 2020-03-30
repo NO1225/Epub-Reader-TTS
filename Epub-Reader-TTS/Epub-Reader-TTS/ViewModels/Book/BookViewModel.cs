@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Epub_Reader_TTS.Core;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Epub_Reader_TTS.Core;
 using static Epub_Reader_TTS.DI;
 
 namespace Epub_Reader_TTS
@@ -42,7 +40,7 @@ namespace Epub_Reader_TTS
         /// Detrmine if the book is currently being read to aid with page transitions 
         /// </summary>
         private bool reading;
-        
+
         private bool isDarkMode;
         private int fontSize;
 
@@ -85,10 +83,13 @@ namespace Epub_Reader_TTS
                 {
                     reading = currentPage.IsReading;
                     //TogglePause(true).GetAwaiter().GetResult();
-                    CurrentPage.OnClose().GetAwaiter().GetResult();
+                    currentPage.OnClose();//.GetAwaiter().GetResult();
                 }
-
+                if (value != null)
+                    value.SortParagraphs();
                 currentPage = value;
+
+
 
             }
         }
@@ -138,7 +139,7 @@ namespace Epub_Reader_TTS
                 UpdateSelectedVoice(selectedVoice, readingSpeed, voicePitch);
             }
         }
-        
+
         /// <summary>
         /// The voice pitch
         /// </summary>
