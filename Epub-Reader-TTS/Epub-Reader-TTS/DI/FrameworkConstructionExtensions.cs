@@ -67,7 +67,7 @@ namespace Epub_Reader_TTS
 
 #endif
 
-            //FileAssociations.EnsureAssociationsSet();
+            FileAssociations.EnsureAssociationsSet();
 
 
             // Return the construction for chaining

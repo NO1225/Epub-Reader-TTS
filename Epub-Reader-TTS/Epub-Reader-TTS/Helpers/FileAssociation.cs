@@ -32,15 +32,20 @@ namespace Epub_Reader_TTS
         public static void EnsureAssociationsSet()
         {
 
+            if (!DI.SettingsManager.AskToAssosiate())
+            {
+                return;
+            }
+
             var filePath = Process.GetCurrentProcess().MainModule;
 
             var epubSampleName = "epub-sample.epub";
 
             var epubSample = filePath.FileName.Substring(0, filePath.FileName.Length - filePath.FileName.Split("\\").Last().Length) + epubSampleName;
 
-            var a = GetExecFileAssociatedToExtension(".epub");
+            var exec = GetExecFileAssociatedToExtension(".epub");
 
-            if (GetExecFileAssociatedToExtension(".epub") != filePath.FileName)
+            if (exec != filePath.FileName)
             {
                 var result = MessageBox.Show("Do you want to open epub files by default with this program?", "Default Program", MessageBoxButton.YesNo, MessageBoxImage.Information);
 
@@ -63,6 +68,10 @@ namespace Epub_Reader_TTS
                     MessageBox.Show("Our hero, this is your last mession before being able to make this the default program... \nYou are required to press Change from the shown window then select this program, \nPress Ok, then press Ok and you are done, Hero...", "A mession to save the world",
                         MessageBoxButton.OK,MessageBoxImage.Information);
 
+                }
+                else
+                {
+                    DI.SettingsManager.SetAskToAssosiate(false);
                 }
             }
 
@@ -171,7 +180,7 @@ namespace Epub_Reader_TTS
             uint pcchOut = 0;
             AssocQueryString(AssocF.Verify, assocStr, doctype, verb, null, ref pcchOut);
 
-            Debug.Assert(pcchOut != 0);
+            //Debug.Assert(pcchOut != 0);
             if (pcchOut == 0)
             {
                 return "";

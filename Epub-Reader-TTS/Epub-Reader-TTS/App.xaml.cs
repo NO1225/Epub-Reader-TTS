@@ -1,14 +1,7 @@
 ﻿using Dna;
 using Epub_Reader_TTS.Core;
 using Epub_Reader_TTS.Relational;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
@@ -57,14 +50,14 @@ namespace Epub_Reader_TTS
             win.Close();
 
             Current.MainWindow.Show();
-            
+
 
             // To be used with open with command 
             if (e.Args.Length == 1)
             {
-                TaskManager.Run(()=> DI.ViewModelDashboard.OpenBook(book));//.GetAwaiter().GetResult();
+                TaskManager.Run(() => DI.ViewModelDashboard.OpenBook(book));//.GetAwaiter().GetResult();
             }
-           
+
 
         }
 
@@ -83,13 +76,11 @@ namespace Epub_Reader_TTS
                 .AddClientDataStore()
                 .AddApplicationViewModels()
                 .AddClientServices()
-
-                // Need some fixing
-                .EnsureFileAssosiation()
-
                 .Build();
 
             await DI.SettingsManager.Initiate();
+
+            FileAssociations.EnsureAssociationsSet();
 
             // Load settings
             ViewModelApplication.SetDarkMode(DI.SettingsManager.IsDarkMode());

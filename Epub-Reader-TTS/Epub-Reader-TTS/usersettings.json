@@ -3,5 +3,6 @@
   "SelectedVoice": "",
   "ReadingSpeed": 1,
   "VoicePitch": 1,
-  "DarkMode": false
+  "DarkMode": false,
+  "DontAskToAssosiate": false
 }

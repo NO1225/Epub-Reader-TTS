@@ -10,8 +10,11 @@
         
         Title="SplashScreen" Height="300" Width="300" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" WindowState="Normal">
     <Grid>
-        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">
-            Loading
-        </TextBlock>
+        <Border Margin="1" BorderBrush="Black" BorderThickness="1">
+            <Border  Margin="1" BorderBrush="Black" BorderThickness="1">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Loading</TextBlock>
+            </Border>
+        </Border>
+
     </Grid>
 </Window>

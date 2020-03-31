@@ -15,5 +15,7 @@ namespace Epub_Reader_TTS.Core
         public double VoicePitch { get; set; } = 1;
 
         public bool DarkMode { get; set; } = false;
+
+        public bool DontAskToAssosiate { get; set; } = false;
     }
 }

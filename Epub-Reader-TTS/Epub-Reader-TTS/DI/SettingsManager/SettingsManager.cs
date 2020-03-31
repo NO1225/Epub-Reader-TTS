@@ -25,7 +25,6 @@ namespace Epub_Reader_TTS
 
         #endregion
 
-
         #region Private Methods
 
         /// <summary>
@@ -145,6 +144,27 @@ namespace Epub_Reader_TTS
         public async Task SetDarkMode(bool value)
         {
             userSettings.DarkMode = value;
+            await SaveChanges();
+        }
+
+        #endregion
+
+
+        #region Assosiate File
+
+        /// <summary>
+        /// To check if the saved settings is a dark mode
+        /// </summary>
+        /// <returns>dark mode is true, false is the light mode</returns>
+        public bool AskToAssosiate() => !userSettings.DontAskToAssosiate;
+
+        /// <summary>
+        /// Store the settings for the dark mode
+        /// </summary>
+        /// <param name="value">dark mode is true, false is the light mode</param>
+        public async Task SetAskToAssosiate(bool value)
+        {
+            userSettings.DontAskToAssosiate = !value;
             await SaveChanges();
         }
 
