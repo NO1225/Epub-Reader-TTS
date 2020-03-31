@@ -118,11 +118,30 @@ namespace Epub_Reader_TTS
 
             int startingIndex = (int)(matches.Count * ratio);
 
+            startingIndex = startingIndex >= matches.Count ? matches.Count - 1 : startingIndex;
 
+            if (matches.Count == 77)
+            {
+                Debug.WriteLine("");
+            }
             while (true)
             {
-                var firstHalf = paragraphText.Substring(0, matches[startingIndex].Index);
-                string secondHalf;
+                string firstHalf, secondHalf;
+
+                if((increasing||decreasing)&&startingIndex == matches.Count)
+                {
+                    firstHalf = paragraphText.Substring(0, matches[startingIndex-1].Index + 1);
+                    secondHalf = paragraphText.Substring(matches[startingIndex-1].Index + 1, paragraphText.Length - (matches[startingIndex-1].Index + 1));
+
+                    Paragraphs.Add(new ParagraphTextViewModel()
+                    {
+                        ParagraphText = firstHalf
+                    });
+
+                    Split(secondHalf, fullAllowedHeight, fullAllowedHeight, allowedWidth, fontSize);
+                    break;
+                }
+                firstHalf = paragraphText.Substring(0, matches[startingIndex].Index);
                 if (firstHalf.GetParagraphHeight(allowedWidth, fontSize) > currentAllowedHeight)
                 {
                     decreasing = true;
@@ -201,7 +220,7 @@ namespace Epub_Reader_TTS
         {
             if (Paragraphs == null)
             {
-                throw new Exception();
+                return;
             }
             if (!Active)
             {

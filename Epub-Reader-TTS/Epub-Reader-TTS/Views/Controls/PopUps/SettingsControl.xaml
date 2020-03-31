@@ -131,7 +131,7 @@
                     Maximum="5"
                     IsSnapToTickEnabled="True"
                     TickFrequency="0.2"
-                    ToolTip="{Binding ReadingSpeed}"
+                    ToolTip="{Binding ReadingSpeed, Converter={local:RoundNumberConverter}, ConverterParameter=2}"
                     Value="{Binding ReadingSpeed}"/>
                 
                 <!-- Voice Pitch Settings -->
@@ -149,7 +149,7 @@
                     Maximum="4"
                     IsSnapToTickEnabled="True"
                     TickFrequency="0.2"
-                    ToolTip="{Binding VoicePitch}"
+                    ToolTip="{Binding VoicePitch,  Converter={local:RoundNumberConverter}, ConverterParameter=2}"
                     Value="{Binding VoicePitch}"/>
 
             </Grid>

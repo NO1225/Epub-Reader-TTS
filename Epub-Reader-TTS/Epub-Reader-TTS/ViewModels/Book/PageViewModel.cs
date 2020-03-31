@@ -122,6 +122,7 @@ namespace Epub_Reader_TTS
         /// </summary>
         public void SortParagraphs()
         {
+            Debug.WriteLine("sort queed");
             if (sorting)
             {
                 waiting = true;
@@ -129,6 +130,7 @@ namespace Epub_Reader_TTS
             }
             else
             {
+                Debug.WriteLine("start sorting");
                 sorting = true;
                 Task.Run(async () => StartSorting());
             }

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epub-Reader-TTS", "Epub-Rea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speaker", "Speaker\Speaker.csproj", "{69C8F194-0C12-4649-BB54-5EB055EFE41C}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Epub-Reader-TTS.Setup", "Epub-Reader-TTS.Setup\Epub-Reader-TTS.Setup.vdproj", "{AC7F15BB-C2B3-4CAF-8D8D-4E55F260CB0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,16 @@ Global
 		{69C8F194-0C12-4649-BB54-5EB055EFE41C}.Release|x64.Deploy.0 = Release|x64
 		{69C8F194-0C12-4649-BB54-5EB055EFE41C}.Release|x86.ActiveCfg = Release|x86
 		{69C8F194-0C12-4649-BB54-5EB055EFE41C}.Release|x86.Build.0 = Release|x86
+		{AC7F15BB-C2B3-4CAF-8D8D-4E55F260CB0D}.Debug|Any CPU.ActiveCfg = Debug
+		{AC7F15BB-C2B3-4CAF-8D8D-4E55F260CB0D}.Debug|ARM.ActiveCfg = Debug
+		{AC7F15BB-C2B3-4CAF-8D8D-4E55F260CB0D}.Debug|ARM64.ActiveCfg = Debug
+		{AC7F15BB-C2B3-4CAF-8D8D-4E55F260CB0D}.Debug|x64.ActiveCfg = Debug
+		{AC7F15BB-C2B3-4CAF-8D8D-4E55F260CB0D}.Debug|x86.ActiveCfg = Debug
+		{AC7F15BB-C2B3-4CAF-8D8D-4E55F260CB0D}.Release|Any CPU.ActiveCfg = Release
+		{AC7F15BB-C2B3-4CAF-8D8D-4E55F260CB0D}.Release|ARM.ActiveCfg = Release
+		{AC7F15BB-C2B3-4CAF-8D8D-4E55F260CB0D}.Release|ARM64.ActiveCfg = Release
+		{AC7F15BB-C2B3-4CAF-8D8D-4E55F260CB0D}.Release|x64.ActiveCfg = Release
+		{AC7F15BB-C2B3-4CAF-8D8D-4E55F260CB0D}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
