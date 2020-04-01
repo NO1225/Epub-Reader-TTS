@@ -76,10 +76,7 @@ namespace Epub_Reader_TTS.Core
         }
         public bool PathExists(string filePath)
         {
-            Debug.WriteLine(filePath);
-            var a = File.Exists(filePath);
-            Debug.WriteLine(a);
-            return a;
+            return File.Exists(filePath);
         }
 
         public FileStream OpenFile(string path)
