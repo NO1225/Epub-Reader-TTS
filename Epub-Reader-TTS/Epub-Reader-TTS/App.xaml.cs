@@ -87,6 +87,7 @@ namespace Epub_Reader_TTS
 
             ViewModelApplication.SetFontSize(DI.SettingsManager.GetFontSize());
 
+
             // Ensure the client data store 
             await ClientDataStore.EnsureDataStoreAsync();
 

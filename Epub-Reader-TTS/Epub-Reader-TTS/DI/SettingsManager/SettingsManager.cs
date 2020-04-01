@@ -1,9 +1,11 @@
 ﻿using Epub_Reader_TTS.Core;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Epub_Reader_TTS
 {
@@ -21,7 +23,7 @@ namespace Epub_Reader_TTS
 
         bool saving = false;
 
-        private object _lockObject = new object();
+        bool waiting = false;
 
         #endregion
 
@@ -32,18 +34,53 @@ namespace Epub_Reader_TTS
         /// </summary>
         private async Task SaveChanges() 
         {
-            while (saving) { }
-            Debug.WriteLine("Initilizing Saving");
-            saving = true;
-            lock(_lockObject)
+            if(saving)
             {
-                using (FileStream fs = File.Create(fileLocation))
-                {
-                    JsonSerializer.SerializeAsync(fs, userSettings);
-                }
-                Debug.WriteLine("Saving DOne");
-            }            
-            saving = false;
+                waiting = true;
+            }
+            else
+            {
+                saving = true;
+                await Save();
+                saving = false;
+                waiting = false;
+            }
+            
+            Debug.WriteLine("Initilizing Saving");
+            
+        }
+
+        private async Task Save()
+        {
+            var tmp = userSettings;
+            using (FileStream fs = File.Create(fileLocation))
+            {
+                await JsonSerializer.SerializeAsync(fs, userSettings);
+            }
+            Debug.WriteLine("Saving Done");
+
+            if(waiting & !equalSettings(tmp))
+            {
+                await Save();
+            }
+        }
+
+        private bool equalSettings(UserSettings userSettings)
+        {
+            if (userSettings.DarkMode != this.userSettings.DarkMode)
+                return false;
+            if (userSettings.DontAskToAssosiate != this.userSettings.DontAskToAssosiate)
+                return false;
+            if (userSettings.FontSize != this.userSettings.FontSize)
+                return false;
+            if (userSettings.ReadingSpeed != this.userSettings.ReadingSpeed)
+                return false;
+            if (userSettings.SelectedVoice != this.userSettings.SelectedVoice)
+                return false;
+            if (userSettings.VoicePitch != this.userSettings.VoicePitch)
+                return false;
+
+            return true;
         }
 
         #endregion
@@ -192,7 +229,7 @@ namespace Epub_Reader_TTS
                 await SaveChanges();
             }
 
-
+            //MessageBox.Show($"Initialized {userSettings}");
             Debug.WriteLine("Initilizing Done");
 
         }
