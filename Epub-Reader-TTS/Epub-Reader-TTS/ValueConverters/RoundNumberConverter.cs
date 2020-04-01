@@ -18,7 +18,9 @@ namespace Epub_Reader_TTS
 
             var number = double.Parse(value.ToString());
 
-            return Math.Round(number,decimils);
+            var outPut = Math.Round(number, decimils);
+
+            return outPut;
 
         }
 

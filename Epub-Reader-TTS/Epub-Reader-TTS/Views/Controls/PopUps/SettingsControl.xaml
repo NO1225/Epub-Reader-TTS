@@ -91,6 +91,8 @@
                         Maximum="36"
                         IsSnapToTickEnabled="True"
                         TickFrequency="2"
+                        AutoToolTipPlacement="BottomRight" 
+                        AutoToolTipPrecision="0"
                         ToolTip="{Binding FontSize}"
                         Value="{Binding FontSize}"/>
                 </DockPanel>
@@ -127,11 +129,13 @@
                     VerticalAlignment="Center"
                     Grid.Row="3"
                     Grid.Column="1"
-                    Minimum="0"
-                    Maximum="5"
+                    Minimum="0.2"
+                    Maximum="3"
                     IsSnapToTickEnabled="True"
                     TickFrequency="0.2"
-                    ToolTip="{Binding ReadingSpeed, Converter={local:RoundNumberConverter}, ConverterParameter=2}"
+                    AutoToolTipPlacement="BottomRight" 
+                    AutoToolTipPrecision="1"
+                    ToolTip="{Binding ReadingSpeed, Converter={local:RoundNumberConverter}, ConverterParameter=1}"
                     Value="{Binding ReadingSpeed}"/>
                 
                 <!-- Voice Pitch Settings -->
@@ -145,11 +149,13 @@
                     VerticalAlignment="Center"
                     Grid.Row="4"
                     Grid.Column="1"
-                    Minimum="0"
-                    Maximum="4"
+                    Minimum="0.2"
+                    Maximum="3"
                     IsSnapToTickEnabled="True"
                     TickFrequency="0.2"
-                    ToolTip="{Binding VoicePitch,  Converter={local:RoundNumberConverter}, ConverterParameter=2}"
+                    AutoToolTipPlacement="BottomRight" 
+                    AutoToolTipPrecision="1"
+                    ToolTip="{Binding VoicePitch,  Converter={local:RoundNumberConverter}, ConverterParameter=1}"
                     Value="{Binding VoicePitch}"/>
 
             </Grid>
