@@ -198,8 +198,7 @@ namespace Epub_Reader_TTS
 
             if (!DI.FileManager.PathExists(file.BookCoverPath))
             {
-                if (string.IsNullOrEmpty(file.BookCoverPath))
-                    file.BookCoverPath = DI.FileManager.ResolvePath($"{CoverPath}{file.Id}.png");
+                file.BookCoverPath = DI.FileManager.ResolvePath($"{CoverPath}{file.Id}.png");
 
                 DI.FileManager.EnsurePathExist(DI.FileManager.ResolvePath(CoverPath));
                 

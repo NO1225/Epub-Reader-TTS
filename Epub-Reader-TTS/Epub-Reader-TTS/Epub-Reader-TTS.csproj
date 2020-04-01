@@ -19,14 +19,10 @@
     <None Remove="Fonts\OpenSans-Light.ttf" />
     <None Remove="Fonts\OpenSans-Regular.ttf" />
     <None Remove="logo_icon.ico" />
-    <None Remove="usersettings.json" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="usersettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

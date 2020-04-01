@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -75,7 +76,10 @@ namespace Epub_Reader_TTS.Core
         }
         public bool PathExists(string filePath)
         {
-            return File.Exists(filePath);
+            Debug.WriteLine(filePath);
+            var a = File.Exists(filePath);
+            Debug.WriteLine(a);
+            return a;
         }
 
         public FileStream OpenFile(string path)
