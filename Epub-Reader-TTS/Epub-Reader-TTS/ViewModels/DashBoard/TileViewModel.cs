@@ -47,6 +47,7 @@ namespace Epub_Reader_TTS
         /// Command to open the book related to this tile
         /// </summary>
         public ICommand OpenCommand { get; set; }
+        public bool Selected { get; set; }
 
         #endregion
 
@@ -77,6 +78,8 @@ namespace Epub_Reader_TTS
         /// <returns></returns>
         private async Task Open()
         {
+            this.Selected = true;
+
             TaskManager.Run(() => Parent.OpenBook(this.Book));
             //Parent.OpenBook(this.Book);
         }

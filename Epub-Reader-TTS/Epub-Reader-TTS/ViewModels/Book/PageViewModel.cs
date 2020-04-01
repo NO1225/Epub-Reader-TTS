@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using static Epub_Reader_TTS.DI;
 
@@ -216,47 +215,48 @@ namespace Epub_Reader_TTS
             double currentHeight = 0;
             double allowedHeight = parent.ActualHeight;
             double allowedWidth = parent.ActualWidth / 2 - 40;
-
-            var minHeight = " ".GetParagraphHeight(allowedWidth, parent.FontSize);
-
-            var paragraphsText = new List<ParagraphTextViewModel>();
-
-            foreach (var paragraph in ParagraphViewModels)
+            if (parent.ActualWidth > 0 && parent.ActualHeight > 0)
             {
-                if (currentHeight + minHeight > allowedHeight)
+                var minHeight = " ".GetParagraphHeight(allowedWidth, parent.FontSize);
+
+                var paragraphsText = new List<ParagraphTextViewModel>();
+
+                foreach (var paragraph in ParagraphViewModels)
                 {
-                    currentPage++;
-                    currentHeight = 0;
-                }
-
-                var paragraphHeight = paragraph.GetParagraphHeight(allowedWidth, parent.FontSize);
-
-                if (currentHeight + paragraphHeight > allowedHeight)
-                {
-                    paragraph.StartSpliting(paragraph.ParagraphText, allowedHeight - currentHeight, allowedHeight, allowedWidth, parent.FontSize);
-
-                    currentPage++;
-                    currentHeight = 0;
-                    for (int i = 1; i < paragraph.Paragraphs.Count; i++)
+                    if (currentHeight + minHeight > allowedHeight)
                     {
-                        if (currentHeight > allowedHeight)
-                            currentPage++;
-                        paragraphHeight = paragraph.Paragraphs[i].GetParagraphHeight(allowedWidth, parent.FontSize);
+                        currentPage++;
+                        currentHeight = 0;
+                    }
+
+                    var paragraphHeight = paragraph.GetParagraphHeight(allowedWidth, parent.FontSize);
+
+                    if (currentHeight + paragraphHeight > allowedHeight)
+                    {
+                        paragraph.StartSpliting(paragraph.ParagraphText, allowedHeight - currentHeight, allowedHeight, allowedWidth, parent.FontSize);
+
+                        currentPage++;
+                        currentHeight = 0;
+                        for (int i = 1; i < paragraph.Paragraphs.Count; i++)
+                        {
+                            if (currentHeight > allowedHeight)
+                                currentPage++;
+                            paragraphHeight = paragraph.Paragraphs[i].GetParagraphHeight(allowedWidth, parent.FontSize);
+                            currentHeight += paragraphHeight;
+                        }
+
+                    }
+                    else
+                    {
+                        paragraph.StartSpliting(paragraph.ParagraphText, allowedHeight - currentHeight, allowedHeight, allowedWidth, parent.FontSize);
                         currentHeight += paragraphHeight;
                     }
 
-                }
-                else
-                {
-                    paragraph.StartSpliting(paragraph.ParagraphText, allowedHeight - currentHeight, allowedHeight, allowedWidth, parent.FontSize);
-                    currentHeight += paragraphHeight;
+                    paragraphsText.AddRange(paragraph.Paragraphs.Select(paragraph => paragraph));
                 }
 
-                paragraphsText.AddRange(paragraph.Paragraphs.Select(paragraph => paragraph));
+                ParagraphTextViewModels = new ObservableCollection<ParagraphTextViewModel>(paragraphsText);
             }
-
-            ParagraphTextViewModels = new ObservableCollection<ParagraphTextViewModel>(paragraphsText);
-
             stopwatch.Stop();
 
             Debug.WriteLine("Elapsed Time is {0} ms", stopwatch.ElapsedMilliseconds);
@@ -364,7 +364,7 @@ namespace Epub_Reader_TTS
         #endregion
 
         #region Event Hundlers
-        
+
         /// <summary>
         /// Event to hundle the changes on the ui with the progress of the reading
         /// </summary>

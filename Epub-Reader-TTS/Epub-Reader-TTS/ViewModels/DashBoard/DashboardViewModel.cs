@@ -33,6 +33,9 @@ namespace Epub_Reader_TTS
         /// </summary>
         public bool Loading { get; set; }
 
+        /// <summary>
+        /// Constant to holde where should the cover images be saved to 
+        /// </summary>
         public readonly string CoverPath;
 
 
