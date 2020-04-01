@@ -52,7 +52,7 @@
     <system:String x:Key="FontAwesomeBackwardIcon">&#xf04a;</system:String>
     <system:String x:Key="FontAwesomeForwardStepIcon">&#xf051;</system:String>
     <system:String x:Key="FontAwesomeBackwardStepIcon">&#xf048;</system:String>
-    <system:String x:Key="FontAwesomeSettingsIcon">&#xf1de;</system:String>
+    <system:String x:Key="FontAwesomeSettingsIcon">&#xf013;</system:String>
     <system:String x:Key="FontAwesomeRedoAltIcon">&#xf01e;</system:String>
     
     

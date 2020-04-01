@@ -51,6 +51,7 @@
             <Button 
                 Style="{DynamicResource IconGrowButton}"
                 Command="{Binding OpenBookCommand}"
+                ToolTip="Add Book"
                 VerticalAlignment="Center"
                 Margin="10"
                 Padding="10"
@@ -62,6 +63,7 @@
                 Style="{DynamicResource IconGrowButton}"
                 Command="{Binding RefreshAllCommand}"
                 VerticalAlignment="Center"
+                ToolTip="Reload All Books"
                 Margin="10"
                 Padding="10"
                 Content="{StaticResource FontAwesomeRedoAltIcon}"

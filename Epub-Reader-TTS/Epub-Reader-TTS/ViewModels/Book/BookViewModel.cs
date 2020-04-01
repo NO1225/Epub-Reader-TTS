@@ -41,7 +41,14 @@ namespace Epub_Reader_TTS
         /// </summary>
         private bool reading;
 
+        /// <summary>
+        /// Determine if the them is dark mode
+        /// </summary>
         private bool isDarkMode;
+
+        /// <summary>
+        /// The font size
+        /// </summary>
         private int fontSize;
 
 
@@ -88,7 +95,7 @@ namespace Epub_Reader_TTS
                 if (value != null)
                     value.SortParagraphs();
                 currentPage = value;
-
+                OnPropertyChanged(nameof(PauseButtonText));
 
 
             }
@@ -97,7 +104,17 @@ namespace Epub_Reader_TTS
         /// <summary>
         /// THe text to be displayed in the pause button
         /// </summary>
-        public string PauseButtonText { get; set; }
+        public string PauseButtonText
+        {
+            get
+            {
+                if(CurrentPage != null)
+                {
+                    return CurrentPage.IsReading? "\uf04c" : "\uf04b";
+                }
+                return reading ? "\uf04c" : "\uf04b";
+            }
+        }
 
         /// <summary>
         /// The type of the popup to be displayed
@@ -296,7 +313,7 @@ namespace Epub_Reader_TTS
 
             InstalledVoices = new ReadOnlyCollection<InstalledVoice>(DI.SpeechSynthesizer.GetInstalledVoices().ToList());
 
-            PauseButtonText = "\uf04b";
+            OnPropertyChanged(nameof(PauseButtonText));
 
             SetSelectedVoice(DI.SettingsManager.GetSelectedVoice(), DI.SettingsManager.GetReadingSpeed(), DI.SettingsManager.GetVoicePitch());
 
@@ -315,6 +332,8 @@ namespace Epub_Reader_TTS
             CurrentPage = PageViewModels.First(p => p.Index == book.CurrentPageIndex);
 
             CurrentPage.Initiate(reading, book.CurrentParagraphIndex);
+
+            OnPropertyChanged(nameof(PauseButtonText));
         }
 
         #endregion
@@ -332,14 +351,14 @@ namespace Epub_Reader_TTS
                 CurrentPage.Initiate();
 
             await CurrentPage.TogglePause(forcePause);
-            Debug.WriteLine(CurrentPage.IsReading);
-            PauseButtonText = CurrentPage.IsReading ? "\uf04c" : "\uf04b";
 
             DI.SpeechSynthesizer.UpdateSystemMediaTrasportControls(
                 Title,
                 CurrentPage.
                 Title,
                 mediaPlaybackStatus: CurrentPage.IsReading ? MediaPlaybackStatus.Playing : MediaPlaybackStatus.Paused);
+
+            OnPropertyChanged(nameof(PauseButtonText));
         }
 
         /// <summary>
@@ -392,6 +411,8 @@ namespace Epub_Reader_TTS
         private async Task NextParagraph()
         {
             await CurrentPage.GoToNextParagraph();
+
+            OnPropertyChanged(nameof(PauseButtonText));
         }
 
         /// <summary>
@@ -401,6 +422,8 @@ namespace Epub_Reader_TTS
         private async Task PreviousParagraph()
         {
             await CurrentPage.GoToPreviousParagraph();
+
+            OnPropertyChanged(nameof(PauseButtonText));
         }
 
         #endregion
@@ -441,6 +464,8 @@ namespace Epub_Reader_TTS
                     CurrentPage.
                     Title,
                     mediaPlaybackStatus: CurrentPage.IsReading ? MediaPlaybackStatus.Playing : MediaPlaybackStatus.Paused);
+
+                OnPropertyChanged(nameof(PauseButtonText));
             }
             else
                 Finnished();
@@ -466,6 +491,8 @@ namespace Epub_Reader_TTS
                     CurrentPage.
                     Title,
                     mediaPlaybackStatus: CurrentPage.IsReading ? MediaPlaybackStatus.Playing : MediaPlaybackStatus.Paused);
+
+                OnPropertyChanged(nameof(PauseButtonText));
             }
         }
 
@@ -483,6 +510,8 @@ namespace Epub_Reader_TTS
 
                 CurrentPage.Initiate(reading);
             }
+
+            OnPropertyChanged(nameof(PauseButtonText));
         }
 
 

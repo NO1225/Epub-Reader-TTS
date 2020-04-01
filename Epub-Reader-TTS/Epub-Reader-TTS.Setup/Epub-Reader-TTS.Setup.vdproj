@@ -50,6 +50,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -191,15 +199,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Epub Reader TTS"
-        "ProductCode" = "8:{E902214B-0CC2-4BC3-B270-7267AAC4FCF4}"
-        "PackageCode" = "8:{51453B8C-B2DC-4C4B-B183-9C3958ECE75C}"
+        "ProductCode" = "8:{8E6BBE65-345E-4FF1-8B4C-6E49198844D5}"
+        "PackageCode" = "8:{7085F1A5-863C-463D-B53A-9F992FB9BC0F}"
         "UpgradeCode" = "8:{51E9B76A-FADD-45A1-84E9-66CFD194CC8D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.02"
+        "ProductVersion" = "8:1.0.03"
         "Manufacturer" = "8:Epub Reader TTS"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
