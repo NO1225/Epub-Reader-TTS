@@ -15,13 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_C8DEC5E94EE54281A060E820164E70BC"
+        "MsmKey" = "8:_B96EC574325246588200B75263B1A391"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_F8437ADC6A744529B62A167829588CDA"
+        "MsmKey" = "8:_C4935AFBD5DC494F8C5FD751CB0F4DD8"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -43,6 +43,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -59,6 +67,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -80,6 +104,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C4935AFBD5DC494F8C5FD751CB0F4DD8"
+            {
+            "SourcePath" = "8:C:\\Users\\safar\\Downloads\\logo___copy_uxB_icon.ico"
+            "TargetName" = "8:icon.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_32048A7FC35844D5A354A822FC94141C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -95,11 +139,22 @@
             "Property" = "8:ProgramMenuFolder"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_2750FD630C604DC5B55FE3147E485FCE"
+                    {
+                    "Name" = "8:Epub Reader TTS"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_6C355F0266D74384AF8FEF1A745F6B43"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_32048A7FC35844D5A354A822FC94141C"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:[LocalAppDataFolder][Manufacturer]\\[ProductName]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -136,16 +191,16 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Epub Reader TTS"
-        "ProductCode" = "8:{48FF059B-918B-45FE-AA47-A260DB08BF22}"
-        "PackageCode" = "8:{30863F8F-3C6A-4EAC-A1A5-23E174E186F0}"
+        "ProductCode" = "8:{E902214B-0CC2-4BC3-B270-7267AAC4FCF4}"
+        "PackageCode" = "8:{51453B8C-B2DC-4C4B-B183-9C3958ECE75C}"
         "UpgradeCode" = "8:{51E9B76A-FADD-45A1-84E9-66CFD194CC8D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:No125"
+        "ProductVersion" = "8:1.0.02"
+        "Manufacturer" = "8:Epub Reader TTS"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:Epub Reader TTS"
@@ -154,7 +209,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:Epub file reader with text o speach support"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_C4935AFBD5DC494F8C5FD751CB0F4DD8"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -257,6 +312,34 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_3EACB6B935A34B088666F15E01F7FDE6"
+            {
+            "Name" = "8:Epub Reader TTS"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_B96EC574325246588200B75263B1A391"
+            "Folder" = "8:_7CCE6DDEE89D4EC0A45D608A38712EB8"
+            "WorkingFolder" = "8:_32048A7FC35844D5A354A822FC94141C"
+            "Icon" = "8:_C4935AFBD5DC494F8C5FD751CB0F4DD8"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_66120DA044F640ABA4652B0A9E445AAC"
+            {
+            "Name" = "8:Epub Reader TTS"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_B96EC574325246588200B75263B1A391"
+            "Folder" = "8:_2750FD630C604DC5B55FE3147E485FCE"
+            "WorkingFolder" = "8:_32048A7FC35844D5A354A822FC94141C"
+            "Icon" = "8:_C4935AFBD5DC494F8C5FD751CB0F4DD8"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
@@ -656,9 +739,9 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C8DEC5E94EE54281A060E820164E70BC"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B96EC574325246588200B75263B1A391"
             {
-            "SourcePath" = "8:..\\Epub-Reader-TTS\\obj\\x86\\Release\\netcoreapp3.1\\Epub-Reader-TTS.exe"
+            "SourcePath" = "8:..\\Epub-Reader-TTS\\obj\\x86\\Release\\netcoreapp3.1\\win-x86\\Epub-Reader-TTS.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_32048A7FC35844D5A354A822FC94141C"
@@ -677,37 +760,10 @@
             "IsolateTo" = "8:"
             "ProjectOutputGroupRegister" = "3:1"
             "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:PublishItems"
+            "OutputGroupCanonicalName" = "8:PublishItemsOutputGroup"
             "OutputProjectGuid" = "8:{FDA51445-18AE-4D53-AEE2-63FDF6195181}"
             "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_F8437ADC6A744529B62A167829588CDA"
-            {
-            "SourcePath" = "8:..\\Epub-Reader-TTS\\obj\\x86\\Release\\netcoreapp3.1\\Epub-Reader-TTS.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_32048A7FC35844D5A354A822FC94141C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{FDA51445-18AE-4D53-AEE2-63FDF6195181}"
-            "ShowKeyOutput" = "11:TRUE"
+            "PublishProfilePath" = "8:Properties\\PublishProfiles\\FolderProfile SC.pubxml"
                 "ExcludeFilters"
                 {
                 }
