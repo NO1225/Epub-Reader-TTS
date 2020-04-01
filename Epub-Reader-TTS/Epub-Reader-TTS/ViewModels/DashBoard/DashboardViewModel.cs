@@ -33,6 +33,8 @@ namespace Epub_Reader_TTS
         /// </summary>
         public bool Loading { get; set; }
 
+        public readonly string CoverPath;
+
 
         #endregion
 
@@ -66,6 +68,8 @@ namespace Epub_Reader_TTS
         /// </summary>
         public DashboardViewModel()
         {
+            CoverPath = $"{Path.GetTempPath()}Epub Reader TTS\\Covers\\";
+
             OpenBookCommand = new RelayCommand(async () => await OpenBookFile());
 
             RefreshAllCommand = new RelayCommand(() => DI.TaskManager.Run(async () => await RefreshAll()));
@@ -192,9 +196,9 @@ namespace Epub_Reader_TTS
             if (!DI.FileManager.PathExists(file.BookCoverPath))
             {
                 if (string.IsNullOrEmpty(file.BookCoverPath))
-                    file.BookCoverPath = DI.FileManager.ResolvePath($"Covers/{file.Id}.png");
+                    file.BookCoverPath = DI.FileManager.ResolvePath($"{CoverPath}{file.Id}.png");
 
-                DI.FileManager.EnsurePathExist(DI.FileManager.ResolvePath("Covers/"));
+                DI.FileManager.EnsurePathExist(DI.FileManager.ResolvePath(CoverPath));
                 
                 if (book.CoverImage != null)
                 {
