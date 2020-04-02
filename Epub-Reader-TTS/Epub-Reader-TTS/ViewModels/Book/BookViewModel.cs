@@ -140,7 +140,7 @@ namespace Epub_Reader_TTS
             set
             {
                 selectedVoice = value;
-                TaskManager.Run(() => UpdateSelectedVoice(selectedVoice, readingSpeed, voicePitch));
+                UpdateSelectedVoice(selectedVoice);
             }
         }
 
@@ -152,8 +152,10 @@ namespace Epub_Reader_TTS
             get => readingSpeed;
             set
             {
+                if (value == 0)
+                    return;
                 readingSpeed = value;
-                UpdateSelectedVoice(selectedVoice, readingSpeed, voicePitch);
+                UpdateReadingSpeed(readingSpeed);
             }
         }
 
@@ -165,8 +167,10 @@ namespace Epub_Reader_TTS
             get => voicePitch;
             set
             {
+                if (value == 0)
+                    return;
                 voicePitch = value;
-                UpdateSelectedVoice(selectedVoice, readingSpeed, voicePitch);
+                UpdateVoicePitch(voicePitch);
             }
         }
 
@@ -179,7 +183,7 @@ namespace Epub_Reader_TTS
             set
             {
                 isDarkMode = value;
-                ViewModelApplication.SetDarkMode(IsDarkMode);
+                DI.UIManager.SetDarkMode(IsDarkMode);
             }
         }
 
@@ -192,7 +196,7 @@ namespace Epub_Reader_TTS
             set
             {
                 fontSize = value;
-                ViewModelApplication.SetFontSize(FontSize);
+                DI.UIManager.SetFontSize(FontSize);
                 if (CurrentPage != null && actualWidth != 0 && actualHeight != 0)
                     CurrentPage.SortParagraphs();
             }
@@ -307,15 +311,24 @@ namespace Epub_Reader_TTS
         /// </summary>
         private void Initiate()
         {
-            IsDarkMode = DI.SettingsManager.IsDarkMode();
+            this.isDarkMode = DI.SettingsManager.IsDarkMode();
 
-            FontSize = DI.SettingsManager.GetFontSize();
+            this.fontSize = DI.SettingsManager.GetFontSize();
 
             InstalledVoices = new ReadOnlyCollection<InstalledVoice>(DI.SpeechSynthesizer.GetInstalledVoices().ToList());
 
-            OnPropertyChanged(nameof(PauseButtonText));
+            var loadedVoice = DI.SettingsManager.GetSelectedVoice();
 
-            SetSelectedVoice(DI.SettingsManager.GetSelectedVoice(), DI.SettingsManager.GetReadingSpeed(), DI.SettingsManager.GetVoicePitch());
+            if (string.IsNullOrEmpty(loadedVoice))
+                loadedVoice = InstalledVoices.First().DisplayName;
+
+            this.selectedVoice = InstalledVoices.First(v => v.DisplayName == loadedVoice);
+
+            this.readingSpeed = DI.SettingsManager.GetReadingSpeed();
+
+            this.voicePitch = DI.SettingsManager.GetVoicePitch();
+
+            OnPropertyChanged(nameof(PauseButtonText));
 
             DI.SpeechSynthesizer.PlayPressed = () => TogglePause();
             DI.SpeechSynthesizer.PausePressed = () => TogglePause();
@@ -531,36 +544,34 @@ namespace Epub_Reader_TTS
         /// <summary>
         /// Select voice based on the installed voice
         /// </summary>
-        /// <param name="selectedVoice"></param>
-        /// <param name="readingSpeed"></param>
-        private void UpdateSelectedVoice(InstalledVoice selectedVoice, double readingSpeed, double voicePitch)
+        /// <param name="selectedVoice">The selected voice</param>
+        private void UpdateSelectedVoice(InstalledVoice selectedVoice)
         {
             DI.SpeechSynthesizer.SelectVoice(selectedVoice.DisplayName);
 
-            DI.SpeechSynthesizer.Rate = readingSpeed;
-
-            DI.SpeechSynthesizer.Pitch = voicePitch;
-
             DI.SettingsManager.SetSelectedVoice(selectedVoice.DisplayName);
-            DI.SettingsManager.SetReadingSpeed(readingSpeed);
-            DI.SettingsManager.SetVoicePitch(voicePitch);
         }
 
         /// <summary>
-        /// Set the selected voice 
+        /// Update the speed of reading
         /// </summary>
-        /// <param name="selectedVoice"></param>
-        /// <param name="readingSpeed"></param>
-        private void SetSelectedVoice(string selectedVoice, double readingSpeed, double voicePitch)
+        /// <param name="readingSpeed">the speed of reading</param>
+        private void UpdateReadingSpeed(double readingSpeed)
         {
-            if (string.IsNullOrEmpty(selectedVoice))
-                selectedVoice = InstalledVoices.First().DisplayName;
+            DI.SpeechSynthesizer.Rate = readingSpeed;
 
-            SelectedVoice = InstalledVoices.First(v => v.DisplayName == selectedVoice);
+            DI.SettingsManager.SetReadingSpeed(readingSpeed);
+        }
 
-            ReadingSpeed = readingSpeed;
+        /// <summary>
+        /// Update the pitch of the voice
+        /// </summary>
+        /// <param name="voicePitch">the pithc of the voice</param>
+        private void UpdateVoicePitch(double voicePitch)
+        {
+            DI.SettingsManager.SetVoicePitch(voicePitch);
 
-            VoicePitch = voicePitch;
+            DI.SpeechSynthesizer.Pitch = voicePitch;
         }
 
         #endregion

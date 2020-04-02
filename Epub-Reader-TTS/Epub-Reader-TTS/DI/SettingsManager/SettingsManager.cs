@@ -20,6 +20,7 @@ namespace Epub_Reader_TTS
         private UserSettings userSettings;
 
         private string fileLocation = "usersettings.json";
+        private string tmpLocation = "tmp.json";
 
         bool saving = false;
 
@@ -53,10 +54,11 @@ namespace Epub_Reader_TTS
         private async Task Save()
         {
             var tmp = userSettings;
-            using (FileStream fs = File.Create(fileLocation))
+            using (FileStream fs = File.Create(tmpLocation))
             {
                 await JsonSerializer.SerializeAsync(fs, userSettings);
             }
+            File.Copy(tmpLocation, fileLocation, true);
             Debug.WriteLine("Saving Done");
 
             if(waiting & !equalSettings(tmp))

@@ -83,10 +83,9 @@ namespace Epub_Reader_TTS
             FileAssociations.EnsureAssociationsSet();
 
             // Load settings
-            ViewModelApplication.SetDarkMode(DI.SettingsManager.IsDarkMode());
+            DI.UIManager.UpdateDarkMode(DI.SettingsManager.IsDarkMode());
 
-            ViewModelApplication.SetFontSize(DI.SettingsManager.GetFontSize());
-
+            DI.UIManager.UpdateFontSize(DI.SettingsManager.GetFontSize());
 
             // Ensure the client data store 
             await ClientDataStore.EnsureDataStoreAsync();

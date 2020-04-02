@@ -15,7 +15,7 @@ namespace Epub_Reader_TTS
         public static ISettingsManager SettingsManager => Framework.Service<ISettingsManager>();
 
         /// <summary>
-        /// A shortcut to access the <see cref="ISettingsManager"/>
+        /// A shortcut to access the <see cref="ISpeechSynthesizer"/>
         /// </summary>
         public static ISpeechSynthesizer SpeechSynthesizer;//=> Framework.Service<ISpeechSynthesizer>();
 
@@ -43,5 +43,10 @@ namespace Epub_Reader_TTS
         /// A shortcut to access toe <see cref="ITaskManager"/> service
         /// </summary>
         public static ITaskManager TaskManager => Framework.Service<ITaskManager>();
+
+        /// <summary>
+        /// A shortcut to access toe <see cref="IUIManager"/> service
+        /// </summary>
+        public static IUIManager UIManager => Framework.Service<IUIManager>();
     }
 }

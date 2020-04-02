@@ -43,9 +43,11 @@ namespace Epub_Reader_TTS
 
             // Bind a Settings manager
             construction.Services.AddSingleton<ISettingsManager, SettingsManager>();
+                        
+            //construction.Services.AddSingleton<ISpeechSynthesizer, SpeechSynthesizer>();
 
-
-            construction.Services.AddSingleton<ISpeechSynthesizer, SpeechSynthesizer>();
+            // Bind a UI manager
+            construction.Services.AddSingleton<IUIManager, UIManager>();
 
             // Return the construction for chaining
             return construction;
