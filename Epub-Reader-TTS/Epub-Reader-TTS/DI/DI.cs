@@ -1,5 +1,6 @@
 ﻿using Dna;
 using Epub_Reader_TTS.Core;
+using Microsoft.Extensions.Logging;
 
 namespace Epub_Reader_TTS
 {
@@ -48,5 +49,10 @@ namespace Epub_Reader_TTS
         /// A shortcut to access toe <see cref="IUIManager"/> service
         /// </summary>
         public static IUIManager UIManager => Framework.Service<IUIManager>();
+
+        /// <summary>
+        /// The Default logger
+        /// </summary>
+        public static ILogger Logger => FrameworkDI.Logger;
     }
 }

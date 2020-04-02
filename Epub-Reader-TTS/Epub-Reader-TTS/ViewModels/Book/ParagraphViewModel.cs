@@ -120,10 +120,6 @@ namespace Epub_Reader_TTS
 
             startingIndex = startingIndex >= matches.Count ? matches.Count - 1 : startingIndex;
 
-            if (matches.Count == 77)
-            {
-                Debug.WriteLine("");
-            }
             while (true)
             {
                 string firstHalf, secondHalf;

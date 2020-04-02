@@ -1,4 +1,5 @@
-﻿using Epub_Reader_TTS.Core;
+﻿using Dna;
+using Epub_Reader_TTS.Core;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Diagnostics;
@@ -47,7 +48,7 @@ namespace Epub_Reader_TTS
                 waiting = false;
             }
             
-            Debug.WriteLine("Initilizing Saving");
+            DI.Logger.LogDebugSource("Initilizing Saving");
             
         }
 
@@ -59,7 +60,7 @@ namespace Epub_Reader_TTS
                 await JsonSerializer.SerializeAsync(fs, userSettings);
             }
             File.Copy(tmpLocation, fileLocation, true);
-            Debug.WriteLine("Saving Done");
+            DI.Logger.LogDebugSource("Saving Done");
 
             if(waiting & !equalSettings(tmp))
             {
@@ -213,7 +214,7 @@ namespace Epub_Reader_TTS
 
         public async Task Initiate()
         {
-            Debug.WriteLine("Initilizing Settings");
+            DI.Logger.LogDebugSource("Initilizing Settings");
 
             if(File.Exists(fileLocation))
             {
@@ -232,7 +233,7 @@ namespace Epub_Reader_TTS
             }
 
             //MessageBox.Show($"Initialized {userSettings}");
-            Debug.WriteLine("Initilizing Done");
+            DI.Logger.LogDebugSource("Initilizing Done");
 
         }
 

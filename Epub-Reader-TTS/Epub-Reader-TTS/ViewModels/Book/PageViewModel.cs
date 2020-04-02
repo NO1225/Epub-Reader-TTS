@@ -1,4 +1,5 @@
-﻿using Epub_Reader_TTS.Core;
+﻿using Dna;
+using Epub_Reader_TTS.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -121,7 +122,7 @@ namespace Epub_Reader_TTS
         /// </summary>
         public void SortParagraphs()
         {
-            Debug.WriteLine("sort queed");
+            Logger.LogDebugSource("sort queed");
             if (sorting)
             {
                 waiting = true;
@@ -129,7 +130,7 @@ namespace Epub_Reader_TTS
             }
             else
             {
-                Debug.WriteLine("start sorting");
+                Logger.LogDebugSource("start sorting");
                 sorting = true;
                 Task.Run(async () => StartSorting());
             }
@@ -259,7 +260,7 @@ namespace Epub_Reader_TTS
             }
             stopwatch.Stop();
 
-            Debug.WriteLine("Elapsed Time is {0} ms", stopwatch.ElapsedMilliseconds);
+            Logger.LogDebugSource($"Elapsed Time is {stopwatch.ElapsedMilliseconds} ms");
 
             if (waiting && (allowedHeight != parent.ActualHeight || allowedWidth != parent.ActualWidth / 2 - 40))
             {

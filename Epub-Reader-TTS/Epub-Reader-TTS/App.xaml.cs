@@ -5,7 +5,6 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using static Dna.FrameworkDI;
 using static Epub_Reader_TTS.DI;
 
 namespace Epub_Reader_TTS
@@ -28,7 +27,6 @@ namespace Epub_Reader_TTS
             var win = new Epub_Reader_TTS.SplashScreen();
 
             win.Show();
-
 
             // Setup the main application 
             await ApplicationSetupAsync();
