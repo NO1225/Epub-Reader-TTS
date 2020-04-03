@@ -39,6 +39,16 @@ namespace Epub_Reader_TTS
         public readonly string CoverPath;
 
 
+        /// <summary>
+        /// The type of the popup to be displayed
+        /// </summary>
+        public AdditionalContent CurrentAdditionalContent { get; set; }
+
+        /// <summary>
+        /// Show the pop up
+        /// </summary>
+        public bool AdditionalContentVisible { get; set; }
+
         #endregion
 
         #region Private Fields
@@ -62,6 +72,16 @@ namespace Epub_Reader_TTS
         /// </summary>
         public ICommand RefreshAllCommand { get; set; }
 
+        /// <summary>
+        /// Command to show the settings popup
+        /// </summary>
+        public ICommand ToggleSettingsCommand { get; set; }
+
+        /// <summary>
+        /// Command to hide any popup
+        /// </summary>
+        public ICommand HidePopUpCommand { get; set; }
+
         #endregion
 
         #region Default Constructor
@@ -76,6 +96,10 @@ namespace Epub_Reader_TTS
             OpenBookCommand = new RelayCommand(async () => await OpenBookFile());
 
             RefreshAllCommand = new RelayCommand(() => DI.TaskManager.Run(async () => await RefreshAll()));
+
+            ToggleSettingsCommand = new RelayCommand(ToggleSettings);
+
+            HidePopUpCommand = new RelayCommand(() => AdditionalContentVisible = false);
 
             Initiate().GetAwaiter().GetResult();
         }
@@ -131,7 +155,28 @@ namespace Epub_Reader_TTS
                 await OpenBookFile(openFileDialog.FileName);
             }
         }
-        
+
+        /// <summary>
+        /// Show/Hide the settings popup
+        /// </summary>
+        private void ToggleSettings()
+        {
+            if (CurrentAdditionalContent == AdditionalContent.Settings)
+            {
+                AdditionalContentVisible = !AdditionalContentVisible;
+            }
+            else
+            {
+                CurrentAdditionalContent = AdditionalContent.Settings;
+                AdditionalContentVisible = true;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+
         /// <summary>
         /// Open the file and assosiate it with a book model
         /// </summary>
@@ -139,7 +184,7 @@ namespace Epub_Reader_TTS
         /// <returns></returns>
         public async Task<Book> OpenBookFile(string path)
         {
-            if(!(Path.GetExtension(path).Substring(1).ToLower() == "epub"))
+            if (!(Path.GetExtension(path).Substring(1).ToLower() == "epub"))
             {
                 MessageBox.Show("Wrong file");
                 return null;
@@ -169,10 +214,6 @@ namespace Epub_Reader_TTS
 
             return book;
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Refresh the selected book

@@ -218,7 +218,7 @@ namespace Epub_Reader_TTS
             double allowedWidth = parent.ActualWidth / 2 - 40;
             if (parent.ActualWidth > 0 && parent.ActualHeight > 0)
             {
-                var minHeight = " ".GetParagraphHeight(allowedWidth, parent.FontSize);
+                var minHeight = " ".GetParagraphHeight(allowedWidth, DI.SettingsViewModel.FontSize);
 
                 var paragraphsText = new List<ParagraphTextViewModel>();
 
@@ -230,11 +230,11 @@ namespace Epub_Reader_TTS
                         currentHeight = 0;
                     }
 
-                    var paragraphHeight = paragraph.GetParagraphHeight(allowedWidth, parent.FontSize);
+                    var paragraphHeight = paragraph.GetParagraphHeight(allowedWidth, DI.SettingsViewModel.FontSize);
 
                     if (currentHeight + paragraphHeight > allowedHeight)
                     {
-                        paragraph.StartSpliting(paragraph.ParagraphText, allowedHeight - currentHeight, allowedHeight, allowedWidth, parent.FontSize);
+                        paragraph.StartSpliting(paragraph.ParagraphText, allowedHeight - currentHeight, allowedHeight, allowedWidth, DI.SettingsViewModel.FontSize);
 
                         currentPage++;
                         currentHeight = 0;
@@ -242,14 +242,14 @@ namespace Epub_Reader_TTS
                         {
                             if (currentHeight > allowedHeight)
                                 currentPage++;
-                            paragraphHeight = paragraph.Paragraphs[i].GetParagraphHeight(allowedWidth, parent.FontSize);
+                            paragraphHeight = paragraph.Paragraphs[i].GetParagraphHeight(allowedWidth, DI.SettingsViewModel.FontSize);
                             currentHeight += paragraphHeight;
                         }
 
                     }
                     else
                     {
-                        paragraph.StartSpliting(paragraph.ParagraphText, allowedHeight - currentHeight, allowedHeight, allowedWidth, parent.FontSize);
+                        paragraph.StartSpliting(paragraph.ParagraphText, allowedHeight - currentHeight, allowedHeight, allowedWidth, DI.SettingsViewModel.FontSize);
                         currentHeight += paragraphHeight;
                     }
 

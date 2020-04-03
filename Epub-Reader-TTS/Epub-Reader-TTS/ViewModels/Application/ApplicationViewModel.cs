@@ -30,15 +30,9 @@ namespace Epub_Reader_TTS
         /// </summary>
         public Book CurrentBook { get; set; }
 
-        ///// <summary>
-        ///// The logo of the application
-        ///// </summary>
-        //public byte[] Logo
-        //{
-        //    get;
-        //    private set;
-        //} = Properties.Resources.Logo.ToByteArray(true);
-
+        /// <summary>
+        /// The title of the application
+        /// </summary>
         public string Title => CurrentBook == null ? "Epub-Reader-TTS" : $"Epub-Reader-TTS - {CurrentBook.BookName}";
 
         #endregion

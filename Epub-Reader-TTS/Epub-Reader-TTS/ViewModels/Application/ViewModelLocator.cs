@@ -18,6 +18,11 @@
         public static ApplicationViewModel ApplicationViewModel => DI.ViewModelApplication;
 
         /// <summary>
+        /// The settings viewmodel
+        /// </summary>
+        public static SettingsViewModel SettingsViewModel => DI.SettingsViewModel;
+
+        /// <summary>
         /// The dashboard view model
         /// </summary>
         public static DashboardViewModel DashboardViewModel => DI.ViewModelDashboard;

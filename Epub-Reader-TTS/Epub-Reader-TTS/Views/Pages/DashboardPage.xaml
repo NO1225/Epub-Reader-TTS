@@ -38,17 +38,21 @@
             </ScrollViewer>
         </Grid>
 
-        <local:AdditionalContentControl 
+
+        <Button Grid.Row="1" Style="{StaticResource Hoverless}" Command="{Binding HidePopUpCommand}" Background="{DynamicResource DimOverlayColorBrush}" Visibility="{Binding AdditionalContentVisible, Converter={local:BoolianToVisibilityConverter}}"/>
+        <local:AdditionalContentControl  
             Grid.Row="1"
             local:AnimateSlideInFromTopProperty.Value="{Binding AdditionalContentVisible}"
             Content="{Binding CurrentAdditionalContent, Converter={local:AdditionalContentConverter}}"
             />
 
-        <StackPanel 
+
+        <DockPanel 
+            LastChildFill="True"
             Background="{DynamicResource PrimaryBackGroundColorBrush}"
-            Grid.Row="0"
-            Orientation="Horizontal">
+            Grid.Row="0">
             <Button 
+                DockPanel.Dock="Left"
                 Style="{DynamicResource IconGrowButton}"
                 Command="{Binding OpenBookCommand}"
                 ToolTip="Add Book"
@@ -60,6 +64,7 @@
                 />
 
             <Button 
+                DockPanel.Dock="Left"
                 Style="{DynamicResource IconGrowButton}"
                 Command="{Binding RefreshAllCommand}"
                 VerticalAlignment="Center"
@@ -69,9 +74,22 @@
                 Content="{StaticResource FontAwesomeRedoAltIcon}"
                 Height="40"
                 />
-        </StackPanel>
 
+            <Button 
+                DockPanel.Dock="Right"
+                Style="{DynamicResource IconGrowButton}"
+                Command="{Binding ToggleSettingsCommand}"
+                ToolTip="Settings"
+                VerticalAlignment="Center"
+                Margin="5"
+                Content="{StaticResource FontAwesomeSettingsIcon}"
+                Height="40"
+                />
+            <Border/>
+        </DockPanel>
 
+        <Button Grid.Row="0" Style="{StaticResource Hoverless}" Command="{Binding HidePopUpCommand}" Background="{DynamicResource DimOverlayColorBrush}" Visibility="{Binding AdditionalContentVisible, Converter={local:BoolianToVisibilityConverter}}"/>
+        
         <!-- Loading Overlay -->
         <Grid Grid.Row="0" Grid.RowSpan="2" Background="{DynamicResource DimOverlayColorBrush}" Visibility="{Binding Loading, Converter={local:BoolianToVisibilityConverter}}">
             <local:LoadingControl/>

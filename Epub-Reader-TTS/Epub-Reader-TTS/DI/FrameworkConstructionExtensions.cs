@@ -21,6 +21,9 @@ namespace Epub_Reader_TTS
 
             // Bind to a single instance of Dashboard view model
             construction.Services.AddSingleton<DashboardViewModel>();
+            
+            // Bind to a single instance of Dashboard view model
+            construction.Services.AddSingleton<SettingsViewModel>();            
 
             // Return the construction for chaining
             return construction;

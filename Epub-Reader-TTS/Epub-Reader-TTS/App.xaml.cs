@@ -72,8 +72,8 @@ namespace Epub_Reader_TTS
             Framework.Construct<DefaultFrameworkConstruction>()
                 .AddFileLogger()
                 .AddClientDataStore()
-                .AddApplicationViewModels()
                 .AddClientServices()
+                .AddApplicationViewModels()
                 .Build();
 
             await DI.SettingsManager.Initiate();
