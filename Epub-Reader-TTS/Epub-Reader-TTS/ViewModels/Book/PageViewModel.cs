@@ -307,10 +307,6 @@ namespace Epub_Reader_TTS
             if (CurrentParagraph != null)
                 CurrentParagraph.Active = false;
 
-            //DI.SpeechSynthesizer.SpeakProgress -= SpeakProgress;
-
-            //DI.SpeechSynthesizer.SpeakCompleted -= SpeakCompleted;
-
             DI.SpeechSynthesizer.SpeakAsyncCancelAll();
         }
 

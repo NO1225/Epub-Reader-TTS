@@ -15,8 +15,8 @@
         <Border   
             Grid.Row="1"
             local:SizeObserver.Observe="True"
-            local:SizeObserver.ObservedHeight="{Binding ActualHeight, Mode=OneWayToSource}"
-            local:SizeObserver.ObservedWidth="{Binding ActualWidth, Mode=OneWayToSource}">
+            local:SizeObserver.ObservedHeight="{Binding ActualHeight, Mode=OneWayToSource, NotifyOnTargetUpdated=True}"
+            local:SizeObserver.ObservedWidth="{Binding ActualWidth, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}">
             <local:PageControl
                 DataContext="{Binding CurrentPage}"/>
         </Border>

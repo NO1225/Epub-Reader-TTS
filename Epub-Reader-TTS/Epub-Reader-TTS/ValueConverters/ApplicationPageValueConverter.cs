@@ -15,7 +15,7 @@ namespace Epub_Reader_TTS
     {
         private static DashboardPage dashboardPage;
 
-        public static BookPage bookPage = new BookPage(null,true);
+        //public static BookPage bookPage = new BookPage(null,true);
 
         public override object Convert(object value, Type targetType = null, object parameter = null, CultureInfo culture = null)
         {
@@ -37,9 +37,11 @@ namespace Epub_Reader_TTS
                     return dashboardPage;
 
                 case ApplicationPage.Book:
-                    bookPage.DataContext = null;
-                    bookPage.DataContext = ViewModelLocator.ApplicationViewModel.CurrentBookViewModel;
-                    return bookPage;
+                    return new BookPage(ViewModelLocator.ApplicationViewModel.CurrentBookViewModel);
+
+                    //bookPage.DataContext = null;
+                    //bookPage.DataContext = ViewModelLocator.ApplicationViewModel.CurrentBookViewModel;
+                    //return bookPage;
 
                 default:
                     Debugger.Break();
