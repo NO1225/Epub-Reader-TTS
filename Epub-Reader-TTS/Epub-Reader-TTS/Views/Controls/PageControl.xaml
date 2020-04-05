@@ -53,7 +53,19 @@
                             HighlightBackground="{DynamicResource PrimaryHoverColorBrush}"
                             HighlightForeground="{DynamicResource PrimaryFontColorBrush}" 
                             TextWrapping="Wrap"
-                        />
+                            >
+                            <local:IndexHighlightTextBlock.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Start Reading From Here" Command="{Binding StartFromHereCommand}">
+                                        <MenuItem.Icon>
+                                            <Viewbox>
+                                                <TextBlock Text="{StaticResource FontAwesomePlayIcon}" Foreground="{DynamicResource AccentColor1Brush}" FontFamily="{StaticResource FontAwesome}"/>
+                                            </Viewbox>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </local:IndexHighlightTextBlock.ContextMenu>
+                        </local:IndexHighlightTextBlock>
                         
                     </Grid>                    
                 </DataTemplate>

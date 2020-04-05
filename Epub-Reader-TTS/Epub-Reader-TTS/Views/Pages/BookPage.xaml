@@ -83,7 +83,7 @@
                     VerticalAlignment="Center"
                     Content="{StaticResource FontAwesomeBackwardStepIcon}"
                     Height="40"
-                    ToolTip="Previos Paragraph"
+                    ToolTip="Previous Paragraph"
                     />
 
                 <Button 

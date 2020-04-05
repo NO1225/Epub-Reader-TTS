@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -32,14 +31,14 @@ namespace Epub_Reader_TTS
         public static readonly DependencyProperty TextWrappingProperty = TextBlock.TextWrappingProperty.AddOwner(
             typeof(IndexHighlightTextBlock),
             new PropertyMetadata(TextWrapping.NoWrap));
-        
+
         public static readonly DependencyProperty TextTrimmingProperty = TextBlock.TextTrimmingProperty.AddOwner(
             typeof(IndexHighlightTextBlock),
             new PropertyMetadata(TextTrimming.None));
 
         public static readonly DependencyProperty TextAlignmentProperty =
             DependencyProperty.Register("TextAlignment", typeof(TextAlignment),
-                typeof(IndexHighlightTextBlock), 
+                typeof(IndexHighlightTextBlock),
                 new PropertyMetadata(TextAlignment.Left));
 
         public static readonly DependencyProperty HighlightForegroundProperty =
@@ -83,7 +82,7 @@ namespace Epub_Reader_TTS
             get => (int)GetValue(HighlightLengthProperty);
             set => SetValue(HighlightLengthProperty, value);
         }
-        
+
         public bool IsActive
         {
             get => (bool)GetValue(IsActiveProperty);
@@ -107,7 +106,7 @@ namespace Epub_Reader_TTS
             get => (TextTrimming)GetValue(TextTrimmingProperty);
             set => SetValue(TextTrimmingProperty, value);
         }
-        
+
         public TextAlignment TextAlignment
         {
             get => (TextAlignment)GetValue(TextAlignmentProperty);
@@ -152,7 +151,7 @@ namespace Epub_Reader_TTS
 
             if (highlightTextBlock == null || string.IsNullOrWhiteSpace(mainText)) return;
 
-            if (!isActive &&( highlightLength == 0 || highlightIndex > mainText.Length - highlightLength))
+            if (!isActive && (highlightLength == 0 || highlightIndex > mainText.Length - highlightLength))
             {
                 var completeRun = new Run(mainText);
                 highlightTextBlock.Inlines.Add(completeRun);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Input;
 
 namespace Epub_Reader_TTS
 {
@@ -44,6 +45,8 @@ namespace Epub_Reader_TTS
         public string ParagraphText { get; set; }
 
         #endregion
+
+        public ICommand StartFromHereCommand { get; set; }
 
         public double GetParagraphHeight(double allowedWidth, double fontSize)
         {

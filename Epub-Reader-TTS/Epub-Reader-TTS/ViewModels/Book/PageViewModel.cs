@@ -166,9 +166,11 @@ namespace Epub_Reader_TTS
         public void AddParagraph(ParagraphViewModel paragraphViewModel)
         {
             paragraphViewModel.OnFinnished = NextParagraph;
-
+            paragraphViewModel.SelectThis = StartFromThisParagraph;
             this.ParagraphViewModels.Add(paragraphViewModel);
         }
+
+  
 
         /// <summary>
         /// Go to the next paragraph
@@ -322,6 +324,13 @@ namespace Epub_Reader_TTS
 
             TaskManager.Run(async () => ViewModelApplication.SavePosition(this.Index, this.CurrentParagraph.Index));
 
+        }
+
+        private void StartFromThisParagraph(int paragraphIndex)
+        {
+            SelectParagraph(paragraphIndex);
+            if (!IsReading)
+                TogglePause(false);
         }
 
         /// <summary>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 
 namespace Epub_Reader_TTS
@@ -11,12 +7,13 @@ namespace Epub_Reader_TTS
     {
         #region Private Fields
 
-        System.Windows.Media.Color primaryFontColor;
-        System.Windows.Media.Color secondaryFontColor;
-        System.Windows.Media.Color primaryBackGroundColor;
-        System.Windows.Media.Color secondaryBackGroundColor;
+       Color primaryFontColor;
+       Color secondaryFontColor;
+       Color primaryBackGroundColor;
+       Color secondaryBackGroundColor;
 
-        System.Windows.Media.Color accentColor1;
+       Color accentColor1;
+       Color dimOverlayColor;
 
         SolidColorBrush primaryFontColorBrush;
         SolidColorBrush secondaryFontColorBrush;
@@ -24,6 +21,7 @@ namespace Epub_Reader_TTS
         SolidColorBrush secondaryBackGroundColorBrush;
 
         SolidColorBrush accentColor1Brush;
+        SolidColorBrush dimOverlayColorBrush;
 
         #endregion
 
@@ -46,36 +44,32 @@ namespace Epub_Reader_TTS
         {
             if (isDarkMode)
             {
-                primaryFontColor = ColorTranslator.FromHtml("#ffffff").ToMediaColor();
-                secondaryFontColor = ColorTranslator.FromHtml("#f0f0f0").ToMediaColor();
-                primaryBackGroundColor = ColorTranslator.FromHtml("#000000").ToMediaColor();
-                secondaryBackGroundColor = ColorTranslator.FromHtml("#2b2b2b").ToMediaColor();
+                primaryFontColor = (Color)ColorConverter.ConvertFromString("#ffffff");
+                secondaryFontColor = (Color)ColorConverter.ConvertFromString("#f0f0f0");
+                primaryBackGroundColor = (Color)ColorConverter.ConvertFromString("#000000");
+                secondaryBackGroundColor = (Color)ColorConverter.ConvertFromString("#2b2b2b");
 
-                accentColor1 = ColorTranslator.FromHtml("#3baaf5").ToMediaColor();
-
-                primaryFontColorBrush = new SolidColorBrush(primaryFontColor);
-                secondaryFontColorBrush = new SolidColorBrush(secondaryFontColor);
-                primaryBackGroundColorBrush = new SolidColorBrush(primaryBackGroundColor);
-                secondaryBackGroundColorBrush = new SolidColorBrush(secondaryBackGroundColor);
-
-                accentColor1Brush = new SolidColorBrush(accentColor1);
+                accentColor1 = (Color)ColorConverter.ConvertFromString("#3baaf5");
+                dimOverlayColor = (Color)ColorConverter.ConvertFromString("#33A4B0FF");
             }
             else
             {
-                primaryFontColor = ColorTranslator.FromHtml("#000000").ToMediaColor();
-                secondaryFontColor = ColorTranslator.FromHtml("#2b2b2b").ToMediaColor();
-                primaryBackGroundColor = ColorTranslator.FromHtml("#ffffff").ToMediaColor();
-                secondaryBackGroundColor = ColorTranslator.FromHtml("#f0f0f0").ToMediaColor();
+                primaryFontColor = (Color)ColorConverter.ConvertFromString("#000000");
+                secondaryFontColor = (Color)ColorConverter.ConvertFromString("#2b2b2b");
+                primaryBackGroundColor = (Color)ColorConverter.ConvertFromString("#ffffff");
+                secondaryBackGroundColor = (Color)ColorConverter.ConvertFromString("#f0f0f0");
 
-                accentColor1 = ColorTranslator.FromHtml("#00569f").ToMediaColor();
-
-                primaryFontColorBrush = new SolidColorBrush(primaryFontColor);
-                secondaryFontColorBrush = new SolidColorBrush(secondaryFontColor);
-                primaryBackGroundColorBrush = new SolidColorBrush(primaryBackGroundColor);
-                secondaryBackGroundColorBrush = new SolidColorBrush(secondaryBackGroundColor);
-
-                accentColor1Brush = new SolidColorBrush(accentColor1);
+                accentColor1 = (Color)ColorConverter.ConvertFromString("#00569f");
+                dimOverlayColor = (Color)ColorConverter.ConvertFromString("#33292D44");
             }
+
+            primaryFontColorBrush = new SolidColorBrush(primaryFontColor);
+            secondaryFontColorBrush = new SolidColorBrush(secondaryFontColor);
+            primaryBackGroundColorBrush = new SolidColorBrush(primaryBackGroundColor);
+            secondaryBackGroundColorBrush = new SolidColorBrush(secondaryBackGroundColor);
+
+            accentColor1Brush = new SolidColorBrush(accentColor1);
+            dimOverlayColorBrush = new SolidColorBrush(dimOverlayColor);
 
             Application.Current.Resources["PrimaryFontColor"] = primaryFontColor;
             Application.Current.Resources["SecondaryFontColor"] = secondaryFontColor;
@@ -83,6 +77,7 @@ namespace Epub_Reader_TTS
             Application.Current.Resources["SecondaryBackGroundColor"] = secondaryBackGroundColor;
 
             Application.Current.Resources["AccentColor1"] = accentColor1;
+            Application.Current.Resources["DimOverlayColor"] = dimOverlayColor;
 
             Application.Current.Resources["PrimaryFontColorBrush"] = primaryFontColorBrush;
             Application.Current.Resources["SecondaryFontColorBrush"] = secondaryFontColorBrush;
@@ -90,6 +85,7 @@ namespace Epub_Reader_TTS
             Application.Current.Resources["SecondaryBackGroundColorBrush"] = secondaryBackGroundColorBrush;
 
             Application.Current.Resources["AccentColor1Brush"] = accentColor1Brush;
+            Application.Current.Resources["DimOverlayColorBrush"] = dimOverlayColorBrush;
         }
 
         /// <summary>

@@ -25,7 +25,8 @@
                                    Padding="{TemplateBinding Padding}"
                                    TextWrapping="{TemplateBinding TextWrapping}"
                                    TextTrimming="{TemplateBinding TextTrimming}"
-                                   TextAlignment="{TemplateBinding TextAlignment}"/>
+                                   TextAlignment="{TemplateBinding TextAlignment}"
+                                   />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

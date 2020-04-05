@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Windows.Input;
 
 namespace Epub_Reader_TTS
 {
@@ -13,8 +14,6 @@ namespace Epub_Reader_TTS
         #region private fields
 
         private bool active;
-        private int wordIndex;
-        private int wordLength;
 
         #endregion
 
@@ -24,6 +23,8 @@ namespace Epub_Reader_TTS
         /// Action to be called when the reading of this paragraph is finnished
         /// </summary>
         public Action OnFinnished;
+
+        public Action<int> SelectThis;// { get; set; }
 
         /// <summary>
         /// If this paragpraph is active and the application is currently reading it 
@@ -35,8 +36,6 @@ namespace Epub_Reader_TTS
                 active = value;
                 if (!value)
                 {
-                    WordIndex = 0;
-                    WordLength = 0;
                     SetWordIndexAndLength(0, 0);
                 }
             }
@@ -47,21 +46,17 @@ namespace Epub_Reader_TTS
         /// </summary>
         public int Index { get; set; }
 
-        /// <summary>
-        /// The currently spoken word
-        /// </summary>
-        public int WordIndex
-        {
-            set => wordIndex = value;
-        }
+        ///// <summary>
+        ///// The currently spoken word
+        ///// </summary>
+        //public int WordIndex { get; set; }
 
-        /// <summary>
-        /// The length of currently spoken word
-        /// </summary>
-        public int WordLength
-        {
-            set => wordLength = value;
-        }
+
+        ///// <summary>
+        ///// The length of currently spoken word
+        ///// </summary>
+        //public int WordLength { get; set; }
+
 
         /// <summary>
         /// The text of this paragraph
@@ -74,7 +69,19 @@ namespace Epub_Reader_TTS
         public ObservableCollection<ParagraphTextViewModel> Paragraphs { get; set; }
 
         #endregion
-               
+
+        #region Commands
+
+        public ICommand StartFromHereCommand { get; set; }
+
+        #endregion
+
+        public ParagraphViewModel()
+        {
+            StartFromHereCommand = new RelayCommand(StartFromHere);
+        }
+
+
         #region Private Methods
 
         /// <summary>
@@ -82,8 +89,7 @@ namespace Epub_Reader_TTS
         /// </summary>
         private void Finnished()
         {
-            if (OnFinnished != null)
-                OnFinnished();
+            OnFinnished?.Invoke();
         }
         
         /// <summary>
@@ -99,10 +105,7 @@ namespace Epub_Reader_TTS
             var paragrpahHeight = paragraphText.GetParagraphHeight(allowedWidth, fontSize);
             if (paragrpahHeight < currentAllowedHeight)
             {
-                Paragraphs.Add(new ParagraphTextViewModel()
-                {
-                    ParagraphText = paragraphText
-                });
+                AddText(paragraphText);
                 return;
             }
             var ratio = currentAllowedHeight / paragrpahHeight;
@@ -129,10 +132,7 @@ namespace Epub_Reader_TTS
                     firstHalf = paragraphText.Substring(0, matches[startingIndex-1].Index + 1);
                     secondHalf = paragraphText.Substring(matches[startingIndex-1].Index + 1, paragraphText.Length - (matches[startingIndex-1].Index + 1));
 
-                    Paragraphs.Add(new ParagraphTextViewModel()
-                    {
-                        ParagraphText = firstHalf
-                    });
+                    AddText(firstHalf);
 
                     Split(secondHalf, fullAllowedHeight, fullAllowedHeight, allowedWidth, fontSize);
                     break;
@@ -148,10 +148,7 @@ namespace Epub_Reader_TTS
                         firstHalf = paragraphText.Substring(0, matches[startingIndex].Index + 1);
                         secondHalf = paragraphText.Substring(matches[startingIndex].Index + 1, paragraphText.Length - (matches[startingIndex].Index + 1));
 
-                        Paragraphs.Add(new ParagraphTextViewModel()
-                        {
-                            ParagraphText = firstHalf
-                        });
+                        AddText(firstHalf);
 
                         Split(secondHalf, fullAllowedHeight, fullAllowedHeight, allowedWidth, fontSize);
                         break;
@@ -177,6 +174,21 @@ namespace Epub_Reader_TTS
                 }
             }
         }
+
+        private void AddText(string paragraphText)
+        {
+            Paragraphs.Add(new ParagraphTextViewModel()
+            {
+                ParagraphText = paragraphText,
+                StartFromHereCommand = StartFromHereCommand
+            });
+        }
+
+        private void StartFromHere()
+        {
+            SelectThis?.Invoke(Index);
+        }
+
 
         #endregion
 
