@@ -8,7 +8,11 @@ namespace Epub_Reader_TTS
     /// </summary>
     public class ParagraphTextViewModel : BaseViewModel
     {
+        #region Private Fields
+
         private bool active;
+
+        #endregion
 
         #region Public Properties
 
@@ -46,12 +50,28 @@ namespace Epub_Reader_TTS
 
         #endregion
 
+        #region Public COmmands
+
+        /// <summary>
+        /// Command to be called when we want to start reading from this paragraph
+        /// </summary>
         public ICommand StartFromHereCommand { get; set; }
 
+        #endregion
+
+        #region Helping Methods
+
+        /// <summary>
+        /// Get the height of the text in this paragraph text
+        /// </summary>
+        /// <param name="allowedWidth">the allowed width</param>
+        /// <param name="fontSize">the font size</param>
+        /// <returns></returns>
         public double GetParagraphHeight(double allowedWidth, double fontSize)
         {
             return ParagraphText.GetParagraphHeight(allowedWidth, fontSize);
         }
 
+        #endregion
     }
 }

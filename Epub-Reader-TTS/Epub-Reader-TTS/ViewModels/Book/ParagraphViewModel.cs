@@ -24,7 +24,10 @@ namespace Epub_Reader_TTS
         /// </summary>
         public Action OnFinnished;
 
-        public Action<int> SelectThis;// { get; set; }
+        /// <summary>
+        /// Action to be called when we need to start reading from this paragraph
+        /// </summary>
+        public Action<int> SelectThis;
 
         /// <summary>
         /// If this paragpraph is active and the application is currently reading it 
@@ -72,10 +75,16 @@ namespace Epub_Reader_TTS
 
         #region Commands
 
+        /// <summary>
+        /// Command to start reading from this paragraph
+        /// </summary>
         public ICommand StartFromHereCommand { get; set; }
 
         #endregion
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public ParagraphViewModel()
         {
             StartFromHereCommand = new RelayCommand(StartFromHere);
@@ -175,6 +184,10 @@ namespace Epub_Reader_TTS
             }
         }
 
+        /// <summary>
+        /// Adding a paragraph text to this paragraph
+        /// </summary>
+        /// <param name="paragraphText"></param>
         private void AddText(string paragraphText)
         {
             Paragraphs.Add(new ParagraphTextViewModel()
@@ -184,6 +197,9 @@ namespace Epub_Reader_TTS
             });
         }
 
+        /// <summary>
+        /// Start reading from this paragraph
+        /// </summary>
         private void StartFromHere()
         {
             SelectThis?.Invoke(Index);

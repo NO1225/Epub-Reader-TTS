@@ -326,6 +326,10 @@ namespace Epub_Reader_TTS
 
         }
 
+        /// <summary>
+        /// Select this paragraph and start reading it
+        /// </summary>
+        /// <param name="paragraphIndex"></param>
         private void StartFromThisParagraph(int paragraphIndex)
         {
             SelectParagraph(paragraphIndex);
