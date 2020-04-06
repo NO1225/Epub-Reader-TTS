@@ -171,10 +171,7 @@ namespace Epub_Reader_TTS
                         firstHalf = paragraphText.Substring(0, matches[startingIndex].Index + 1);
                         secondHalf = paragraphText.Substring(matches[startingIndex].Index + 1, paragraphText.Length - (matches[startingIndex].Index + 1));
 
-                        Paragraphs.Add(new ParagraphTextViewModel()
-                        {
-                            ParagraphText = firstHalf
-                        });
+                        AddText(firstHalf);
 
                         Split(secondHalf, fullAllowedHeight, fullAllowedHeight, allowedWidth, fontSize);
                         break;

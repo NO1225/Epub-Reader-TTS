@@ -38,7 +38,8 @@
                 VerticalContentAlignment="Center"
                 ToolTip="{Binding Book.BookName}"
                 Command="{Binding OpenCommand}" 
-                Background="{Binding Selected, Converter={local:TileColorConverter}}">
+                Background="{DynamicResource SecondaryBackGroundColorBrush}">
+            <!--Background="{Binding Selected, Converter={local:TileColorConverter}}">-->
             <Image                  
                 Stretch="UniformToFill" 
                 Grid.Row="0" 

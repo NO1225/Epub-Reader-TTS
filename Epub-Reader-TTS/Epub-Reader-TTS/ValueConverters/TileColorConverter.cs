@@ -18,7 +18,7 @@ namespace Epub_Reader_TTS
             if ((bool)value)
                 return Application.Current.Resources["AccentColor2Brush"];
 
-            return Application.Current.Resources["PrimaryBackGroundColorBrush"];
+            return Application.Current.Resources["SecondaryBackGroundColorBrush"];
 
         }
 

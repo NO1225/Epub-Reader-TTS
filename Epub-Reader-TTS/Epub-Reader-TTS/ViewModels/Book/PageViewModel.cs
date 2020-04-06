@@ -41,6 +41,7 @@ namespace Epub_Reader_TTS
         /// Action to be stored
         /// </summary>
         public Action<int> OnPreviousPage;
+        private bool isReading;
 
         /// <summary>
         /// The index of this page
@@ -83,7 +84,15 @@ namespace Epub_Reader_TTS
         /// <summary>
         /// If the applicaiton is reading 
         /// </summary>
-        public bool IsReading { get; set; }
+        public bool IsReading
+        {
+            get => isReading;
+            set
+            {
+                isReading = value;
+                parent.OnPropertyChanged(nameof(parent.PauseButtonText));
+            }
+        }
 
 
         #endregion
@@ -170,7 +179,7 @@ namespace Epub_Reader_TTS
             this.ParagraphViewModels.Add(paragraphViewModel);
         }
 
-  
+
 
         /// <summary>
         /// Go to the next paragraph
