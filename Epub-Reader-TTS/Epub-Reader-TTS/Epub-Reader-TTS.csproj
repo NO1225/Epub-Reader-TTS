@@ -9,8 +9,8 @@
     <Platforms>AnyCPU;x64;x86</Platforms>
     <ApplicationIcon>logo_icon.ico</ApplicationIcon>
     <AssetTargetFallback>uap10.0.18362</AssetTargetFallback>
-    <AssemblyVersion>1.0.07.0</AssemblyVersion>
-    <FileVersion>1.0.07.0</FileVersion>
+    <AssemblyVersion>1.0.08.0</AssemblyVersion>
+    <FileVersion>1.0.08.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
