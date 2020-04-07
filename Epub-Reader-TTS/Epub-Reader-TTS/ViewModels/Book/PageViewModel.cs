@@ -76,6 +76,9 @@ namespace Epub_Reader_TTS
 
                 currentParagraph = value;
 
+                if(currentParagraph != null)
+                    currentParagraph.Active = true;
+
                 if (IsReading)
                     StartReading().GetAwaiter().GetResult();
             }
@@ -301,8 +304,6 @@ namespace Epub_Reader_TTS
                 IsReading = true;
             }
 
-            CurrentParagraph.Active = true;
-
             DI.SpeechSynthesizer.SpeakAsync(CurrentParagraph.ParagraphText);
 
         }
@@ -315,9 +316,6 @@ namespace Epub_Reader_TTS
         {
             IsReading = false;
 
-            if (CurrentParagraph != null)
-                CurrentParagraph.Active = false;
-
             DI.SpeechSynthesizer.SpeakAsyncCancelAll();
         }
 
@@ -329,10 +327,7 @@ namespace Epub_Reader_TTS
         {
             CurrentParagraph = ParagraphViewModels.First(p => p.Index == currentParagraphIndex);
 
-            CurrentParagraph.Active = true;
-
             TaskManager.Run(async () => ViewModelApplication.SavePosition(this.Index, this.CurrentParagraph.Index));
-
         }
 
         /// <summary>
@@ -403,8 +398,6 @@ namespace Epub_Reader_TTS
         {
             if (reason == CompletionReason.Cancel)
                 return;
-
-            CurrentParagraph.Active = false;
 
             NextParagraph();
         }

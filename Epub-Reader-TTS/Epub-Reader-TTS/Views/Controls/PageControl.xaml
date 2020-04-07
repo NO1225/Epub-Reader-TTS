@@ -39,6 +39,8 @@
         x:Name="ScrollContainer"
         HorizontalScrollBarVisibility="Auto"
         VerticalScrollBarVisibility="Disabled"
+        
+
         local:HorizantalWheelScrollingProperty.Value="True"            
         >
         <ItemsControl             
@@ -59,7 +61,7 @@
                         <!-- Active paragraph border -->
                         <Border 
                             Margin="5"
-                            Visibility="{Binding Active, Converter={local:FocusVisibilityConverter}, ConverterParameter={x:Reference Name=page_view}}"
+                            Visibility="{Binding Active, Converter={local:BoolianToVisibilityConverter}}"
                             BorderBrush="{DynamicResource SecondaryBackGroundColorBrush}"
                             BorderThickness="2"
                             >
@@ -72,7 +74,7 @@
                             Foreground="{DynamicResource PrimaryFontColorBrush}"
                             HighlightIndex="{Binding WordIndex}"
                             HighlightLength="{Binding WordLength}"
-                            IsActive="{Binding Active,Mode=TwoWay}"
+                            IsActive="{Binding Active,Mode=OneWay}"
                             FontSize="{DynamicResource MainFontSize}"
                             FontFamily="{StaticResource OpenSansRegular}"
                             TextAlignment="Justify"

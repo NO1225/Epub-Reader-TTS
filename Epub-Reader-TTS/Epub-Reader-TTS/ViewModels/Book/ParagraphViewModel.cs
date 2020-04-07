@@ -37,10 +37,8 @@ namespace Epub_Reader_TTS
             get => active; set
             {
                 active = value;
-                if (!value)
-                {
-                    SetWordIndexAndLength(0, 0);
-                }
+                SetWordIndexAndLength(0, 0);
+
             }
         }
 
@@ -190,7 +188,8 @@ namespace Epub_Reader_TTS
             Paragraphs.Add(new ParagraphTextViewModel()
             {
                 ParagraphText = paragraphText,
-                StartFromHereCommand = StartFromHereCommand
+                StartFromHereCommand = StartFromHereCommand,
+                Active=Active
             });
         }
 
@@ -265,6 +264,10 @@ namespace Epub_Reader_TTS
                     splice.Active = true;
                     splice.WordLength = characterCount;
                     splice.WordIndex = characterPosition - sumOfLengths;
+                }
+                else if(characterPosition == 0&&characterCount==0)
+                {
+                    splice.Active = true;
                 }
                 else
                 {
