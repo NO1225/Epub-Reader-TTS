@@ -31,6 +31,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
                 <!-- DarkMode Settings -->
@@ -158,6 +159,48 @@
                     AutoToolTipPrecision="1"
                     ToolTip="{Binding VoicePitch,  Converter={local:RoundNumberConverter}, ConverterParameter=1}"
                     Value="{Binding VoicePitch}"/>
+                
+                
+                
+                
+                <!-- About -->
+                <StackPanel Grid.ColumnSpan="2" Grid.Row="5">
+                    <Border 
+                        HorizontalAlignment="Center"
+                        BorderBrush="{DynamicResource PrimaryFontColorBrush}"
+                        BorderThickness="0 0 0 1"
+                        Margin="5">
+                        <TextBlock 
+                            Margin="5"
+                            
+                            Text="About"/>
+                    </Border>
+                    <TextBlock 
+                        Margin="5"
+                        HorizontalAlignment="Center"
+                        Text="{Binding PatchNotes}"/>
+                    <TextBlock
+                        Margin="5"
+                        HorizontalAlignment="Center"
+                        >
+                        <Hyperlink  
+                            local:ExternalUriProperty.Value="True"
+                            NavigateUri="{Binding DiscordUri}">
+                            <Run Text="{Binding DiscordText}"/>
+                        </Hyperlink>
+                    </TextBlock>  
+                    <TextBlock
+                        Margin="5"
+                        HorizontalAlignment="Center"
+                        >
+                        <Hyperlink  
+                            local:ExternalUriProperty.Value="True"
+                            NavigateUri="{Binding EmailUri}">
+                            <Run Text="{Binding EmailText}"/>
+                        </Hyperlink>
+                    </TextBlock>
+                    
+                </StackPanel>
 
             </Grid>
         </ScrollViewer>

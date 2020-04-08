@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -44,7 +45,7 @@ namespace Epub_Reader_TTS
         public static readonly DependencyProperty HighlightForegroundProperty =
             DependencyProperty.Register("HighlightForeground", typeof(Brush),
                 typeof(IndexHighlightTextBlock),
-                new PropertyMetadata(Brushes.White));
+                new PropertyMetadata(Brushes.White, HighlightForegroundChanged));
 
         public static readonly DependencyProperty HighlightBackgroundProperty =
             DependencyProperty.Register("HighlightBackground", typeof(Brush),
@@ -124,6 +125,13 @@ namespace Epub_Reader_TTS
 
         }
 
+        private static void HighlightForegroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var textblock = (IndexHighlightTextBlock)d;
+
+            textblock.ProcessIndexChanged(textblock.Text);
+        }
+
         private static void OnHighlightIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var textblock = (IndexHighlightTextBlock)d;
@@ -151,7 +159,7 @@ namespace Epub_Reader_TTS
 
             if (highlightTextBlock == null || string.IsNullOrWhiteSpace(mainText)) return;
 
-            if (!isActive && (highlightLength == 0 || highlightIndex > mainText.Length - highlightLength))
+            if (!isActive || (highlightLength == 0 || highlightIndex > mainText.Length - highlightLength))
             {
                 var completeRun = new Run(mainText);
                 highlightTextBlock.Inlines.Add(completeRun);

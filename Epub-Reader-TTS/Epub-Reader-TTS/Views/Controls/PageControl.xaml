@@ -39,8 +39,6 @@
         x:Name="ScrollContainer"
         HorizontalScrollBarVisibility="Auto"
         VerticalScrollBarVisibility="Disabled"
-        
-
         local:HorizantalWheelScrollingProperty.Value="True"            
         >
         <ItemsControl             
@@ -62,12 +60,15 @@
                         <Border 
                             Margin="5"
                             Visibility="{Binding Active, Converter={local:BoolianToVisibilityConverter}}"
-                            BorderBrush="{DynamicResource SecondaryBackGroundColorBrush}"
-                            BorderThickness="2"
+                            Background="{DynamicResource SecondaryBackGroundColorBrush}"
+                            CornerRadius="15"
                             >
+                            <Border.Effect>
+                                <BlurEffect Radius="15"/>
+                            </Border.Effect>
                         </Border>
                                                 
-                        <!-- Paragraph text -->
+                         <!-- Paragraph text --> 
                         <local:IndexHighlightTextBlock 
                             Margin="10"     
                             Text="{Binding ParagraphText}"

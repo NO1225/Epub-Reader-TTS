@@ -182,7 +182,14 @@ namespace Epub_Reader_TTS
             this.ParagraphViewModels.Add(paragraphViewModel);
         }
 
-
+        /// <summary>
+        /// Repeat current paragraph
+        /// </summary>
+        public async Task RepeatParagraph()
+        {
+            await TogglePause(false);
+            await TogglePause(false);
+        }
 
         /// <summary>
         /// Go to the next paragraph
@@ -308,6 +315,7 @@ namespace Epub_Reader_TTS
 
         }
 
+
         /// <summary>
         /// Stop the reading
         /// </summary>
@@ -344,7 +352,6 @@ namespace Epub_Reader_TTS
         /// <summary>
         /// Go to the next paragraph
         /// </summary>
-        /// <param name="currentParagraph"></param>
         private void NextParagraph()
         {
             if (ParagraphViewModels.Count <= CurrentParagraph.Index + 1)

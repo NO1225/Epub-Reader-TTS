@@ -54,6 +54,7 @@
     <system:String x:Key="FontAwesomeBackwardStepIcon">&#xf048;</system:String>
     <system:String x:Key="FontAwesomeSettingsIcon">&#xf013;</system:String>
     <system:String x:Key="FontAwesomeRedoAltIcon">&#xf01e;</system:String>
+    <system:String x:Key="FontAwesomeRefreshIcon">&#xf01e;</system:String>
     
     
 

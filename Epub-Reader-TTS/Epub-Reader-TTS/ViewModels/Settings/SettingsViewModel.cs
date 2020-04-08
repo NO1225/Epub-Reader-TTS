@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Epub_Reader_TTS
@@ -114,6 +115,35 @@ namespace Epub_Reader_TTS
                 DI.ViewModelApplication.CurrentBookViewModel?.SortCurrent();
             }
         }
+
+        #region About
+
+        /// <summary>
+        /// The current version of the application
+        /// </summary>
+        public string PatchNotes { get; set; } = $"Epub Reader TTS v{Assembly.GetEntryAssembly().GetName().Version}";
+
+        /// <summary>
+        /// The text to click to go to the discord server
+        /// </summary>
+        public string DiscordText { get; set; } = $"Discord Server";
+
+        /// <summary>
+        /// The Uri to the discord server
+        /// </summary>
+        public Uri DiscordUri { get; set; } = new Uri("https://discord.gg/2Vqy8V");
+
+        /// <summary>
+        /// The text to click to send the auther an email
+        /// </summary>
+        public string EmailText { get; set; } = $"Send me an E-Mail";
+
+        /// <summary>
+        /// The Uri to send an E-mail
+        /// </summary>
+        public Uri EmailUri { get; set; } = new Uri("mailto:Epub-Reader-TTS@outlook.com?subject=FeedBack");
+
+        #endregion
 
         #endregion
 

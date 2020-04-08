@@ -9,8 +9,8 @@
     <Platforms>AnyCPU;x64;x86</Platforms>
     <ApplicationIcon>logo_icon.ico</ApplicationIcon>
     <AssetTargetFallback>uap10.0.18362</AssetTargetFallback>
-    <AssemblyVersion>1.0.08.0</AssemblyVersion>
-    <FileVersion>1.0.08.0</FileVersion>
+    <AssemblyVersion>1.0.9.0</AssemblyVersion>
+    <FileVersion>1.0.9.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +21,7 @@
     <None Remove="Fonts\OpenSans-Light.ttf" />
     <None Remove="Fonts\OpenSans-Regular.ttf" />
     <None Remove="logo_icon.ico" />
+    <None Remove="Windows\logo-reduced.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +52,7 @@
     <Resource Include="Fonts\OpenSans-Light.ttf" />
     <Resource Include="Fonts\OpenSans-Regular.ttf" />
     <Resource Include="logo_icon.ico" />
+    <Resource Include="logo-reduced.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,11 +6,26 @@
         xmlns:local="clr-namespace:Epub_Reader_TTS"
         mc:Ignorable="d"
         WindowStyle="None"        
-        Title="SplashScreen" Height="300" Width="300" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" WindowState="Normal">
+        Title="Epub-Reader-TTS | Loading" 
+        Height="300" 
+        Width="300" 
+        ResizeMode="NoResize" 
+        ShowInTaskbar="False" 
+        WindowStartupLocation="CenterScreen" 
+        WindowState="Normal"
+        Icon="/logo_icon.ico">
     <Grid>
         <Border Margin="1" BorderBrush="Black" BorderThickness="1">
             <Border  Margin="1" BorderBrush="Black" BorderThickness="1">
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Loading</TextBlock>
+                <DockPanel LastChildFill="True">
+                    <TextBlock
+                        Margin="10"
+                        DockPanel.Dock="Bottom" VerticalAlignment="Center" HorizontalAlignment="Center">Loading...</TextBlock>
+                    <Image
+                        Margin="40"
+                        Source="/logo-reduced.png" />
+                </DockPanel>
+                
             </Border>
         </Border>
 

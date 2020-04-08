@@ -271,6 +271,9 @@ namespace Epub_Reader_TTS
             {
                 // TODO: 
                 MessageBox.Show("Not Found");
+
+                Loading = false;
+                return;
             }
 
             // Read an epub file

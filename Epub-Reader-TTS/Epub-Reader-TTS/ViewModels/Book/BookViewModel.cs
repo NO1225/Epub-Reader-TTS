@@ -136,6 +136,8 @@ namespace Epub_Reader_TTS
         /// </summary>
         public ICommand PlayCommand { get; set; }
 
+        public ICommand RepeatCommand { get; set; }
+
         public ICommand PreviousParagraphCommand { get; set; }
 
         public ICommand NextParagraphCommand { get; set; }
@@ -172,6 +174,8 @@ namespace Epub_Reader_TTS
         {
             PlayCommand = new RelayCommand(async () => await TogglePause());
 
+            RepeatCommand = new RelayCommand(async () => await RepeatParagraph());
+
             PreviousParagraphCommand = new RelayCommand(async () => await PreviousParagraph());
 
             NextParagraphCommand = new RelayCommand(async () => await NextParagraph());
@@ -190,6 +194,7 @@ namespace Epub_Reader_TTS
 
             Initiate();
         }
+
 
         #endregion
 
@@ -288,6 +293,17 @@ namespace Epub_Reader_TTS
             await CurrentPage.TogglePause(true);
 
             ViewModelApplication.GoToPage(ApplicationPage.Dashboard);
+        }
+
+        /// <summary>
+        /// tell the page to repeat the current paragraph
+        /// </summary>
+        /// <returns></returns>
+        private async Task RepeatParagraph()
+        {
+            await CurrentPage.RepeatParagraph();
+
+            OnPropertyChanged(nameof(PauseButtonText));
         }
 
         /// <summary>

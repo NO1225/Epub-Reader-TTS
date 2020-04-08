@@ -7,13 +7,13 @@ namespace Epub_Reader_TTS
     {
         #region Private Fields
 
-       Color primaryFontColor;
-       Color secondaryFontColor;
-       Color primaryBackGroundColor;
-       Color secondaryBackGroundColor;
+        Color primaryFontColor;
+        Color secondaryFontColor;
+        Color primaryBackGroundColor;
+        Color secondaryBackGroundColor;
 
-       Color accentColor1;
-       Color dimOverlayColor;
+        Color accentColor1;
+        Color dimOverlayColor;
 
         SolidColorBrush primaryFontColorBrush;
         SolidColorBrush secondaryFontColorBrush;
@@ -45,7 +45,7 @@ namespace Epub_Reader_TTS
             if (isDarkMode)
             {
                 primaryFontColor = (Color)ColorConverter.ConvertFromString("#ffffff");
-                secondaryFontColor = (Color)ColorConverter.ConvertFromString("#f0f0f0");
+                secondaryFontColor = (Color)ColorConverter.ConvertFromString("#dedede");
                 primaryBackGroundColor = (Color)ColorConverter.ConvertFromString("#000000");
                 secondaryBackGroundColor = (Color)ColorConverter.ConvertFromString("#2b2b2b");
 
@@ -57,7 +57,7 @@ namespace Epub_Reader_TTS
                 primaryFontColor = (Color)ColorConverter.ConvertFromString("#000000");
                 secondaryFontColor = (Color)ColorConverter.ConvertFromString("#2b2b2b");
                 primaryBackGroundColor = (Color)ColorConverter.ConvertFromString("#ffffff");
-                secondaryBackGroundColor = (Color)ColorConverter.ConvertFromString("#f0f0f0");
+                secondaryBackGroundColor = (Color)ColorConverter.ConvertFromString("#dedede");
 
                 accentColor1 = (Color)ColorConverter.ConvertFromString("#00569f");
                 dimOverlayColor = (Color)ColorConverter.ConvertFromString("#33292D44");

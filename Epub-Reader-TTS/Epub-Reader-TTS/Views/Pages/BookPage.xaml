@@ -94,6 +94,15 @@
                     Height="40"
                     ToolTip="Play/Pause"
                     />
+                
+                <Button 
+                    Style="{DynamicResource IconGrowButton}"
+                    Command="{Binding RepeatCommand}" 
+                    VerticalAlignment="Center"
+                    Content="{StaticResource FontAwesomeRefreshIcon}"
+                    Height="40"
+                    ToolTip="Repeat The Current Paragraph"
+                    />
 
                 <Button 
                     Style="{DynamicResource IconGrowButton}"
