@@ -185,6 +185,16 @@
                         >
                         <Hyperlink  
                             local:ExternalUriProperty.Value="True"
+                            NavigateUri="{Binding WebsiteUri}">
+                            <Run Text="{Binding WebsiteText}"/>
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock
+                        Margin="5"
+                        HorizontalAlignment="Center"
+                        >
+                        <Hyperlink  
+                            local:ExternalUriProperty.Value="True"
                             NavigateUri="{Binding DiscordUri}">
                             <Run Text="{Binding DiscordText}"/>
                         </Hyperlink>

@@ -143,6 +143,16 @@ namespace Epub_Reader_TTS
         /// </summary>
         public Uri EmailUri { get; set; } = new Uri("mailto:Epub-Reader-TTS@outlook.com?subject=FeedBack");
 
+        /// <summary>
+        /// The text to click to go to the app website
+        /// </summary>
+        public string WebsiteText { get; set; } = $"Go to website: epubreadertts.tech";
+
+        /// <summary>
+        /// The Uri to the website
+        /// </summary>
+        public Uri WebsiteUri { get; set; } = new Uri("https://epubreadertts.tech");
+
         #endregion
 
         #endregion
