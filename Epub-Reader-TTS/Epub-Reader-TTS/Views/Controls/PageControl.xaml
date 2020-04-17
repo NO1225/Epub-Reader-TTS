@@ -61,10 +61,10 @@
                             Margin="5"
                             Visibility="{Binding Active, Converter={local:BoolianToVisibilityConverter}}"
                             Background="{DynamicResource SecondaryBackGroundColorBrush}"
-                            CornerRadius="15"
+                            CornerRadius="5"
                             >
                             <Border.Effect>
-                                <BlurEffect Radius="15"/>
+                                <BlurEffect Radius="5"/>
                             </Border.Effect>
                         </Border>
                                                 

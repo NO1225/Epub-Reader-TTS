@@ -271,7 +271,9 @@ namespace Epub_Reader_TTS
                 }
                 else
                 {
-                    splice.Active = false;
+                    splice.WordIndex = 0;
+                    splice.WordLength = 0;
+                    splice.Active = true;
                 }
 
                 sumOfLengths = nextSumOfLengths;

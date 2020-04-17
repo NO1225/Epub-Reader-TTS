@@ -9,8 +9,6 @@ namespace Epub_Reader_TTS
 {
     public class SpeechSynthesizer : ISpeechSynthesizer
     {
-        //private WindowsXamlHost windowsXamlHost = new WindowsXamlHost();
-
         private Speaker.SpeakerWithSMTC speaker;
 
         public double Rate
@@ -88,6 +86,11 @@ namespace Epub_Reader_TTS
         public SpeechSynthesizer(global::Speaker.SpeakerWithSMTC speaker)
         {
             this.speaker = speaker;
+
+            // Update the speech synthesize 
+            Pitch = DI.SettingsManager.GetVoicePitch();
+            Rate = DI.SettingsManager.GetReadingSpeed();
+            SelectVoice(DI.SettingsManager.GetSelectedVoice());
         }
 
         public async Task SpeakAsync(string text)

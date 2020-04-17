@@ -1,0 +1,12 @@
+Epub Reader TTS v0.0.9 Installer
+
+v0.0.9:
+Self-Contained Installer
+https://1drv.ms/u/s!Al9HhTuqaZ82dJ4Xbn-DoKCBIgc?e=5fcnyC
+
+Changes:
+1- Background color instead of border for selected paragraph
+2- Fixing bugs: (the loading which doesn't dissapear) 
+3- Adding information about the application in the settings
+4- Adding repeat paragraph button 
+5- Modification on the Splash Screen

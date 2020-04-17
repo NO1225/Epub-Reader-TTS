@@ -18,16 +18,21 @@ namespace Epub_Reader_TTS
     {
         public override void OnValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var element = sender as UIElement;
+            var element = sender as ScrollViewer;
 
             if (element == null)
                 throw new Exception("Attached property must be used with UIElement.");
 
             if ((bool)e.NewValue)
+            {
                 element.PreviewMouseWheel += OnPreviewMouseWheel;
+            }
             else
+            {
                 element.PreviewMouseWheel -= OnPreviewMouseWheel;
+            }
         }
+
 
         private static void OnPreviewMouseWheel(object sender, MouseWheelEventArgs args)
         {
