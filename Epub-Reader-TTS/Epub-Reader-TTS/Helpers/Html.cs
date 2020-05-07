@@ -1,6 +1,8 @@
 ﻿using EpubSharp;
+using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -13,98 +15,218 @@ namespace Epub_Reader_TTS
     /// </summary>
     internal static class Html
     {
-        private static readonly RegexOptions RegexOptions = RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture;
-        private static readonly RegexOptions RegexOptionsIgnoreCase = RegexOptions.IgnoreCase | RegexOptions;
-        private static readonly RegexOptions RegexOptionsIgnoreCaseSingleLine = RegexOptions.Singleline | RegexOptionsIgnoreCase;
-        private static readonly RegexOptions RegexOptionsIgnoreCaseMultiLine = RegexOptions.Multiline | RegexOptionsIgnoreCase;
-
-        public static string GetContentAsPlainText(string html)
-        {
-            if (string.IsNullOrWhiteSpace(html)) throw new ArgumentNullException(nameof(html));
-
-            html = html.Trim();
-            html = Regex.Replace(html, @"\r\n?|\n", "");
-            var match = Regex.Match(html, @"<body[^>]*>.+</body>", RegexOptionsIgnoreCaseSingleLine);
-            return match.Success ? ClearText(match.Value).Trim(' ', '\r', '\n') : "";
-        }
-
-        private static string ClearText(string text)
-        {
-            if (text == null) return null;
-
-            var result = ReplaceBlockTagsWithNewLines(text);
-            result = RemoveHtmlTags(result);
-            result = DecodeHtmlSymbols(result);
-            return result;
-        }
-
-        private static string RemoveHtmlTags(string text)
-        {
-            return text == null ? null : Regex.Replace(text, @"</?(\w+|\s*!--)[^>]*>", " ", RegexOptions);
-        }
-
-        private static string ReplaceBlockTagsWithNewLines(string text)
-        {
-            return text == null ? null : Regex.Replace(text, @"(?<!^\s*)<(p|div|h1|h2|h3|h4|h5|h6)[^>]*>", "\n", RegexOptionsIgnoreCaseMultiLine);
-        }
-
-        private static string DecodeHtmlSymbols(string text)
-        {
-            if (text == null) return null;
-            var regex = new Regex(@"(?<defined>(&nbsp|&quot|&mdash|&ldquo|&rdquo|\&\#8211|\&\#8212|&\#8230|\&\#171|&laquo|&raquo|&amp);?)|(?<other>\&\#\d+;?)", RegexOptionsIgnoreCase);
-            text = Regex.Replace(regex.Replace(text, SpecialSymbolsEvaluator), @"\ {2,}", " ", RegexOptions);
-            text = WebUtility.HtmlDecode(text);
-            return text;
-        }
-
-        private static string SpecialSymbolsEvaluator(Match m)
-        {
-            if (!m.Groups["defined"].Success) return " ";
-            switch (m.Groups["defined"].Value.ToLower())
-            {
-                case "&nbsp;": return " ";
-                case "&nbsp": return " ";
-                case "&quot;": return "\"";
-                case "&quot": return "\"";
-                case "&mdash;": return " ";
-                case "&mdash": return " ";
-                case "&ldquo;": return "\"";
-                case "&ldquo": return "\"";
-                case "&rdquo;": return "\"";
-                case "&rdquo": return "\"";
-                case "&#8211;": return "-";
-                case "&#8211": return "-";
-                case "&#8212;": return "-";
-                case "&#8212": return "-";
-                case "&#8230": return "...";
-                case "&#171;": return "\"";
-                case "&#171": return "\"";
-                case "&laquo;": return "\"";
-                case "&laquo": return "\"";
-                case "&raquo;": return "\"";
-                case "&raquo": return "\"";
-                case "&amp;": return "&";
-                case "&amp": return "&";
-                default: return " ";
-            }
-        }
-
+        
         public static string ToPlainText(this EpubTextFile epubTextFile)
         {
             var builder = new StringBuilder();
 
-            builder.Append(Html.GetContentAsPlainText(epubTextFile.TextContent));
+            builder.Append(Html.ConvertHtml(epubTextFile.TextContent));
 
             return builder.ToString().Trim();
         }
 
+        public static string ConvertHtml(string html)
+        {
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(html);
+            return ConvertDoc(doc);
+        }
+
+        public static string ConvertDoc(HtmlDocument doc)
+        {
+            using (StringWriter sw = new StringWriter())
+            {
+                ConvertTo(doc.DocumentNode, sw);
+                sw.Flush();
+                return sw.ToString();
+            }
+        }
+
+        internal static void ConvertContentTo(HtmlNode node, TextWriter outText, PreceedingDomTextInfo textInfo)
+        {
+            foreach (HtmlNode subnode in node.ChildNodes)
+            {
+                ConvertTo(subnode, outText, textInfo);
+            }
+        }
+
+        public static void ConvertTo(HtmlNode node, TextWriter outText)
+        {
+            ConvertTo(node, outText, new PreceedingDomTextInfo(false));
+        }
+
+        internal static void ConvertTo(HtmlNode node, TextWriter outText, PreceedingDomTextInfo textInfo)
+        {
+            string html;
+            switch (node.NodeType)
+            {
+                case HtmlNodeType.Comment:
+                    // don't output comments
+                    break;
+                case HtmlNodeType.Document:
+                    ConvertContentTo(node, outText, textInfo);
+                    break;
+                case HtmlNodeType.Text:
+                    // script and style must not be output
+                    string parentName = node.ParentNode.Name;
+                    if ((parentName == "script") || (parentName == "style"))
+                    {
+                        break;
+                    }
+                    // get text
+                    html = ((HtmlTextNode)node).Text;
+                    // is it in fact a special closing node output as text?
+                    if (HtmlNode.IsOverlappedClosingElement(html))
+                    {
+                        break;
+                    }
+                    // check the text is meaningful and not a bunch of whitespaces
+                    if (html.Length == 0)
+                    {
+                        break;
+                    }
+                    if (!textInfo.WritePrecedingWhiteSpace || textInfo.LastCharWasSpace)
+                    {
+                        html = html.TrimStart();
+                        if (html.Length == 0) { break; }
+                        textInfo.IsFirstTextOfDocWritten.Value = textInfo.WritePrecedingWhiteSpace = true;
+                    }
+                    outText.Write(HtmlEntity.DeEntitize(Regex.Replace(html.TrimEnd(), @"\s{2,}", " ")));
+                    if (textInfo.LastCharWasSpace = char.IsWhiteSpace(html[html.Length - 1]))
+                    {
+                        outText.Write(' ');
+                    }
+                    break;
+                case HtmlNodeType.Element:
+                    string endElementString = null;
+                    bool isInline;
+                    bool skip = false;
+                    int listIndex = 0;
+                    switch (node.Name)
+                    {
+                        case "head":
+                        case "nav":
+                            skip = true;
+                            isInline = false;
+                            break;
+                        case "body":
+                        case "section":
+                        case "article":
+                        case "aside":
+                        case "h1":
+                        case "h2":
+                        case "header":
+                        case "footer":
+                        case "address":
+                        case "main":
+                        case "div":
+                        case "p": // stylistic - adjust as you tend to use
+                            if (textInfo.IsFirstTextOfDocWritten)
+                            {
+                                outText.Write("\r\n");
+                            }
+                            endElementString = "\r\n";
+                            isInline = false;
+                            break;
+                        case "br":
+                            outText.Write("\r\n");
+                            skip = true;
+                            textInfo.WritePrecedingWhiteSpace = false;
+                            isInline = true;
+                            break;
+                        case "a":
+                            if (node.Attributes.Contains("href"))
+                            {
+                                string href = node.Attributes["href"].Value.Trim();
+                                if (node.InnerText.IndexOf(href, StringComparison.InvariantCultureIgnoreCase) == -1)
+                                {
+                                    //endElementString = "<" + href + ">";
+                                }
+                            }
+                            isInline = true;
+                            break;
+                        case "li":
+                            if (textInfo.ListIndex > 0)
+                            {
+                                outText.Write("\r\n{0}.\t", textInfo.ListIndex++);
+                            }
+                            else
+                            {
+                                outText.Write("\r\n*\t"); //using '*' as bullet char, with tab after, but whatever you want eg "\t->", if utf-8 0x2022
+                            }
+                            isInline = false;
+                            break;
+                        case "ol":
+                            listIndex = 1;
+                            goto case "ul";
+                        case "ul": //not handling nested lists any differently at this stage - that is getting close to rendering problems
+                            endElementString = "\r\n";
+                            isInline = false;
+                            break;
+                        case "img": //inline-block in reality
+                            //if (node.Attributes.Contains("alt"))
+                            //{
+                            //    outText.Write('[' + node.Attributes["alt"].Value);
+                            //    endElementString = "]";
+                            //}
+                            //if (node.Attributes.Contains("src"))
+                            //{
+                            //    outText.Write('<' + node.Attributes["src"].Value + '>');
+                            //}
+                            isInline = true;
+                            break;
+                        default:
+                            isInline = true;
+                            break;
+                    }
+                    if (!skip && node.HasChildNodes)
+                    {
+                        ConvertContentTo(node, outText, isInline ? textInfo : new PreceedingDomTextInfo(textInfo.IsFirstTextOfDocWritten) { ListIndex = listIndex });
+                    }
+                    if (endElementString != null)
+                    {
+                        outText.Write(endElementString);
+                    }
+                    break;
+            }
+        }
+
         public static ICollection<string> ToParagraphs(this EpubTextFile epubTextFile)
         {
-            var paragraphs = epubTextFile.ToPlainText().Split('\n').ToList();
+            var reg = "\r\n|\n\r|\r|\n";
+
+            var text = epubTextFile.ToPlainText();
+
+            var paragraphs =  Regex.Split(text, reg).ToList();
 
             paragraphs.RemoveAll(t => string.IsNullOrWhiteSpace(t));
 
             return paragraphs;
+        }
+    }
+
+    internal class PreceedingDomTextInfo
+    {
+        public PreceedingDomTextInfo(BoolWrapper isFirstTextOfDocWritten)
+        {
+            IsFirstTextOfDocWritten = isFirstTextOfDocWritten;
+        }
+        public bool WritePrecedingWhiteSpace { get; set; }
+        public bool LastCharWasSpace { get; set; }
+        public readonly BoolWrapper IsFirstTextOfDocWritten;
+        public int ListIndex { get; set; }
+    }
+    internal class BoolWrapper
+    {
+        public BoolWrapper() { }
+        public bool Value { get; set; }
+        public static implicit operator bool(BoolWrapper boolWrapper)
+        {
+            return boolWrapper.Value;
+        }
+        public static implicit operator BoolWrapper(bool boolWrapper)
+        {
+            return new BoolWrapper { Value = boolWrapper };
         }
     }
 }

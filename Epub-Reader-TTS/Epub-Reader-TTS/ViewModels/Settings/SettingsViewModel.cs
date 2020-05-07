@@ -151,7 +151,7 @@ namespace Epub_Reader_TTS
         /// <summary>
         /// The Uri to the website
         /// </summary>
-        public Uri WebsiteUri { get; set; } = new Uri("https://epubreadertts.tech");
+        public Uri WebsiteUri { get; set; } = new Uri("https://no1225.github.io/");
 
         #endregion
 

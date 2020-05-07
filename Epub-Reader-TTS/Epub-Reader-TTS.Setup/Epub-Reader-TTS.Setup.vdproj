@@ -108,6 +108,16 @@
         {
             "LaunchCondition"
             {
+                "{A06ECF26-33A3-4562-8140-9B0E340D4F24}:_F330DAA17D1D42A181358301745373C3"
+                {
+                "Name" = "8:.NET Core"
+                "Message" = "8:[VSDNETCOREMSG]"
+                "AllowLaterVersions" = "11:FALSE"
+                "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
+                "IsNETCore" = "11:TRUE"
+                "Architecture" = "2:0"
+                "Runtime" = "2:0"
+                }
             }
         }
         "File"
@@ -199,15 +209,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Epub Reader TTS"
-        "ProductCode" = "8:{C8790CE7-D4A5-45CB-B3BA-5B8F1EC4E3BF}"
-        "PackageCode" = "8:{5673908E-44DD-4E71-A199-C94700B5AC80}"
+        "ProductCode" = "8:{C3C0CBF6-B34A-4F58-8F45-21BB979DDB24}"
+        "PackageCode" = "8:{53AE0649-82E2-44FD-8F67-EE8739062395}"
         "UpgradeCode" = "8:{51E9B76A-FADD-45A1-84E9-66CFD194CC8D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.10"
+        "ProductVersion" = "8:1.0.11"
         "Manufacturer" = "8:Epub Reader TTS"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
