@@ -9,6 +9,7 @@ using Windows.Media;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Media.SpeechSynthesis;
+using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
@@ -103,7 +104,7 @@ namespace Speaker
             }
         }
 
-        public void UpdateSystemMediaTrasportControls(
+        public async void UpdateSystemMediaTrasportControls(
             string title,
             string chapter,
             string coverPath = "",
@@ -129,8 +130,16 @@ namespace Speaker
             updater.MusicProperties.AlbumArtist = chapter;
             updater.MusicProperties.Title = title;
 
-            if(!string.IsNullOrEmpty(coverPath))
-                updater.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(coverPath));
+            if (!string.IsNullOrEmpty(coverPath))
+            {
+                var file = await StorageFile.GetFileFromPathAsync(coverPath);
+                
+                if (file != null)
+                {
+                    updater.Thumbnail = RandomAccessStreamReference.CreateFromFile(file);
+                }                
+            }
+
             updater.Update();
         }
 

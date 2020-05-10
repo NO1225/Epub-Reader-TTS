@@ -1,7 +1,6 @@
 ﻿using Epub_Reader_TTS.Core;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -65,6 +64,12 @@ namespace Epub_Reader_TTS
                     value.SortParagraphs();
                 currentPage = value;
                 OnPropertyChanged(nameof(PauseButtonText));
+
+                DI.SpeechSynthesizer.UpdateSystemMediaTrasportControls(
+                    Title,
+                    CurrentPage.Title,
+                    ViewModelApplication.CurrentBook.BookCoverPath,
+                    mediaPlaybackStatus: CurrentPage.IsReading ? MediaPlaybackStatus.Playing : MediaPlaybackStatus.Paused);
             }
         }
 
@@ -75,9 +80,9 @@ namespace Epub_Reader_TTS
         {
             get
             {
-                if(CurrentPage != null)
+                if (CurrentPage != null)
                 {
-                    return CurrentPage.IsReading? "\uf04c" : "\uf04b";
+                    return CurrentPage.IsReading ? "\uf04c" : "\uf04b";
                 }
                 return reading ? "\uf04c" : "\uf04b";
             }
@@ -211,6 +216,7 @@ namespace Epub_Reader_TTS
             DI.SpeechSynthesizer.PausePressed = () => TogglePause();
             DI.SpeechSynthesizer.NextPressed = () => NextParagraph();
             DI.SpeechSynthesizer.PreviousPressed = () => PreviousParagraph();
+
         }
 
         /// <summary>
@@ -224,6 +230,8 @@ namespace Epub_Reader_TTS
             CurrentPage.Initiate(reading, book.CurrentParagraphIndex);
 
             OnPropertyChanged(nameof(PauseButtonText));
+
+
         }
 
 
@@ -245,8 +253,7 @@ namespace Epub_Reader_TTS
 
             DI.SpeechSynthesizer.UpdateSystemMediaTrasportControls(
                 Title,
-                CurrentPage.
-                Title,
+                CurrentPage.Title,
                 mediaPlaybackStatus: CurrentPage.IsReading ? MediaPlaybackStatus.Playing : MediaPlaybackStatus.Paused);
 
             OnPropertyChanged(nameof(PauseButtonText));
@@ -347,7 +354,7 @@ namespace Epub_Reader_TTS
         /// <param name="pageViewModel"></param>
         public void AddPage(PageViewModel pageViewModel)
         {
-            if(this.PageViewModels==null)
+            if (this.PageViewModels == null)
                 this.PageViewModels = new ObservableCollection<PageViewModel>();
 
             pageViewModel.OnFinnished = NextPage;
@@ -374,8 +381,7 @@ namespace Epub_Reader_TTS
 
                 DI.SpeechSynthesizer.UpdateSystemMediaTrasportControls(
                     Title,
-                    CurrentPage.
-                    Title,
+                    CurrentPage.Title,
                     mediaPlaybackStatus: CurrentPage.IsReading ? MediaPlaybackStatus.Playing : MediaPlaybackStatus.Paused);
 
                 OnPropertyChanged(nameof(PauseButtonText));
@@ -400,8 +406,7 @@ namespace Epub_Reader_TTS
 
                 DI.SpeechSynthesizer.UpdateSystemMediaTrasportControls(
                     Title,
-                    CurrentPage.
-                    Title,
+                    CurrentPage.Title,
                     mediaPlaybackStatus: CurrentPage.IsReading ? MediaPlaybackStatus.Playing : MediaPlaybackStatus.Paused);
 
                 OnPropertyChanged(nameof(PauseButtonText));
