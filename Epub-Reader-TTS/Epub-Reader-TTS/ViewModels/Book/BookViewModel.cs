@@ -68,7 +68,6 @@ namespace Epub_Reader_TTS
                 DI.SpeechSynthesizer.UpdateSystemMediaTrasportControls(
                     Title,
                     CurrentPage.Title,
-                    ViewModelApplication.CurrentBook.BookCoverPath,
                     mediaPlaybackStatus: CurrentPage.IsReading ? MediaPlaybackStatus.Playing : MediaPlaybackStatus.Paused);
             }
         }
@@ -231,6 +230,11 @@ namespace Epub_Reader_TTS
 
             OnPropertyChanged(nameof(PauseButtonText));
 
+            DI.SpeechSynthesizer.UpdateSystemMediaTrasportControls(
+                Title,
+                CurrentPage.Title,
+                ViewModelApplication.CurrentBook.BookCoverPath,
+                mediaPlaybackStatus: CurrentPage.IsReading ? MediaPlaybackStatus.Playing : MediaPlaybackStatus.Paused);
 
         }
 
